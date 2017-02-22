@@ -39,7 +39,7 @@ public class AudioProcessor : MonoBehaviour {
 				note = "Xi";
 			}
 			resourceManager.InstantiateMusicSymbol (note);
-			Debug.logger.Log (max);
+//			Debug.logger.Log (max);
 //			StartCoroutine (sleep ());
 			sampleRate = 1f;
 		} else {

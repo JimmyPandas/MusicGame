@@ -9,10 +9,10 @@ public class TouchInput : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0) || Input.GetMouseButtonDown (1) || Input.GetMouseButtonDown (2)) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit)) {
+			if (Physics.Raycast (ray, out hit) && hit.transform.CompareTag("Item")) {
 				Destroy (hit.transform.gameObject);
-				ResourseManager resourceManager = Camera.main.GetComponentInChildren<ResourseManager> ();
-				resourceManager.AddScore (10);
+				GUIManager guiManager = Camera.main.GetComponentInChildren<GUIManager> ();
+				guiManager.AddScore(10);
 			}
 		}
 	}
