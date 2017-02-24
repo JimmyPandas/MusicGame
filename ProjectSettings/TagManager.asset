@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Symbol
   - Item
+  - GUI
   layers:
   - Default
   - TransparentFX

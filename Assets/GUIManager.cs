@@ -8,27 +8,19 @@ public class GUIManager : MonoBehaviour {
 	public GameObject ground;
 	public GameObject trees;
 	public GameObject grass;
+
 	public int score = 0;
-	public Canvas scoreCanvas;
-	private Text scoreText;
+	public GameObject gameCanvas;
+
+	public Text scoreText;
 
 	// Use this for initialization
 	void Start () {
 		Instantiate (ground, ground.transform.position, Quaternion.identity);
 		Instantiate (grass, grass.transform.position, Quaternion.identity);
 		Instantiate (trees, trees.transform.position, Quaternion.identity);
-		scoreCanvas = Instantiate (scoreCanvas, scoreCanvas.transform.position, Quaternion.identity);
-		if(scoreCanvas != null) {
-			scoreText = scoreCanvas.GetComponentInChildren<Text> ();
-			UpdateScore();
-		}
-		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 
 	public void AddScore (int scorePoint) {
 		score += scorePoint;
@@ -45,4 +37,5 @@ public class GUIManager : MonoBehaviour {
 		score -= scorePoint;
 		UpdateScore ();
 	}
+		
 }

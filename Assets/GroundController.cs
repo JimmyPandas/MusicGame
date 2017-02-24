@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class GroundController : MonoBehaviour {
 
-	void OnTriggerStay(Collider other) {
-		Debug.logger.Log("Collide!");
+	void OnTriggerEnter(Collider other) {
 		GameObject gameObject = other.gameObject;
 		if (gameObject.CompareTag ("Item")) {
-			gameObject.transform.Translate(Vector3.right * 2 * Time.deltaTime);
 			gameObject.GetComponentInChildren<ItemController> ().SetSpeed (0);
 			Destroy(gameObject);
-			GUIManager guiManager = Camera.main.GetComponentInChildren<GUIManager> ();
+			GUIManager guiManager = GameObject.Find("GUIManager").GetComponentInChildren<GUIManager> ();
 			guiManager.LoseScore(10);
 		}
 	}
+
 }

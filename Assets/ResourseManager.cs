@@ -12,9 +12,21 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject item;
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
 	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
+	private string path = "";
 
 	// Use this for initialization
 	void Start () {
+		GameObject dataManager = GameObject.Find ("DataManager");
+		path = dataManager.GetComponentInChildren<DataManager> ().path;
+		StartCoroutine(LoadSongCoroutine()); 
+		FileLoader fileLoader = dataManager.GetComponentInChildren<FileLoader>();
+		fileLoader.enabled = false;
+
+		AudioSource audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
+		if(audioSource != null) {
+			GetComponentInChildren<AudioProcessor> ().enabled = true;
+		}
+
 		colorsDict.Add ("Do", Color.red);
 		colorsDict.Add ("Re", new Color(253, 181, 99, 1));
 		colorsDict.Add ("Mi", Color.yellow);
@@ -51,6 +63,19 @@ public class ResourseManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded) {
+			audioSource.Play ();
+		}
+	}
+
+	IEnumerator LoadSongCoroutine(){
+		if (path.Length != 0) { 
+			WWW www = new WWW("file://" + path);
+
+			GetComponentInChildren<AudioSource>().clip = www.audioClip;
+			yield return www;
+		}
 	}
 
 	public void InstantiateMusicSymbol(string note) {

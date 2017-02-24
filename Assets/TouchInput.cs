@@ -11,7 +11,7 @@ public class TouchInput : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit) && hit.transform.CompareTag("Item")) {
 				Destroy (hit.transform.gameObject);
-				GUIManager guiManager = Camera.main.GetComponentInChildren<GUIManager> ();
+				GUIManager guiManager = GameObject.Find("GUIManager").GetComponentInChildren<GUIManager> ();
 				guiManager.AddScore(10);
 			}
 		}
