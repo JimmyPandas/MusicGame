@@ -18,15 +18,32 @@ public class ResourseManager : MonoBehaviour {
 	void Start () {
 		GameObject dataManager = GameObject.Find ("DataManager");
 		path = dataManager.GetComponentInChildren<DataManager> ().path;
-		StartCoroutine(LoadSongCoroutine()); 
-		FileLoader fileLoader = dataManager.GetComponentInChildren<FileLoader>();
-		fileLoader.enabled = false;
+//		StartCoroutine(LoadSongCoroutine()); 
+
+		InitColorDict ();
+		InitItemDict ();
 
 		AudioSource audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
 		if(audioSource != null) {
 			GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
 
+
+	
+	}
+
+	// Update is called once per frame
+	void Update () {
+		AudioSource audioSource = GetComponent<AudioSource> ();
+		if (audioSource.clip != null) {
+			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded) {
+				audioSource.Play ();
+			}
+		}
+	}
+
+
+	private void InitColorDict() {
 		colorsDict.Add ("Do", Color.red);
 		colorsDict.Add ("Re", new Color(253, 181, 99, 1));
 		colorsDict.Add ("Mi", Color.yellow);
@@ -34,7 +51,9 @@ public class ResourseManager : MonoBehaviour {
 		colorsDict.Add ("So", Color.cyan);
 		colorsDict.Add ("La", Color.green);
 		colorsDict.Add ("Xi", Color.magenta);
+	}
 
+	private void InitItemDict() {
 		List<GameObject> doItems = new List<GameObject> ();
 		doItems.Add (apple);
 		doItems.Add(strawberry);
@@ -50,7 +69,7 @@ public class ResourseManager : MonoBehaviour {
 		laItems.Add(item);
 		List<GameObject> xiItems = new List<GameObject> ();
 		xiItems.Add(item);
-			
+
 		itemsDict.Add ("Do", doItems);
 		itemsDict.Add ("Re", reItems);
 		itemsDict.Add ("Mi", meItems);
@@ -58,22 +77,12 @@ public class ResourseManager : MonoBehaviour {
 		itemsDict.Add ("So", soItems);
 		itemsDict.Add ("La", laItems);
 		itemsDict.Add ("Xi", xiItems);
-	
-	}
-
-	// Update is called once per frame
-	void Update () {
-		AudioSource audioSource = GetComponent<AudioSource> ();
-		if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded) {
-			audioSource.Play ();
-		}
 	}
 
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
 			WWW www = new WWW("file://" + path);
-
-			GetComponentInChildren<AudioSource>().clip = www.audioClip;
+			GetComponent<AudioSource>().clip = www.audioClip;
 			yield return www;
 		}
 	}

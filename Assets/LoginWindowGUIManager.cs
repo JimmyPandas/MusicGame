@@ -18,10 +18,15 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	public void Play() {
 		SceneManager.LoadScene ("Game");
+
+
 	}
 
 	public void Setting() {
 		GameObject.Find ("DataManager").GetComponentInChildren<FileLoader> ().enabled = true;
+		GameObject dataManager = GameObject.Find ("DataManager");
+		FileLoader fileLoader = dataManager.GetComponentInChildren<FileLoader>();
+		fileLoader.enabled = false;
 	}
 
 	public void Quit() {

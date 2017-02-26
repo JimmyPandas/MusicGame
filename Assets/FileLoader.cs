@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 
 public class FileLoader : MonoBehaviour {
@@ -20,15 +19,10 @@ public class FileLoader : MonoBehaviour {
 	}
 
 
-	[MenuItem("Examples/Save Music to file")]
-	void SelectFile ()
-	{
-		
-		path = EditorUtility.OpenFilePanel(
-			"Overwrite with mp3",
-			"",
-			"mp3, wav");
-		GetComponentInChildren<DataManager>().path = path;
+	void SelectFile () {
+		path = "/Users/jimmyliu/Documents/MusicGame/Assets/Music/陈希郡-那原点.mp3";
+		GetComponentInChildren<DataManager> ().path = path;
+		Debug.logger.Log (Application.persistentDataPath);
 	}
 
 

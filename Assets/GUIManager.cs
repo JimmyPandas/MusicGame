@@ -19,6 +19,7 @@ public class GUIManager : MonoBehaviour {
 		Instantiate (ground, ground.transform.position, Quaternion.identity);
 		Instantiate (grass, grass.transform.position, Quaternion.identity);
 		Instantiate (trees, trees.transform.position, Quaternion.identity);
+		UpdateScore ();
 	}
 
 
