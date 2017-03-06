@@ -18,10 +18,12 @@ ExportedObj/
 *.booproj
 *.svd
 *.mp3
+*.wav
 
 # Unity3D generated meta files
 *.pidb.meta
 *.mp3.meta
+*.wav.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
