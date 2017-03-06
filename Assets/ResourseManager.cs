@@ -18,8 +18,9 @@ public class ResourseManager : MonoBehaviour {
 	void Start () {
 		GameObject dataManager = GameObject.Find ("DataManager");
 		path = dataManager.GetComponentInChildren<DataManager> ().path;
-//		StartCoroutine(LoadSongCoroutine()); 
-
+		StartCoroutine(LoadSongCoroutine()); 
+		FileLoader fileLoader = dataManager.GetComponentInChildren<FileLoader>();
+		fileLoader.enabled = false;
 		InitColorDict ();
 		InitItemDict ();
 

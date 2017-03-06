@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class FileLoader : MonoBehaviour {
 	
@@ -19,10 +22,16 @@ public class FileLoader : MonoBehaviour {
 	}
 
 
-	void SelectFile () {
-		path = "/Users/jimmyliu/Documents/MusicGame/Assets/Music/陈希郡-那原点.mp3";
-		GetComponentInChildren<DataManager> ().path = path;
-		Debug.logger.Log (Application.persistentDataPath);
+	void SelectFile ()
+	{
+		#if UNITY_EDITOR
+		path = EditorUtility.OpenFilePanel(
+			"Overwrite with mp3",
+			"",
+			"wav");
+		GetComponentInChildren<DataManager>().path = path;
+		#endif
+
 	}
 
 
