@@ -8,12 +8,12 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	public GameObject mainCanvas;
 
 	public GameObject mainMenu;
+	public GameObject character;
 
 	// Use this for initialization
 	void Start () {
-		if (mainCanvas != null) {
-			mainCanvas.SetActive (true);
-		}
+		mainCanvas.SetActive (true);
+		Instantiate (character, character.transform.position, Quaternion.identity);
 	}
 
 	public void Play() {

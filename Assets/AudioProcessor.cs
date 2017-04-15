@@ -40,9 +40,6 @@ public class AudioProcessor : MonoBehaviour {
 			float amplitude = amplitueSum / numSamples;
 
 			note = calcNote (fundFreq);
-			Debug.logger.Log (sampleRate);
-			Debug.logger.Log ("fundfreq: " + fundFreq);
-			Debug.logger.Log ("amplitude: " + amplitude);
 
 
 			resourceManager.InstantiateMusicSymbol (note);

@@ -18,13 +18,11 @@ public class CloudController : MonoBehaviour {
 	void Update () {
 		if (transform.position.x <= -12 && !spawned) {
 			if (items.Count > 0) {
-				int index = Random.Range (0, items.Count - 1);
+				int index = Random.Range (0, items.Count);
 				GameObject item = items [index];
-				Vector3 position = new Vector3 (Random.Range (-12.0f, 12.0f), 5, 0);
+				Vector3 position = new Vector3 (Random.Range (-8.0f, 8.0f), 5, 0);
 				GameObject spawnedItem = Instantiate (item, position, Quaternion.identity);
-				Color color = GetComponentInChildren<SpriteRenderer> ().color;
 				spawnedItem.GetComponentInChildren<ItemController> ().SetSpeed (speed);
-				spawnedItem.GetComponentInChildren<SpriteRenderer> ().color = color;
 				spawned = true;
 			}
 		}

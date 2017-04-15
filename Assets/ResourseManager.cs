@@ -9,6 +9,15 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject apple;
 	public GameObject strawberry;
 	public GameObject pear;
+	public GameObject banana;
+	public GameObject orange;
+	public GameObject peach;
+	public GameObject cherry;
+	public GameObject greenApple;
+	public GameObject pineapple;
+	public GameObject pitaya;
+	public GameObject purpleGrape;
+	public GameObject watermelon;
 	public GameObject item;
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
 	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
@@ -28,8 +37,6 @@ public class ResourseManager : MonoBehaviour {
 		if(audioSource != null) {
 			GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
-
-
 	
 	}
 
@@ -46,11 +53,11 @@ public class ResourseManager : MonoBehaviour {
 
 	private void InitColorDict() {
 		colorsDict.Add ("Do", Color.red);
-		colorsDict.Add ("Re", new Color(253, 181, 99, 1));
+		colorsDict.Add ("Re", new Color(1, 176f / 255f, 0, 1));
 		colorsDict.Add ("Mi", Color.yellow);
 		colorsDict.Add ("Fa", Color.green);
-		colorsDict.Add ("So", Color.cyan);
-		colorsDict.Add ("La", Color.green);
+		colorsDict.Add ("So", Color.blue);
+		colorsDict.Add ("La", new Color(255f / 255f, 192f / 255f, 203f / 255f, 1));
 		colorsDict.Add ("Xi", Color.magenta);
 	}
 
@@ -58,18 +65,22 @@ public class ResourseManager : MonoBehaviour {
 		List<GameObject> doItems = new List<GameObject> ();
 		doItems.Add (apple);
 		doItems.Add(strawberry);
+		doItems.Add(cherry);
 		List<GameObject> reItems = new List<GameObject> ();
-		reItems.Add(item);
+		reItems.Add(orange);
+		reItems.Add(pineapple);
 		List<GameObject> meItems = new List<GameObject> ();
-		meItems.Add(item);
+		meItems.Add(banana);
 		List<GameObject> faItems = new List<GameObject> ();
 		faItems.Add(pear);
+		faItems.Add(greenApple);
+		faItems.Add(watermelon);
 		List<GameObject> soItems = new List<GameObject> ();
-		soItems.Add(item);
+		soItems.Add(item);	
 		List<GameObject> laItems = new List<GameObject> ();
-		laItems.Add(item);
+		laItems.Add(peach);
 		List<GameObject> xiItems = new List<GameObject> ();
-		xiItems.Add(item);
+		xiItems.Add(purpleGrape);
 
 		itemsDict.Add ("Do", doItems);
 		itemsDict.Add ("Re", reItems);

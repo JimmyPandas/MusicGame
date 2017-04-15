@@ -7,7 +7,6 @@ public class GUIManager : MonoBehaviour {
 
 	public GameObject ground;
 	public GameObject trees;
-	public GameObject grass;
 
 	public int score = 0;
 	public GameObject gameCanvas;
@@ -16,9 +15,8 @@ public class GUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Instantiate (ground, ground.transform.position, Quaternion.identity);
-		Instantiate (grass, grass.transform.position, Quaternion.identity);
 		Instantiate (trees, trees.transform.position, Quaternion.identity);
+		Instantiate (ground, ground.transform.position, Quaternion.identity);
 		UpdateScore ();
 	}
 
