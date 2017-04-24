@@ -52,13 +52,13 @@ public class ResourseManager : MonoBehaviour {
 
 
 	private void InitColorDict() {
-		colorsDict.Add ("Do", Color.red);
-		colorsDict.Add ("Re", new Color(1, 176f / 255f, 0, 1));
-		colorsDict.Add ("Mi", Color.yellow);
-		colorsDict.Add ("Fa", Color.green);
-		colorsDict.Add ("So", Color.blue);
-		colorsDict.Add ("La", new Color(255f / 255f, 192f / 255f, 203f / 255f, 1));
-		colorsDict.Add ("Xi", Color.magenta);
+		colorsDict.Add ("Do", new Color(247f / 255f, 122f / 255f, 104f / 255f, 1));
+		colorsDict.Add ("Re", new Color(252f / 255f, 189f / 255f, 13f / 255f, 1));
+		colorsDict.Add ("Mi", new Color(255f / 255f, 241f / 255f, 77f / 255f, 1));
+		colorsDict.Add ("Fa", new Color(177f / 255f, 199f / 255f, 39f / 255f, 1));
+		colorsDict.Add ("So", new Color(155f / 255f, 171f / 255f, 222f / 255f, 1));
+		colorsDict.Add ("La", new Color(237f / 255f, 185f / 255f, 175f / 255f, 1));
+		colorsDict.Add ("Xi", new Color(106f / 255f, 64f / 255f, 83f / 255f, 1));
 	}
 
 	private void InitItemDict() {
