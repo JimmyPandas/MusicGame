@@ -20,7 +20,7 @@ public class CloudController : MonoBehaviour {
 			if (items.Count > 0) {
 				int index = Random.Range (0, items.Count);
 				GameObject item = items [index];
-				Vector3 position = new Vector3 (Random.Range (-8.0f, 8.0f), 5, 0);
+				Vector3 position = new Vector3 (Random.Range (-12.0f, 12.0f), 5, 0);
 				GameObject spawnedItem = Instantiate (item, position, Quaternion.identity);
 				spawnedItem.GetComponentInChildren<ItemController> ().SetSpeed (speed);
 				spawned = true;

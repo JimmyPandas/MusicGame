@@ -6,9 +6,8 @@ using UnityEngine.UI;
 public class GUIManager : MonoBehaviour {
 
 	public GameObject ground;
-	public GameObject ground2;
 	public GameObject trees;
-
+	public GameObject girl;
 	public int score = 0;
 	public GameObject gameCanvas;
 
@@ -16,8 +15,8 @@ public class GUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Instantiate (girl, girl.transform.position, Quaternion.identity);
 		Instantiate (trees, trees.transform.position, Quaternion.identity);
-		Instantiate (ground2, ground2.transform.position, Quaternion.identity);
 		Instantiate (ground, ground.transform.position, Quaternion.identity);
 		UpdateScore ();
 	}
