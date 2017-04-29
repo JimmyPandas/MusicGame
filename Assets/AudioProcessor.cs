@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioProcessor : MonoBehaviour {
 
-	float spawnRate = 0.1f;
+	float spawnRate = 1.5f;
 	private int sampleRate;
 	
 	// Update is called once per frame
@@ -45,7 +45,7 @@ public class AudioProcessor : MonoBehaviour {
 			resourceManager.InstantiateMusicSymbol (note);
 //			Debug.logger.Log (max);
 //			StartCoroutine (sleep ());
-			spawnRate = 1f;
+			spawnRate = 1.5f;
 		} else {
 			spawnRate -= Time.deltaTime;
 		}

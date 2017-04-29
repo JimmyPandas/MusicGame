@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemController : MonoBehaviour {
+public class FruitController : MonoBehaviour {
 
 	private float speed;
+	private bool scoreable = true;
 
 	// Update is called once per frame
 	void Update () {
@@ -14,7 +15,14 @@ public class ItemController : MonoBehaviour {
 	public void SetSpeed(float speed) {
 		this.speed = speed;
 	}
-		
+
+	public void SetScoreable(bool scoreable){
+		this.scoreable = scoreable;
+	}
+
+	public bool IfScoreable() {
+		return scoreable;
+	}
 
 
 }

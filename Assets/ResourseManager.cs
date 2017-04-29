@@ -18,6 +18,7 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject pitaya;
 	public GameObject purpleGrape;
 	public GameObject watermelon;
+	public GameObject blueberry;
 	public GameObject item;
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
 	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
@@ -76,7 +77,7 @@ public class ResourseManager : MonoBehaviour {
 		faItems.Add(greenApple);
 		faItems.Add(watermelon);
 		List<GameObject> soItems = new List<GameObject> ();
-		soItems.Add(item);	
+		soItems.Add(blueberry);	
 		List<GameObject> laItems = new List<GameObject> ();
 		laItems.Add(peach);
 		List<GameObject> xiItems = new List<GameObject> ();
@@ -106,9 +107,9 @@ public class ResourseManager : MonoBehaviour {
 			spawnedSymbol.GetComponentInChildren<SpriteRenderer> ().color = colorsDict [note];
 			List<GameObject> items = itemsDict [note];
 			CloudController cloudController = spawnedSymbol.GetComponentInChildren<CloudController> ();
+			cloudController.SetNote (note);
 			foreach(GameObject item in items) {
 				cloudController.AddItem(item);
-				cloudController.SetNote (note);
 			}
 
 			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");

@@ -8,6 +8,8 @@ public class CloudController : MonoBehaviour {
 	private string note = "";
 	private List<GameObject> items = new List<GameObject>();
 	private bool spawned = false;
+	private GameObject spawnedFruit;
+	private float scoreableTime = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -16,26 +18,34 @@ public class CloudController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (transform.position.x <= -12 && !spawned) {
+		transform.Translate(Vector3.left * speed * Time.deltaTime);
+		if (transform.position.x <= -10 && !spawned) {
 			if (items.Count > 0) {
 				int index = Random.Range (0, items.Count);
 				GameObject item = items [index];
 				Vector3 position = new Vector3 (Random.Range (-12.0f, 12.0f), 5, 0);
-				GameObject spawnedItem = Instantiate (item, position, Quaternion.identity);
-				spawnedItem.GetComponentInChildren<ItemController> ().SetSpeed (speed);
+				spawnedFruit = Instantiate (item, position, Quaternion.identity);
+				spawnedFruit.GetComponentInChildren<FruitController> ().SetSpeed (speed);
 				spawned = true;
 			}
 		}
+		if (spawned) {
+			scoreableTime -= Time.deltaTime;
+		}
 
-		if (transform.position.x <= -15) {
+		if (scoreableTime < 0) {
+			FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+			fruitController.SetScoreable (false);
 			Destroy (gameObject);
-		} else {
-			transform.Translate(Vector3.left * speed * Time.deltaTime);
 		}
 	}
-
+		
 	public void SetSpeed(float speed) {
 		this.speed = speed;
+	}
+
+	public float GetScoreTime() {
+		return scoreableTime;
 	}
 
 	public void AddItem(GameObject item) {

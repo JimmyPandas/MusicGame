@@ -10,31 +10,55 @@ public class GUIManager : MonoBehaviour {
 	public GameObject girl;
 	public int score = 0;
 	public GameObject gameCanvas;
+	private int combo = 0;
 
 	public Text scoreText;
+	public Text feeebackText;
 
 	// Use this for initialization
 	void Start () {
-		Instantiate (girl, girl.transform.position, Quaternion.identity);
-		Instantiate (trees, trees.transform.position, Quaternion.identity);
-		Instantiate (ground, ground.transform.position, Quaternion.identity);
+		Instantiate (girl, girl.transform.position, girl.transform.rotation);
+		Instantiate (trees, trees.transform.position, trees.transform.rotation);
+		Instantiate (ground, ground.transform.position, ground.transform.rotation);
 		UpdateScore ();
 	}
 
 
 	public void AddScore (int scorePoint) {
-		score += scorePoint;
+		combo++;
+		score += (int) (scorePoint * Mathf.Pow(combo, 2f));
+		SetFeedback ();
 		UpdateScore ();
 	}
 
 	void UpdateScore () {	
-		if (scoreText != null) {
-			scoreText.text = "Score: " + score;
+		scoreText.text = "Score: " + score;
+	}
+
+	void SetFeedback() {
+		Animator animator = feeebackText.GetComponentInChildren<Animator> ();
+		if (combo > 0) {
+			feeebackText.text = "COMBO X" + combo;
+			animator.Play("ComboAnimation");
+			if (combo == 6) {
+				feeebackText.text = "Good!";
+			} else if (combo == 12) {
+				feeebackText.text = "Fantastic!";
+			} else if (combo == 36) {
+				feeebackText.text = "Godlike!";
+			}
+			animator.Play("ComboAnimation");
+		} else {
+			feeebackText.text = "Fighting!";
+			animator.Play("ComboAnimation");
 		}
+
 	}
 
 	public void LoseScore (int scorePoint) {
 		score -= scorePoint;
+		combo = 0;
+		SetFeedback ();
 		UpdateScore ();
 	}
 		
