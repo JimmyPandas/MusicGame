@@ -42,7 +42,7 @@ Material:
     - first:
         name: _DetailTex
       second:
-        m_Texture: {fileID: 2800000, guid: 9d506b77aae2c442fb090f6956dfaa92, type: 3}
+        m_Texture: {fileID: 2800000, guid: 857389b2d03c04ec0800f3ee093c3d75, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114129404313129840}
   - component: {fileID: 54579012556979492}
   - component: {fileID: 65509553730156524}
+  - component: {fileID: 95190431162096944}
   m_Layer: 0
   m_Name: PurpleGrape
   m_TagString: Item
@@ -37,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1538607935266680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.28, y: 0.57, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -65,11 +66,28 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1538607935266680}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 6, y: 8.5, z: 0.2}
-  m_Center: {x: 0, y: -0.3, z: 0}
+  m_Size: {x: 6, y: 8.256035, z: 0.2}
+  m_Center: {x: 0, y: -0.47077847, z: 0}
+--- !u!95 &95190431162096944
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1538607935266680}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f96c11887aa864f049101ec142115f10, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114129404313129840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 921ab0b2789794ebea76b686a1a20236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!212 &212878965719137880
 SpriteRenderer:
   m_ObjectHideFlags: 1
