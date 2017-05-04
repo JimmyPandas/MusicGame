@@ -1376,6 +1376,8 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
+    - m_Text: Queen - We  Will  Rock  You
+      m_Image: {fileID: 0}
     - m_Text: "\u9648\u5E0C\u90E1 - \u90A3\u539F\u70B9"
       m_Image: {fileID: 0}
     - m_Text: "\u5468\u5174\u54F2 - \u4EE5\u540E\u522B\u505A\u670B\u53CB"
@@ -1383,8 +1385,6 @@ MonoBehaviour:
     - m_Text: "\u4E94\u6708\u5929 - \u7A81\u7136\u597D\u60F3\u4F60"
       m_Image: {fileID: 0}
     - m_Text: "\u859B\u4E4B\u8C26 - \u4F60\u8FD8\u8981\u6211\u600E\u6837"
-      m_Image: {fileID: 0}
-    - m_Text: Queen - We  Will  Rock  You
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

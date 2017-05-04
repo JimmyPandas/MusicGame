@@ -20,9 +20,9 @@ public class GUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Instantiate (magician, magician.transform.position, magician.transform.rotation);
-		Instantiate (trees, trees.transform.position, trees.transform.rotation);
-		Instantiate (ground, ground.transform.position, ground.transform.rotation);
+//		Instantiate (magician, magician.transform.position, magician.transform.rotation);
+//		Instantiate (trees, trees.transform.position, trees.transform.rotation);
+//		Instantiate (ground, ground.transform.position, ground.transform.rotation);
 		UpdateScore ();
 	}
 
