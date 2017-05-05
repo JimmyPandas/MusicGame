@@ -20,15 +20,19 @@ public class CloudController : MonoBehaviour {
 	void Update () {
 		transform.Translate(Vector3.left * speed * Time.deltaTime);
 		if (transform.position.x <= -10 && !spawned) {
-			foreach(GameObject item in items) {
-				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1	, 0);
+//			foreach(GameObject item in items) {
+			if (items.Count > 0) {
+				int index = Random.Range (0, items.Count);
+				GameObject item = items [index];
+				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
 				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 				GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
 				spawnedFruit.transform.SetParent (parent.transform);
 				spawnedFruit.GetComponentInChildren<FruitController> ().SetSpeed (speed);
-				spawnedFruits.Add(spawnedFruit);
+				spawnedFruits.Add (spawnedFruit);
 				spawned = true;
 			}
+//			}
 		}
 		if (spawned) {
 			scoreableTime -= Time.deltaTime;
@@ -66,9 +70,9 @@ public class CloudController : MonoBehaviour {
 	public float GetNoteSpeed(string note) {
 		switch (note) {
 		case "Do":
-			return 0.25f;
-		case "Re":
 			return 0.5f;
+		case "Re":
+			return 0.75f;
 		case "Mi":
 			return 1f;
 		case "Fa":
@@ -80,7 +84,7 @@ public class CloudController : MonoBehaviour {
 		case "Xi":
 			return 3f;
 		default:
-			return 5f;
+			return 3.5f;
 		}
 	}
 }

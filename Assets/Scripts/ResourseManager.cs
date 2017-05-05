@@ -70,9 +70,9 @@ public class ResourseManager : MonoBehaviour {
 		colorsDict.Add ("Re", new Color(252f / 255f, 189f / 255f, 13f / 255f, 1));
 		colorsDict.Add ("Mi", new Color(255f / 255f, 241f / 255f, 77f / 255f, 1));
 		colorsDict.Add ("Fa", new Color(177f / 255f, 199f / 255f, 39f / 255f, 1));
-		colorsDict.Add ("So", new Color(155f / 255f, 171f / 255f, 222f / 255f, 1));
+		colorsDict.Add ("So", new Color(101f / 255f, 172f / 255f, 1, 1));
 		colorsDict.Add ("La", new Color(237f / 255f, 185f / 255f, 175f / 255f, 1));
-		colorsDict.Add ("Xi", new Color(106f / 255f, 64f / 255f, 83f / 255f, 1));
+		colorsDict.Add ("Xi", new Color(106f / 255f, 64f / 255f, 1, 1));
 	}
 
 	private void InitItemDict() {
@@ -109,7 +109,7 @@ public class ResourseManager : MonoBehaviour {
 
 	public void InstantiateMusicSymbol(string note) {
 		if (colorsDict.ContainsKey (note)) {
-			GameObject spawnedSymbol = Instantiate (musicSymbol, musicSymbol.transform.position
+			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(20, Random.Range (-2f, 2f), 0)
 				, Quaternion.identity);
 			spawnedSymbol.GetComponentInChildren<SpriteRenderer> ().color = colorsDict [note];
 			List<GameObject> items = itemsDict [note];

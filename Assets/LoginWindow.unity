@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 87}
   - component: {fileID: 86}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: MusicMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1385,6 +1385,16 @@ MonoBehaviour:
     - m_Text: "\u4E94\u6708\u5929 - \u7A81\u7136\u597D\u60F3\u4F60"
       m_Image: {fileID: 0}
     - m_Text: "\u859B\u4E4B\u8C26 - \u4F60\u8FD8\u8981\u6211\u600E\u6837"
+      m_Image: {fileID: 0}
+    - m_Text: "\u521D\u97F3\u30DF\u30AF-FREELY TOMORROW"
+      m_Image: {fileID: 0}
+    - m_Text: "KANAN-\u834A\u59EB"
+      m_Image: {fileID: 0}
+    - m_Text: "\u82B1\u305F\u3093-Dear (LiLA'c Remix)"
+      m_Image: {fileID: 0}
+    - m_Text: "\u82B1\u305F\u3093-WAVE"
+      m_Image: {fileID: 0}
+    - m_Text: Shakira,Freshlyground - Waka Waka
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

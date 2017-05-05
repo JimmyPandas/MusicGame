@@ -7,6 +7,8 @@ TagManager:
   - Symbol
   - Item
   - GUI
+  - Shield
+  - Parent
   layers:
   - Default
   - TransparentFX
@@ -43,4 +45,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 1245051905
+    locked: 0
+  - name: Item
+    uniqueID: 753997525
     locked: 0
