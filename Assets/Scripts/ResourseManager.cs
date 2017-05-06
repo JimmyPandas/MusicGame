@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class ResourseManager : MonoBehaviour {
 
@@ -25,7 +26,7 @@ public class ResourseManager : MonoBehaviour {
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
 	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
 	private bool musicPlayed = false;
-	private float musicPlayTime;
+	private float musicPlayTime = 100f;
 	private string path = "";
 
 	// Use this for initialization
@@ -36,18 +37,32 @@ public class ResourseManager : MonoBehaviour {
 		path = dataManager.GetComponentInChildren<DataManager> ().path;
 		AudioSource audioSource = GetComponent<AudioSource> ();
 		if(audioSource != null) {
-			audioSource.clip = (AudioClip) Resources.Load (path, typeof(AudioClip));
-			musicPlayTime = audioSource.clip.length;
+			StartCoroutine(LoadSongCoroutine()); 
+//			audioSource.clip = (AudioClip) Resources.Load (path, typeof(AudioClip));
+
 			GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
 	
+	}
+
+	IEnumerator LoadSongCoroutine(){
+		if (path.Length != 0) { 
+			WWW www = new WWW("file://" + path);
+			GetComponent<AudioSource>().clip = www.audioClip;
+			yield return www;
+			musicPlayTime = www.audioClip.length;
+			Debug.logger.Log (musicPlayTime);
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
 		AudioSource audioSource = GetComponent<AudioSource> ();
 		musicPlayTime -= Time.deltaTime;
+
 		if (audioSource.clip != null && !musicPlayed) {
+//			Debug.logger.Log (musicPlayTime);
+//			musicPlayTime = audioSource.clip.length;
 			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded && !musicPlayed) {
 				audioSource.Play ();
 				musicPlayed = true;

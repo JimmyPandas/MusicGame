@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class LoginWindowGUIManager : MonoBehaviour {
 
@@ -10,9 +11,25 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	public GameObject musicLibraryCanvas;
 	public Dropdown dropdown;
 	private bool musicChosen = false;
+	private string searchPath = "";
 
 	// Use this for initialization
 	void Start () {
+		searchPath =  "/Users/jimmy/Downloads/";
+//		IEnumerable<string> files = Directory.GetFiles(path + "/Resources", "*.*", SearchOption.AllDirectories)
+//			.Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".aif") || s.EndsWith(".ogg"));
+		
+		string[] musicfiles = Directory.GetFiles (searchPath, "*.wav", SearchOption.AllDirectories);
+		List<string> musicOptions = new List<string>();
+		foreach(string musicfile in musicfiles) {
+			
+			var fileInfo = new System.IO.FileInfo(musicfile);
+			if (fileInfo.Length > 10000000) {
+//				string musicOption = Path.GetFileName(musicfile);
+				musicOptions.Add (musicfile);
+			}
+		}
+		dropdown.AddOptions (musicOptions);
 	}
 
 	public void Play() {
@@ -52,7 +69,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		//get the string value of the selected index
 		string musicOption = menuOptions [menuIndex].text;
 		GameObject dataManager = GameObject.Find ("DataManager");
-		string path = "Music/" + musicOption;
+//		string path = "Music/" + musicOption;
+		string path = musicOption;
 		dataManager.GetComponentInChildren<DataManager> ().path = path;
 		musicChosen = true;
 	}
