@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GUIManager : MonoBehaviour {
 
@@ -17,15 +18,31 @@ public class GUIManager : MonoBehaviour {
 	public Text feeebackText;
 	public GameObject shield;
 	private bool shieldSpawned = false;
+	public bool gameOver = false;
+	public GameObject gameOverText;
+	public Animator gameOverAnimator;
+	private float animationDelay = 15f;
 
 	// Use this for initialization
 	void Start () {
-//		Instantiate (magician, magician.transform.position, magician.transform.rotation);
-//		Instantiate (trees, trees.transform.position, trees.transform.rotation);
-//		Instantiate (ground, ground.transform.position, ground.transform.rotation);
+		gameOverAnimator = GameObject.Find ("ItemCanvas").GetComponentInChildren<Animator> ();
 		UpdateScore ();
 	}
 
+	// Update is called once per frame
+	void Update () {
+		if (gameOver && animationDelay >= 15f) {
+			GameObject dataManager = GameObject.Find ("DataManager");
+			Destroy (dataManager);
+			gameOverAnimator.SetTrigger ("GameOver");
+		}
+		if (gameOver) {
+			animationDelay -= Time.deltaTime;
+		}
+		if (animationDelay < 0) {
+			SceneManager.LoadScene ("LoginWindow");
+		}
+	}
 
 	public void AddScore (int scorePoint) {
 		combo++;

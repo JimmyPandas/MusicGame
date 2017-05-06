@@ -7,17 +7,32 @@ using UnityEngine.SceneManagement;
 public class LoginWindowGUIManager : MonoBehaviour {
 
 	public GameObject mainCanvas;
-	public GameObject mainMenu;
-	public GameObject magician;
+	public GameObject musicLibraryCanvas;
 	public Dropdown dropdown;
 
 	// Use this for initialization
 	void Start () {
-		mainCanvas.SetActive (true);
-		Instantiate (magician, magician.transform.position, Quaternion.identity);
 	}
 
 	public void Play() {
+		
+		SceneManager.LoadScene ("Game");
+	}
+
+	public void Setting() {
+	}
+		
+
+	public void Quit() {
+		Application.Quit ();
+	}
+
+	public void DisplayMusicLibraryUI() {
+		musicLibraryCanvas.SetActive (true);
+		mainCanvas.SetActive (false);
+	}
+
+	public void MusicLibraryConfirm() {
 		int menuIndex = dropdown.value;
 
 		//get all options available within this dropdown menu
@@ -28,16 +43,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		GameObject dataManager = GameObject.Find ("DataManager");
 		string path = "Music/" + value;
 		dataManager.GetComponentInChildren<DataManager> ().path = path;
-
-		SceneManager.LoadScene ("Game");
-	}
-
-	public void Setting() {
-	}
-		
-
-	public void Quit() {
-		Application.Quit ();
+		musicLibraryCanvas.SetActive (false);
+		mainCanvas.SetActive (true);
 	}
 
 }

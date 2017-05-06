@@ -20,9 +20,9 @@ public class FruitController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
-			animator.Play ("FruitOnGround");
+			animator.SetTrigger ("OnGround");
 		} 
-	    if (animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitOnGround")) {
+		if (onGround) {
 			onGroundTime -= Time.deltaTime;
 		}
 

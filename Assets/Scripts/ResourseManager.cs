@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ResourseManager : MonoBehaviour {
 
@@ -22,6 +21,7 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject yellowPear;
 	public GameObject item;
 
+
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
 	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
 	private bool musicPlayed = false;
@@ -37,6 +37,7 @@ public class ResourseManager : MonoBehaviour {
 		AudioSource audioSource = GetComponent<AudioSource> ();
 		if(audioSource != null) {
 			audioSource.clip = (AudioClip) Resources.Load (path, typeof(AudioClip));
+			musicPlayTime = audioSource.clip.length;
 			GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
 	
@@ -50,16 +51,13 @@ public class ResourseManager : MonoBehaviour {
 			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded && !musicPlayed) {
 				audioSource.Play ();
 				musicPlayed = true;
-				musicPlayTime = audioSource.clip.length;
-
 			}
 		}
 		if (musicPlayTime < 0) {
 			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");
 			if (liveSymbols.Length == 0) {
-				GameObject dataManager = GameObject.Find ("DataManager");
-				Destroy (dataManager);
-				SceneManager.LoadScene ("LoginWindow");
+				GUIManager guiManager = GameObject.Find("GUIManager").GetComponentInChildren<GUIManager> ();
+				guiManager.gameOver = true;
 			}
 		}
 	}
