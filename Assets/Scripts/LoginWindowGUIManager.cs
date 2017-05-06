@@ -9,13 +9,19 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	public GameObject mainCanvas;
 	public GameObject musicLibraryCanvas;
 	public Dropdown dropdown;
+	private bool musicChosen = false;
 
 	// Use this for initialization
 	void Start () {
 	}
 
 	public void Play() {
-		
+		if (!musicChosen) {
+			//get all options available within this dropdown menu
+			List<Dropdown.OptionData> menuOptions = dropdown.options;
+			int menuIndex = Random.Range (0, menuOptions.Count);
+			SetMusic (menuIndex);
+		}
 		SceneManager.LoadScene ("Game");
 	}
 
@@ -34,17 +40,21 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	public void MusicLibraryConfirm() {
 		int menuIndex = dropdown.value;
+		SetMusic (menuIndex);
+		musicLibraryCanvas.SetActive (false);
+		mainCanvas.SetActive (true);
+	}
 
+	private void SetMusic(int menuIndex) {
 		//get all options available within this dropdown menu
 		List<Dropdown.OptionData> menuOptions = dropdown.options;
 
 		//get the string value of the selected index
-		string value = menuOptions [menuIndex].text;
+		string musicOption = menuOptions [menuIndex].text;
 		GameObject dataManager = GameObject.Find ("DataManager");
-		string path = "Music/" + value;
+		string path = "Music/" + musicOption;
 		dataManager.GetComponentInChildren<DataManager> ().path = path;
-		musicLibraryCanvas.SetActive (false);
-		mainCanvas.SetActive (true);
+		musicChosen = true;
 	}
 
 }
