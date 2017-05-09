@@ -69,19 +69,19 @@ public class CloudController : MonoBehaviour {
 
 	public float GetNoteSpeed(string note) {
 		switch (note) {
-		case "Do":
+		case "C":
 			return 0.5f;
-		case "Re":
+		case "D":
 			return 0.75f;
-		case "Mi":
+		case "E":
 			return 1f;
-		case "Fa":
+		case "F":
 			return 1.5f;
-		case "So":
+		case "G":
 			return 2f;
-		case "La":
+		case "A":
 			return 2.5f;
-		case "Xi":
+		case "B":
 			return 3f;
 		default:
 			return 3.5f;

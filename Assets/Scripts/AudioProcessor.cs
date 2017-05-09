@@ -50,6 +50,7 @@ public class AudioProcessor : MonoBehaviour {
 
 
 	private string calcNote(float fundFreq) {
+		List<string> notes = new List<string> {"C", "D", "E", "F", "G", "A", "B"};
 		string note = "";
 		float noteFreq = 32.7f;
 		const float multiple = 1.05946f;
@@ -71,15 +72,7 @@ public class AudioProcessor : MonoBehaviour {
 					}
 
 				}
-				switch (pow) {
-				case 0: return "Do";
-				case 1: return "Re";
-				case 2: return "Mi";
-				case 3: return "Fa";
-				case 4: return "So";
-				case 5: return "La";
-				case 6: return "Xi";
-				}
+				return notes [pow];
 			}
 		}
 		return note;

@@ -38,8 +38,6 @@ public class ResourseManager : MonoBehaviour {
 		AudioSource audioSource = GetComponent<AudioSource> ();
 		if(audioSource != null) {
 			StartCoroutine(LoadSongCoroutine()); 
-//			audioSource.clip = (AudioClip) Resources.Load (path, typeof(AudioClip));
-
 			GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
 	
@@ -51,7 +49,6 @@ public class ResourseManager : MonoBehaviour {
 			GetComponent<AudioSource>().clip = www.GetAudioClip();
 			yield return www;
 			musicPlayTime = www.GetAudioClip().length;
-			Debug.logger.Log (musicPlayTime);
 		}
 	}
 
@@ -61,8 +58,6 @@ public class ResourseManager : MonoBehaviour {
 		musicPlayTime -= Time.deltaTime;
 
 		if (audioSource.clip != null && !musicPlayed) {
-//			Debug.logger.Log (musicPlayTime);
-//			musicPlayTime = audioSource.clip.length;
 			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded && !musicPlayed) {
 				audioSource.Play ();
 				musicPlayed = true;
@@ -79,13 +74,13 @@ public class ResourseManager : MonoBehaviour {
 		
 
 	private void InitColorDict() {
-		colorsDict.Add ("Do", new Color(247f / 255f, 122f / 255f, 104f / 255f, 1));
-		colorsDict.Add ("Re", new Color(252f / 255f, 189f / 255f, 13f / 255f, 1));
-		colorsDict.Add ("Mi", new Color(255f / 255f, 241f / 255f, 77f / 255f, 1));
-		colorsDict.Add ("Fa", new Color(177f / 255f, 199f / 255f, 39f / 255f, 1));
-		colorsDict.Add ("So", new Color(101f / 255f, 172f / 255f, 1, 1));
-		colorsDict.Add ("La", new Color(237f / 255f, 185f / 255f, 175f / 255f, 1));
-		colorsDict.Add ("Xi", new Color(106f / 255f, 64f / 255f, 1, 1));
+		colorsDict.Add ("C", new Color(247f / 255f, 122f / 255f, 104f / 255f, 1));
+		colorsDict.Add ("D", new Color(252f / 255f, 189f / 255f, 13f / 255f, 1));
+		colorsDict.Add ("E", new Color(255f / 255f, 241f / 255f, 77f / 255f, 1));
+		colorsDict.Add ("F", new Color(177f / 255f, 199f / 255f, 39f / 255f, 1));
+		colorsDict.Add ("G", new Color(101f / 255f, 172f / 255f, 1, 1));
+		colorsDict.Add ("A", new Color(237f / 255f, 185f / 255f, 175f / 255f, 1));
+		colorsDict.Add ("B", new Color(106f / 255f, 64f / 255f, 1, 1));
 	}
 
 	private void InitItemDict() {
@@ -110,13 +105,13 @@ public class ResourseManager : MonoBehaviour {
 		List<GameObject> xiItems = new List<GameObject> ();
 		xiItems.Add(purpleGrape);
 
-		itemsDict.Add ("Do", doItems);
-		itemsDict.Add ("Re", reItems);
-		itemsDict.Add ("Mi", meItems);
-		itemsDict.Add ("Fa", faItems);
-		itemsDict.Add ("So", soItems);
-		itemsDict.Add ("La", laItems);
-		itemsDict.Add ("Xi", xiItems);
+		itemsDict.Add ("C", doItems);
+		itemsDict.Add ("D", reItems);
+		itemsDict.Add ("E", meItems);
+		itemsDict.Add ("F", faItems);
+		itemsDict.Add ("G", soItems);
+		itemsDict.Add ("A", laItems);
+		itemsDict.Add ("B", xiItems);
 	}
 		
 
