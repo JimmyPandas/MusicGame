@@ -36,11 +36,10 @@ public class AudioProcessor : MonoBehaviour {
 			}
 				
 			float fundFreq = freq * sampleRate / numSamples;
-			Debug.logger.Log (fundFreq);
 
 			float amplitude = amplitueSum / numSamples;
 			note = calcNote (fundFreq);
-			Debug.logger.Log (note);
+			Debug.logger.Log (fundFreq + " " + note);
 			resourceManager.InstantiateMusicSymbol (note);
 			spawnRate = 2f;
 		} else {

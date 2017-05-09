@@ -9,6 +9,7 @@ TagManager:
   - GUI
   - Shield
   - Parent
+  - Button
   layers:
   - Default
   - TransparentFX
