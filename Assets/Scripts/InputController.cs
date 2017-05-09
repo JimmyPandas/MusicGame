@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour {
+public class InputController : MonoBehaviour {
 
 
 	// Update is called once per frame
 	void Update () {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
-		Debug.logger.Log(SceneManager.GetActiveScene().name);
-		Debug.logger.Log(SceneManager.GetActiveScene ().name.Equals("LoginWindow"));
 		if (SceneManager.GetActiveScene ().name.Equals ("LoginWindow")) {
 			if (Input.GetMouseButtonDown (0) || Input.GetMouseButtonDown (1) || Input.GetMouseButtonDown (2)) {
 				if (Physics.Raycast (ray, out hit) && hit.transform.tag.Contains("Button")) {
