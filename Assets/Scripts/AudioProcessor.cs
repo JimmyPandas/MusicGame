@@ -17,7 +17,7 @@ public class AudioProcessor : MonoBehaviour {
 		}
 
 		if (spawnRate <= 0) {
-			int numSamples = 2048 * 4;
+			const int numSamples = 8192;
 			float[] spectrum = new float[numSamples];
 			ResourseManager resourceManager = Camera.main.GetComponentInChildren<ResourseManager> ();
 			AudioListener.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
@@ -28,53 +28,72 @@ public class AudioProcessor : MonoBehaviour {
 			float freq = 0.0f;
 			string note = "";
 			for (int i = 1; i < spectrum.Length - 1; i++) {
-				if (maxAmplitude < spectrum [i]) {
+				if (spectrum[i] > 0.01f && maxAmplitude < spectrum [i]) {
 					maxAmplitude = spectrum [i];
 					freq = i;
 				}
 				amplitueSum += Mathf.Abs(spectrum [i]);
 			}
 				
-			float fundFreq = freq * sampleRate / numSamples;
+			float fundFreq = freq * sampleRate / 2 / numSamples;
 
 			float amplitude = amplitueSum / numSamples;
-			note = calcNote (fundFreq);
-			Debug.logger.Log (fundFreq + " " + note);
-			resourceManager.InstantiateMusicSymbol (note);
-			spawnRate = 2f;
+			string result = calcNoteAndZone (fundFreq);
+			if (result.Length == 2) {
+				note = result [0].ToString ();
+				string zone = result [1].ToString();
+				int multiple = 0;
+				if (int.TryParse (zone, out multiple)) {
+					Debug.logger.Log (fundFreq + " " + note + " " + multiple);
+				} 
+	
+
+				resourceManager.InstantiateMusicSymbol (note, zone);
+				spawnRate = 2f;
+			}
+
 		} else {
 			spawnRate -= Time.deltaTime;
 		}
 	}
 
 
-	private string calcNote(float fundFreq) {
+	private string calcNoteAndZone(float fundFreq) {
+		int zone = 1;
 		List<string> notes = new List<string> {"C", "D", "E", "F", "G", "A", "B"};
 		string note = "";
 		float noteFreq = 32.7f;
 		const float multiple = 1.05946f;
 		const float MAX_NOTE_FREQ = 3951.1f;
+		float prevNoteFreq = 0;
 		while (fundFreq >= noteFreq && fundFreq <= MAX_NOTE_FREQ) {
 			if (fundFreq >= noteFreq * 2) {
 				noteFreq *= 2;
+				zone++;
 			} else {
 				int pow = 0;
 				while (fundFreq > noteFreq && pow <= 6) {
+					prevNoteFreq = noteFreq;
 					if (pow != 2) {
 						noteFreq *= Mathf.Pow (multiple, 2);				
 					} else {
 						noteFreq *= multiple;
 					}
 					noteFreq = Mathf.Round (noteFreq * 10) / 10;
-					if (fundFreq >= noteFreq) {
+				
+					if (fundFreq >= noteFreq || noteFreq - fundFreq < fundFreq - prevNoteFreq) {
 						pow++;
 					}
 
 				}
-				return notes [pow];
+				if (pow == 7) {
+					pow = 0;
+					zone++;
+				}
+				return notes [pow] + zone;
 			}
 		}
-		return note;
+		return note + zone;
 	}
 		
 }

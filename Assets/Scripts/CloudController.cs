@@ -10,10 +10,15 @@ public class CloudController : MonoBehaviour {
 	private bool spawned = false;
 	private List<GameObject> spawnedFruits = new List<GameObject>();
 	private float scoreableTime = 2f;
+	private string zone;
 
 	// Use this for initialization
 	void Start () {
-		speed = GetNoteSpeed (note) ;
+		int multiple = 0;
+		if (int.TryParse (zone, out multiple)) {
+			speed = GetNoteSpeed (note) * multiple / 3;
+		} 
+
 	}
 	
 	// Update is called once per frame
@@ -67,6 +72,10 @@ public class CloudController : MonoBehaviour {
 		this.note = note;
 	}
 
+	public void SetZone(string zone) {
+		this.zone = zone;
+	}
+
 	public float GetNoteSpeed(string note) {
 		switch (note) {
 		case "C":
@@ -87,4 +96,5 @@ public class CloudController : MonoBehaviour {
 			return 3.5f;
 		}
 	}
+		
 }

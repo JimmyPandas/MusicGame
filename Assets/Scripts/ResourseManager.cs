@@ -115,7 +115,7 @@ public class ResourseManager : MonoBehaviour {
 	}
 		
 
-	public void InstantiateMusicSymbol(string note) {
+	public void InstantiateMusicSymbol(string note, string zone) {
 		if (colorsDict.ContainsKey (note)) {
 			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(20, Random.Range (-2f, 1f), 0)
 				, Quaternion.identity);
@@ -123,6 +123,7 @@ public class ResourseManager : MonoBehaviour {
 			List<GameObject> items = itemsDict [note];
 			CloudController cloudController = spawnedSymbol.GetComponentInChildren<CloudController> ();
 			cloudController.SetNote (note);
+			cloudController.SetZone (zone);
 			foreach(GameObject item in items) {
 				cloudController.AddItem(item);
 			}
@@ -130,7 +131,11 @@ public class ResourseManager : MonoBehaviour {
 			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");
 			foreach (GameObject liveSymbol in liveSymbols) {
 				CloudController controller = liveSymbol.GetComponentInChildren<CloudController>();
-				controller.SetSpeed (controller.GetNoteSpeed (note));
+				int multiple = 0;
+				if (int.TryParse (zone, out multiple)) {
+					controller.SetSpeed (controller.GetNoteSpeed (note) * multiple / 3);
+				} 
+			
 			}
 
 		}
