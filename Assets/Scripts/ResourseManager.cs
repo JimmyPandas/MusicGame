@@ -48,9 +48,9 @@ public class ResourseManager : MonoBehaviour {
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
 			WWW www = new WWW("file://" + path);
-			GetComponent<AudioSource>().clip = www.audioClip;
+			GetComponent<AudioSource>().clip = www.GetAudioClip();
 			yield return www;
-			musicPlayTime = www.audioClip.length;
+			musicPlayTime = www.GetAudioClip().length;
 			Debug.logger.Log (musicPlayTime);
 		}
 	}
@@ -122,7 +122,7 @@ public class ResourseManager : MonoBehaviour {
 
 	public void InstantiateMusicSymbol(string note) {
 		if (colorsDict.ContainsKey (note)) {
-			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(20, Random.Range (-2f, 2f), 0)
+			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(20, Random.Range (-2f, 1f), 0)
 				, Quaternion.identity);
 			spawnedSymbol.GetComponentInChildren<SpriteRenderer> ().color = colorsDict [note];
 			List<GameObject> items = itemsDict [note];

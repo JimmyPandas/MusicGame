@@ -14,11 +14,10 @@ public class AudioProcessor : MonoBehaviour {
 			AudioSource audioSource = GetComponent<AudioSource> ();
 
 			sampleRate = audioSource.clip.frequency;
-			Debug.logger.Log ("rate: " + audioSource.clip.frequency);
 		}
 
 		if (spawnRate <= 0) {
-			int numSamples = 2048;
+			int numSamples = 2048 * 4;
 			float[] spectrum = new float[numSamples];
 			ResourseManager resourceManager = Camera.main.GetComponentInChildren<ResourseManager> ();
 			AudioListener.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
@@ -37,14 +36,12 @@ public class AudioProcessor : MonoBehaviour {
 			}
 				
 			float fundFreq = freq * sampleRate / numSamples;
+			Debug.logger.Log (fundFreq);
+
 			float amplitude = amplitueSum / numSamples;
-
 			note = calcNote (fundFreq);
-
-
+			Debug.logger.Log (note);
 			resourceManager.InstantiateMusicSymbol (note);
-//			Debug.logger.Log (max);
-//			StartCoroutine (sleep ());
 			spawnRate = 2f;
 		} else {
 			spawnRate -= Time.deltaTime;
@@ -54,25 +51,38 @@ public class AudioProcessor : MonoBehaviour {
 
 	private string calcNote(float fundFreq) {
 		string note = "";
-		if (32.7 <= fundFreq && fundFreq < 65.4) {
-			note = "Do";
-		} else if (65.4 <= fundFreq && fundFreq < 130.8) {
-			note = "Re";
-		} else if (130.8 <= fundFreq && fundFreq < 261.6) {
-			note = "Mi";
-		} else if (261.6 < fundFreq && fundFreq < 523.3) {
-			note = "Fa";
-		} else if (523.3 < fundFreq && fundFreq < 1046.5) {
-			note = "So";
-		} else if (1046.5 < fundFreq && fundFreq < 2093.0) {
-			note = "La";
-		} else if (2093.0 <= fundFreq && fundFreq <= 3952.0) {
-			note = "Xi";
+		float noteFreq = 32.7f;
+		const float multiple = 1.05946f;
+		const float MAX_NOTE_FREQ = 3951.1f;
+		while (fundFreq >= noteFreq && fundFreq <= MAX_NOTE_FREQ) {
+			if (fundFreq >= noteFreq * 2) {
+				noteFreq *= 2;
+			} else {
+				int pow = 0;
+				while (fundFreq > noteFreq && pow <= 6) {
+					if (pow != 2) {
+						noteFreq *= Mathf.Pow (multiple, 2);				
+					} else {
+						noteFreq *= multiple;
+					}
+					noteFreq = Mathf.Round (noteFreq * 10) / 10;
+					if (fundFreq >= noteFreq) {
+						pow++;
+					}
+
+				}
+				switch (pow) {
+				case 0: return "Do";
+				case 1: return "Re";
+				case 2: return "Mi";
+				case 3: return "Fa";
+				case 4: return "So";
+				case 5: return "La";
+				case 6: return "Xi";
+				}
+			}
 		}
 		return note;
 	}
-
-	IEnumerator sleep() {
-		yield return new WaitForSeconds(5);
-	}
+		
 }

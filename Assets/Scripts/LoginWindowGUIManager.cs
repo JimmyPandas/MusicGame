@@ -12,21 +12,29 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	public Dropdown dropdown;
 	private bool musicChosen = false;
 	private string searchPath = "";
+	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
 
 	// Use this for initialization
 	void Start () {
-		searchPath =  "/Users/jimmy/Downloads/";
-//		IEnumerable<string> files = Directory.GetFiles(path + "/Resources", "*.*", SearchOption.AllDirectories)
-//			.Where(s => s.EndsWith(".mp3") || s.EndsWith(".wav") || s.EndsWith(".aif") || s.EndsWith(".ogg"));
-		
+		searchPath =  Application.dataPath;
+		string parentDir = Directory.GetParent (searchPath).FullName;
+		while (parentDir.Length >= 16) {
+			searchPath = parentDir;
+			parentDir = Directory.GetParent (searchPath).FullName;
+		}
+
+		Debug.logger.Log (searchPath);
 		string[] musicfiles = Directory.GetFiles (searchPath, "*.wav", SearchOption.AllDirectories);
 		List<string> musicOptions = new List<string>();
 		foreach(string musicfile in musicfiles) {
 			
 			var fileInfo = new System.IO.FileInfo(musicfile);
 			if (fileInfo.Length > 10000000) {
-//				string musicOption = Path.GetFileName(musicfile);
-				musicOptions.Add (musicfile);
+				string musicOption = Path.GetFileName(musicfile);
+				if (!musicOptionsDic.ContainsKey (musicOption)) {
+					musicOptions.Add (musicOption);
+					musicOptionsDic.Add (musicOption, musicfile);
+				}
 			}
 		}
 		dropdown.AddOptions (musicOptions);
@@ -69,10 +77,12 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		//get the string value of the selected index
 		string musicOption = menuOptions [menuIndex].text;
 		GameObject dataManager = GameObject.Find ("DataManager");
-//		string path = "Music/" + musicOption;
-		string path = musicOption;
-		dataManager.GetComponentInChildren<DataManager> ().path = path;
-		musicChosen = true;
+		if (musicOptionsDic.ContainsKey (musicOption)) {
+			string path = musicOptionsDic [musicOption];
+
+			dataManager.GetComponentInChildren<DataManager> ().path = path;
+			musicChosen = true;
+		}
 	}
 
 }
