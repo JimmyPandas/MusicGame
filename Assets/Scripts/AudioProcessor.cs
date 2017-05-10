@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 [RequireComponent(typeof(AudioSource))]
 public class AudioProcessor : MonoBehaviour {
+
 
 	float spawnRate = 2f;
 	private int sampleRate;
@@ -42,12 +44,6 @@ public class AudioProcessor : MonoBehaviour {
 			if (result.Length == 2) {
 				note = result [0].ToString ();
 				string zone = result [1].ToString();
-				int multiple = 0;
-				if (int.TryParse (zone, out multiple)) {
-					Debug.logger.Log (fundFreq + " " + note + " " + multiple);
-				} 
-	
-
 				resourceManager.InstantiateMusicSymbol (note, zone);
 				spawnRate = 2f;
 			}

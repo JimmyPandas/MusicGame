@@ -11,12 +11,16 @@ public class CloudController : MonoBehaviour {
 	private List<GameObject> spawnedFruits = new List<GameObject>();
 	private float scoreableTime = 2f;
 	private string zone;
-
+	private float differenceInScale;
 	// Use this for initialization
 	void Start () {
 		int multiple = 0;
 		if (int.TryParse (zone, out multiple)) {
 			speed = GetNoteSpeed (note) * multiple / 3;
+			float cloudScale = multiple / 4f;
+			differenceInScale = cloudScale - transform.localScale.x;
+			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
+			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
 		} 
 
 	}
@@ -24,7 +28,7 @@ public class CloudController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.Translate(Vector3.left * speed * Time.deltaTime);
-		if (transform.position.x <= -10 && !spawned) {
+		if (transform.position.x <= -10 + differenceInScale * 6 && !spawned) {
 //			foreach(GameObject item in items) {
 			if (items.Count > 0) {
 				int index = Random.Range (0, items.Count);

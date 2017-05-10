@@ -117,7 +117,7 @@ public class ResourseManager : MonoBehaviour {
 
 	public void InstantiateMusicSymbol(string note, string zone) {
 		if (colorsDict.ContainsKey (note)) {
-			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(20, Random.Range (-2f, 1f), 0)
+			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(musicSymbol.transform.position.x, Random.Range (-2f, 1f), 0)
 				, Quaternion.identity);
 			spawnedSymbol.GetComponentInChildren<SpriteRenderer> ().color = colorsDict [note];
 			List<GameObject> items = itemsDict [note];
