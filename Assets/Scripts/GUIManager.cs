@@ -96,5 +96,7 @@ public class GUIManager : MonoBehaviour {
 			energybar.value /= 2;
 		}
 	}
+
+
 		
 }

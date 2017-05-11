@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.EventSystems;
 
 public class ResourseManager : MonoBehaviour {
 
-	public GameObject musicSymbol;
 	public GameObject apple;
 	public GameObject strawberry;
 	public GameObject pear;
@@ -20,25 +20,25 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject watermelon;
 	public GameObject blueberry;
 	public GameObject yellowPear;
-	public GameObject item;
-
 
 	private Dictionary<string, List<GameObject>> itemsDict = new Dictionary<string, List<GameObject>>();
-	private Dictionary<string, Color> colorsDict = new Dictionary<string, Color>();
 	private bool musicPlayed = false;
 	private float musicPlayTime = 100f;
 	private string path = "";
+	private AudioSource audioSource;
+	private Dictionary<string, List<GameObject>> spawnedFruitsDict = new Dictionary<string, List<GameObject>>();
+	private List<string> notes = new List<string>();
 
 	// Use this for initialization
 	void Start () {
-		InitColorDict ();
 		InitItemDict ();
+		InitSpawnedFruits ();
 		GameObject dataManager = GameObject.Find ("DataManager");
 		path = dataManager.GetComponentInChildren<DataManager> ().path;
-		AudioSource audioSource = GetComponent<AudioSource> ();
+		audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
 		if(audioSource != null) {
 			StartCoroutine(LoadSongCoroutine()); 
-			GetComponentInChildren<AudioProcessor> ().enabled = true;
+			Camera.main.GetComponentInChildren<AudioProcessor> ().enabled = true;
 		}
 	
 	}
@@ -46,7 +46,7 @@ public class ResourseManager : MonoBehaviour {
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
 			WWW www = new WWW("file://" + path);
-			GetComponent<AudioSource>().clip = www.GetAudioClip();
+			audioSource.clip = www.GetAudioClip();
 			yield return www;
 			musicPlayTime = www.GetAudioClip().length;
 		}
@@ -54,8 +54,6 @@ public class ResourseManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		AudioSource audioSource = GetComponent<AudioSource> ();
-		musicPlayTime -= Time.deltaTime;
 
 		if (audioSource.clip != null && !musicPlayed) {
 			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded && !musicPlayed) {
@@ -66,74 +64,96 @@ public class ResourseManager : MonoBehaviour {
 		if (musicPlayTime < 0) {
 			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");
 			if (liveSymbols.Length == 0) {
-				GUIManager guiManager = GameObject.Find("GUIManager").GetComponentInChildren<GUIManager> ();
+				GUIManager guiManager = GetComponent<GUIManager> ();
 				guiManager.gameOver = true;
 			}
 		}
 	}
 		
 
-	private void InitColorDict() {
-		colorsDict.Add ("C", new Color(247f / 255f, 122f / 255f, 104f / 255f, 1));
-		colorsDict.Add ("D", new Color(252f / 255f, 189f / 255f, 13f / 255f, 1));
-		colorsDict.Add ("E", new Color(255f / 255f, 241f / 255f, 77f / 255f, 1));
-		colorsDict.Add ("F", new Color(177f / 255f, 199f / 255f, 39f / 255f, 1));
-		colorsDict.Add ("G", new Color(101f / 255f, 172f / 255f, 1, 1));
-		colorsDict.Add ("A", new Color(237f / 255f, 185f / 255f, 175f / 255f, 1));
-		colorsDict.Add ("B", new Color(106f / 255f, 64f / 255f, 1, 1));
-	}
-
 	private void InitItemDict() {
-		List<GameObject> doItems = new List<GameObject> ();
-		doItems.Add (apple);
-		doItems.Add(strawberry);
-		doItems.Add(cherry);
-		List<GameObject> reItems = new List<GameObject> ();
-		reItems.Add(orange);
-		reItems.Add(pineapple);
-		List<GameObject> meItems = new List<GameObject> ();
-		meItems.Add(yellowPear);
-		meItems.Add(banana);
-		List<GameObject> faItems = new List<GameObject> ();
-		faItems.Add(pear);
-		faItems.Add(greenApple);
-		faItems.Add(watermelon);
-		List<GameObject> soItems = new List<GameObject> ();
-		soItems.Add(blueberry);	
-		List<GameObject> laItems = new List<GameObject> ();
-		laItems.Add(peach);
-		List<GameObject> xiItems = new List<GameObject> ();
-		xiItems.Add(purpleGrape);
-
-		itemsDict.Add ("C", doItems);
-		itemsDict.Add ("D", reItems);
-		itemsDict.Add ("E", meItems);
-		itemsDict.Add ("F", faItems);
-		itemsDict.Add ("G", soItems);
-		itemsDict.Add ("A", laItems);
-		itemsDict.Add ("B", xiItems);
+		itemsDict.Add ("C", new List<GameObject>{apple, strawberry, cherry});
+		itemsDict.Add ("D", new List<GameObject>{orange, pineapple});
+		itemsDict.Add ("E", new List<GameObject>{yellowPear, banana});
+		itemsDict.Add ("F", new List<GameObject>{pear, greenApple, watermelon});
+		itemsDict.Add ("G", new List<GameObject>{blueberry});
+		itemsDict.Add ("A", new List<GameObject>{peach});
+		itemsDict.Add ("B", new List<GameObject>{purpleGrape});
 	}
-		
+
+	private void InitSpawnedFruits() {
+		spawnedFruitsDict.Add ("C", new List<GameObject>());
+		spawnedFruitsDict.Add ("D", new List<GameObject>());
+		spawnedFruitsDict.Add ("E", new List<GameObject>());
+		spawnedFruitsDict.Add ("F", new List<GameObject>());
+		spawnedFruitsDict.Add ("G", new List<GameObject>());
+		spawnedFruitsDict.Add ("A", new List<GameObject>());
+		spawnedFruitsDict.Add ("B", new List<GameObject>());
+	}
+
+	public string GetCurrentNote() {
+		string currentNote = "";
+		if (notes.Count > 0) {
+			currentNote = notes [0];
+		}
+		return currentNote;
+	}
+
+	public void CollectFruit() {
+		var button = EventSystem.current.currentSelectedGameObject;
+		if (button != null) {
+			Debug.Log ("Clicked on : " + button.name);
+			string note = button.name.Replace ("Button", "");
+			List<GameObject> spawnedFruits = spawnedFruitsDict [note];
+			if(spawnedFruits.Count > 0) {
+				GameObject fruit = spawnedFruits[0];
+				if (fruit != null) {
+					Debug.Log (fruit.name);
+					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
+					fruitController.SetRemoved (true);
+					spawnedFruitsDict [note].Remove (fruit);
+					GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
+					if (fruitController.IfScoreable ()) {
+						guiManager.AddScore (10);
+					} else {
+						guiManager.LoseScore (10);
+					}
+				}
+			}
+		} else {
+			Debug.Log ("currentSelectedGameObject is null");
+		}
+	}
+
+	public void RemoveNote(string note) {
+		notes.Remove (note);	
+	}
 
 	public void InstantiateMusicSymbol(string note, string zone) {
-		if (colorsDict.ContainsKey (note)) {
-			GameObject spawnedSymbol = Instantiate (musicSymbol, new Vector3(musicSymbol.transform.position.x, Random.Range (-2f, 1f), 0)
-				, Quaternion.identity);
-			spawnedSymbol.GetComponentInChildren<SpriteRenderer> ().color = colorsDict [note];
+		if (itemsDict.ContainsKey (note)) {
+			notes.Add (note);
 			List<GameObject> items = itemsDict [note];
-			CloudController cloudController = spawnedSymbol.GetComponentInChildren<CloudController> ();
-			cloudController.SetNote (note);
-			cloudController.SetZone (zone);
-			foreach(GameObject item in items) {
-				cloudController.AddItem(item);
+			int size = items.Count;
+			if (size > 0) {
+				int index = Random.Range (0, size);
+				GameObject item = items [index];
+				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
+				GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
+				spawnedFruit.transform.SetParent (parent.transform);
+				spawnedFruitsDict [note].Add (spawnedFruit);
+				FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+				fruitController.SetNote (note);
+				fruitController.SetZone (zone);
 			}
-
-			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");
-			foreach (GameObject liveSymbol in liveSymbols) {
-				CloudController controller = liveSymbol.GetComponentInChildren<CloudController>();
+				
+		
+			GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
+			foreach (GameObject fruit in liveFruits) {
+				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
 				int multiple = 0;
 				if (int.TryParse (zone, out multiple)) {
-					controller.SetSpeed (controller.GetNoteSpeed (note) * multiple / 3);
+					fruitController.SetSpeed (fruitController.GetNoteSpeed (note) * multiple / 3);
 				} 
 			
 			}

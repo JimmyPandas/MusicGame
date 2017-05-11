@@ -6,10 +6,16 @@ using System.Runtime.InteropServices;
 [RequireComponent(typeof(AudioSource))]
 public class AudioProcessor : MonoBehaviour {
 
-
+//	[DllImport ("libvamp_essentia")]
+//	private static extern void compute ();
 	float spawnRate = 2f;
 	private int sampleRate;
-	
+	private ResourseManager resourceManager;
+	// Use this for initialization
+	void Start () {
+		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
+		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
+	}
 	// Update is called once per frame
 	void Update () {
 		if (sampleRate == 0) {
@@ -21,7 +27,7 @@ public class AudioProcessor : MonoBehaviour {
 		if (spawnRate <= 0) {
 			const int numSamples = 8192;
 			float[] spectrum = new float[numSamples];
-			ResourseManager resourceManager = Camera.main.GetComponentInChildren<ResourseManager> ();
+
 			AudioListener.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
 
 			float maxAmplitude = 0.0f;

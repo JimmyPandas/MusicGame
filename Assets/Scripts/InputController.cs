@@ -23,13 +23,17 @@ public class InputController : MonoBehaviour {
 	
 			if (Physics.Raycast (ray, out hit) && hit.transform.CompareTag ("Item")) {
 				GameObject fruit = hit.transform.gameObject;
-				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
 				GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
-				Destroy (fruit);
-				if (fruitController.IfScoreable ()) {
-					guiManager.AddScore (10);
-				} else {
-					guiManager.LoseScore (10);
+				ResourseManager rm = guiManager.GetComponentInChildren<ResourseManager>();
+				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
+				if (fruitController.GetNote ().Equals (rm.GetCurrentNote ())) {
+					fruitController.SetRemoved (true);
+	
+					if (fruitController.IfScoreable ()) {
+						guiManager.AddScore (10);
+					} else {
+						guiManager.LoseScore (10);
+					}
 				}
 			}
 		}
