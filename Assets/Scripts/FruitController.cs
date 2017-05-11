@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitController : MonoBehaviour {
 	
 	private string note = "";
-	private float scoreableTime = 10f;
+	private float scoreableTime = 2f;
 	private string zone;
 	private float differenceInScale;
 	private float speed;
@@ -17,14 +17,12 @@ public class FruitController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		int multiple = 0;
-		if (int.TryParse (zone, out multiple)) {
-			speed = GetNoteSpeed (note) * multiple / 3;
-//			float fruitScale = multiple / 4f;
-//			differenceInScale = fruitScale - transform.localScale.x;
+//		int multiple = 0;
+//		if (int.TryParse (zone, out multiple)) {
+//			differenceInScale = speed - transform.localScale.x;
 //			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
 //			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
-		} 
+//		} 
 		animator = GetComponentInChildren<Animator> ();
 		animator.speed = this.speed;
 		animator.Play ("FruitFalling");
@@ -90,23 +88,24 @@ public class FruitController : MonoBehaviour {
 	}
 
 	public float GetNoteSpeed(string note) {
+		const float multiple = 1.05946f;
 		switch (note) {
 		case "C":
-			return 0.5f;
-		case "D":
-			return 0.75f;
-		case "E":
 			return 1f;
+		case "D":
+			return Mathf.Pow (multiple, 2);
+		case "E":
+			return Mathf.Pow (multiple, 4);
 		case "F":
-			return 1.5f;
+			return Mathf.Pow (multiple, 5);
 		case "G":
-			return 2f;
+			return Mathf.Pow (multiple, 7);
 		case "A":
-			return 2.5f;
+			return Mathf.Pow (multiple, 9);
 		case "B":
-			return 3f;
+			return Mathf.Pow (multiple, 11);
 		default:
-			return 3.5f;
+			return 3.0f;
 		}
 	}
 

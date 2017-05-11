@@ -8,7 +8,7 @@ public class AudioProcessor : MonoBehaviour {
 
 //	[DllImport ("libvamp_essentia")]
 //	private static extern void compute ();
-	float spawnRate = 2f;
+	float spawnRate = 1f;
 	private int sampleRate;
 	private ResourseManager resourceManager;
 	// Use this for initialization
@@ -16,11 +16,11 @@ public class AudioProcessor : MonoBehaviour {
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
 	}
+
 	// Update is called once per frame
 	void Update () {
 		if (sampleRate == 0) {
 			AudioSource audioSource = GetComponent<AudioSource> ();
-
 			sampleRate = audioSource.clip.frequency;
 		}
 
@@ -50,8 +50,8 @@ public class AudioProcessor : MonoBehaviour {
 			if (result.Length == 2) {
 				note = result [0].ToString ();
 				string zone = result [1].ToString();
-				resourceManager.InstantiateMusicSymbol (note, zone);
-				spawnRate = 2f;
+				resourceManager.InstantiateMusicSymbol (note, zone, fundFreq);
+				spawnRate = 1f;
 			}
 
 		} else {
