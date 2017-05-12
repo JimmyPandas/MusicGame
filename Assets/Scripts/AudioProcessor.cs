@@ -8,7 +8,7 @@ public class AudioProcessor : MonoBehaviour {
 
 //	[DllImport ("libvamp_essentia")]
 //	private static extern void compute ();
-	float spawnRate = 1f;
+	float spawnRate = 0.75f;
 	private int sampleRate;
 	private ResourseManager resourceManager;
 	// Use this for initialization
@@ -36,7 +36,7 @@ public class AudioProcessor : MonoBehaviour {
 			float freq = 0.0f;
 			string note = "";
 			for (int i = 1; i < spectrum.Length - 1; i++) {
-				if (spectrum[i] > 0.01f && maxAmplitude < spectrum [i]) {
+				if (maxAmplitude < spectrum [i]) {
 					maxAmplitude = spectrum [i];
 					freq = i;
 				}
@@ -51,7 +51,7 @@ public class AudioProcessor : MonoBehaviour {
 				note = result [0].ToString ();
 				string zone = result [1].ToString();
 				resourceManager.InstantiateMusicSymbol (note, zone, fundFreq);
-				spawnRate = 1f;
+				spawnRate = 0.75f;
 			}
 
 		} else {

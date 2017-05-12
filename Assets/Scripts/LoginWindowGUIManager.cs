@@ -24,30 +24,20 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		}
 
 		Debug.logger.Log (searchPath);
-		string[] musicfiles = Directory.GetFiles (searchPath, "*.wav", SearchOption.AllDirectories);
-		List<string> musicOptions = new List<string>();
-		foreach(string musicfile in musicfiles) {
-			
-			var fileInfo = new System.IO.FileInfo(musicfile);
-			if (fileInfo.Length > 10000000) {
-				string musicOption = Path.GetFileName(musicfile);
-				if (!musicOptionsDic.ContainsKey (musicOption)) {
-					musicOptions.Add (musicOption);
-					musicOptionsDic.Add (musicOption, musicfile);
-				}
-			}
-		}
-		dropdown.AddOptions (musicOptions);
 	}
 
 	public void Play() {
+		RefreshMusicList ();
 		if (!musicChosen) {
 			//get all options available within this dropdown menu
 			List<Dropdown.OptionData> menuOptions = dropdown.options;
-			int menuIndex = Random.Range (0, menuOptions.Count);
-			SetMusic (menuIndex);
+			if (menuOptions.Count > 0) {
+				int menuIndex = Random.Range (0, menuOptions.Count);
+				SetMusic (menuIndex);
+			}
 		}
 		SceneManager.LoadScene ("Game");
+
 	}
 
 	public void Setting() {
@@ -61,6 +51,25 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	public void DisplayMusicLibraryUI() {
 		musicLibraryCanvas.SetActive (true);
 		mainCanvas.SetActive (false);
+		RefreshMusicList ();
+	}
+
+	public void RefreshMusicList() {
+		dropdown.ClearOptions ();
+		musicOptionsDic.Clear ();
+		string[] musicfiles = Directory.GetFiles (searchPath, "*.wav", SearchOption.AllDirectories);
+		List<string> musicOptions = new List<string>();
+		foreach(string musicfile in musicfiles) {
+			var fileInfo = new System.IO.FileInfo(musicfile);
+			if (fileInfo.Length > 10000000) {
+				string musicOption = Path.GetFileName(musicfile);
+				if (!musicOptionsDic.ContainsKey (musicOption)) {
+					musicOptions.Add (musicOption);
+					musicOptionsDic.Add (musicOption, musicfile);
+				}
+			}
+		}
+		dropdown.AddOptions (musicOptions);
 	}
 
 	public void MusicLibraryConfirm() {
@@ -79,7 +88,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		GameObject dataManager = GameObject.Find ("DataManager");
 		if (musicOptionsDic.ContainsKey (musicOption)) {
 			string path = musicOptionsDic [musicOption];
-
 			dataManager.GetComponentInChildren<DataManager> ().path = path;
 			musicChosen = true;
 		}

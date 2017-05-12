@@ -21,7 +21,7 @@ public class GUIManager : MonoBehaviour {
 	public bool gameOver = false;
 	public GameObject gameOverText;
 	public Animator gameOverAnimator;
-	private float animationDelay = 15f;
+	private float animationDelay = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -31,7 +31,7 @@ public class GUIManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (gameOver && animationDelay >= 15f) {
+		if (gameOver && animationDelay >=  5f) {
 			GameObject dataManager = GameObject.Find ("DataManager");
 			Destroy (dataManager);
 			gameOverAnimator.SetTrigger ("GameOver");

@@ -28,7 +28,9 @@ public class InputController : MonoBehaviour {
 				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
 				if (fruitController.GetNote ().Equals (rm.GetCurrentNote ())) {
 					fruitController.SetRemoved (true);
-	
+					if (!fruitController.IfNoteRemoved ()) {
+						rm.RemoveNote (fruitController.GetNote ());
+					}
 					if (fruitController.IfScoreable ()) {
 						guiManager.AddScore (10);
 					} else {

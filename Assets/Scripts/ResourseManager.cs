@@ -28,6 +28,7 @@ public class ResourseManager : MonoBehaviour {
 	private AudioSource audioSource;
 	private Dictionary<string, List<GameObject>> spawnedFruitsDict = new Dictionary<string, List<GameObject>>();
 	private List<string> notes = new List<string>();
+	private Vector3 prevSpawnedPos = new Vector3 ();
 
 	// Use this for initialization
 	void Start () {
@@ -54,7 +55,7 @@ public class ResourseManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		musicPlayTime -= Time.deltaTime;
 		if (audioSource.clip != null && !musicPlayed) {
 			if (!audioSource.isPlaying && audioSource.clip.loadState == AudioDataLoadState.Loaded && !musicPlayed) {
 				audioSource.Play ();
@@ -133,7 +134,7 @@ public class ResourseManager : MonoBehaviour {
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
-			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 2f;
+			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f;
 		} 
 
 		if (itemsDict.ContainsKey (note)) {
@@ -144,6 +145,9 @@ public class ResourseManager : MonoBehaviour {
 				int index = Random.Range (0, size);
 				GameObject item = items [index];
 				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 2 && Mathf.Abs (position.x - prevSpawnedPos.x) > 8) {
+					position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+				}
 				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 				GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
 				spawnedFruit.transform.SetParent (parent.transform);
@@ -152,6 +156,7 @@ public class ResourseManager : MonoBehaviour {
 				fruitController.SetSpeed (speed);
 				fruitController.SetNote (note);
 				fruitController.SetZone (zone);
+				prevSpawnedPos = position;
 			}
 				
 		

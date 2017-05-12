@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitController : MonoBehaviour {
 	
 	private string note = "";
-	private float scoreableTime = 2f;
+	private float scoreableTime = 3f;
 	private string zone;
 	private float differenceInScale;
 	private float speed;
@@ -14,6 +14,7 @@ public class FruitController : MonoBehaviour {
 	public bool onGround = false;
 	private float onGroundTime = 2f;
 	private bool removed = false;
+	private bool noteRemoved = false;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +35,12 @@ public class FruitController : MonoBehaviour {
 		scoreableTime -= Time.deltaTime;
 		if (scoreableTime < 0) {
 			SetScoreable (false);
+			GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
+			ResourseManager rm = guiManager.GetComponentInChildren<ResourseManager> ();
+			if (!noteRemoved) {
+				rm.RemoveNote (note);
+				noteRemoved = true;
+			}
 		}
 		if (onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
 			animator.SetTrigger ("OnGround");
@@ -44,9 +51,6 @@ public class FruitController : MonoBehaviour {
 
 		if(onGroundTime < 0 || removed) {
 			if (gameObject.transform.parent != null) {
-				GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
-				ResourseManager rm = guiManager.GetComponentInChildren<ResourseManager> ();
-				rm.RemoveNote (note);
 				Destroy (gameObject.transform.parent.gameObject);
 			}
 		}
@@ -64,6 +68,14 @@ public class FruitController : MonoBehaviour {
 
 	public void SetRemoved(bool removed){
 		this.removed = removed;
+	}
+
+	public void SetNoteRemoved(bool noteRemoved){
+		this.noteRemoved = noteRemoved;
+	}
+
+	public bool IfNoteRemoved(){
+		return noteRemoved;
 	}
 
 	public float GetScoreTime() {
