@@ -145,7 +145,7 @@ public class ResourseManager : MonoBehaviour {
 				int index = Random.Range (0, size);
 				GameObject item = items [index];
 				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
-				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 2 && Mathf.Abs (position.x - prevSpawnedPos.x) > 8) {
+				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 2 || Mathf.Abs (position.x - prevSpawnedPos.x) > 8) {
 					position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
 				}
 				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);

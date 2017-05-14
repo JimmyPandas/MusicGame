@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4503268613128600}
   - component: {fileID: 212029771097135556}
-  - component: {fileID: 135812790514303560}
   - component: {fileID: 114707991171263100}
   - component: {fileID: 54530569807966160}
   - component: {fileID: 95601097838995810}
+  - component: {fileID: 65288187277177218}
   m_Layer: 0
   m_Name: Peach
   m_TagString: Item
@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1565756438485604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 1}
+  m_LocalPosition: {x: -2.51, y: -1.97, z: 0}
+  m_LocalScale: {x: 0.04, y: 0.04, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,6 +59,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65288187277177218
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1565756438485604}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 29.970247, y: 24.213661, z: 0.2}
+  m_Center: {x: 0.22140443, y: -3.0996733, z: 0}
 --- !u!95 &95601097838995810
 Animator:
   serializedVersion: 3
@@ -89,18 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   onGround: 0
---- !u!135 &135812790514303560
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1565756438485604}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Center: {x: 0, y: -2, z: 0}
 --- !u!212 &212029771097135556
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -131,8 +131,13 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 753997525
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d53c640f3e9944715b3518c9b31c1af2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0

@@ -3294,18 +3294,15 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 0.05
       objectReference: {fileID: 0}
-    - target: {fileID: 135812790514303560, guid: 5072f54e7fa5e4281b7b94db9fd4da7d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Radius
       value: 0.677876
       objectReference: {fileID: 0}
-    - target: {fileID: 135812790514303560, guid: 5072f54e7fa5e4281b7b94db9fd4da7d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Center.x
       value: -0.30875206
       objectReference: {fileID: 0}
-    - target: {fileID: 135812790514303560, guid: 5072f54e7fa5e4281b7b94db9fd4da7d,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Center.y
       value: -1.9999993
       objectReference: {fileID: 0}

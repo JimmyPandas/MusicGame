@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4457371210793038}
   - component: {fileID: 212973907918716134}
-  - component: {fileID: 135438524904795240}
   - component: {fileID: 114590176600570528}
   - component: {fileID: 54549266514902642}
   - component: {fileID: 95072876992610938}
+  - component: {fileID: 65022009919752764}
   m_Layer: 0
   m_Name: Pitaya
   m_TagString: Item
@@ -38,8 +38,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1936141517470372}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalPosition: {x: 0.77, y: 0.38, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,6 +59,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65022009919752764
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1936141517470372}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.5620394, y: 3.4573705, z: 0.2}
+  m_Center: {x: -0.0295188, y: -0.14760494, z: 0}
 --- !u!95 &95072876992610938
 Animator:
   serializedVersion: 3
@@ -89,18 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   onGround: 0
---- !u!135 &135438524904795240
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1936141517470372}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: -0.5, y: -0.5, z: 0}
 --- !u!212 &212973907918716134
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -131,8 +131,13 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 753997525
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f0f3cce395c2d42a09d54a00bedb27ca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0

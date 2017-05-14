@@ -18,12 +18,13 @@ public class FruitController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-//		int multiple = 0;
-//		if (int.TryParse (zone, out multiple)) {
+		int multiple = 0;
+		if (int.TryParse (zone, out multiple)) {
 //			differenceInScale = speed - transform.localScale.x;
 //			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
 //			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
-//		} 
+			gameObject.transform.localScale *= Mathf.Sqrt(multiple);
+		} 
 		animator = GetComponentInChildren<Animator> ();
 		animator.speed = this.speed;
 		animator.Play ("FruitFalling");
