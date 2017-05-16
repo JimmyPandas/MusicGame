@@ -6,15 +6,24 @@ using System.Runtime.InteropServices;
 [RequireComponent(typeof(AudioSource))]
 public class AudioProcessor : MonoBehaviour {
 
-//	[DllImport ("libvamp_essentia")]
-//	private static extern void compute ();
+	[DllImport ("AudioProcessorPlugin")]
+	private static extern void detectPitch (int algoNum, string audio_file, string output_file);
+
 	float spawnRate = 0.75f;
 	private int sampleRate;
 	private ResourseManager resourceManager;
+	private string audio_file_path;
+	private CSVParsor parsor;
 	// Use this for initialization
 	void Start () {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		audio_file_path = dataManager.path;
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
+		string output_file_path = dataManager.searchPath + "/result.csv";
+		detectPitch (0, audio_file_path, output_file_path);
+		parsor = new CSVParsor ();
+		parsor.path = output_file_path;
 	}
 
 	// Update is called once per frame
@@ -25,37 +34,44 @@ public class AudioProcessor : MonoBehaviour {
 		}
 
 		if (spawnRate <= 0) {
-			const int numSamples = 8192;
-			float[] spectrum = new float[numSamples];
-
-			AudioListener.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
-
-			float maxAmplitude = 0.0f;
-			float amplitueSum = 0.0f;
-
-			float freq = 0.0f;
+//			const int numSamples = 8192;
+//			float[] spectrum = new float[numSamples];
+//
+//			AudioListener.GetSpectrumData (spectrum, 0, FFTWindow.Hamming);
+//
+//			float maxAmplitude = 0.0f;
+//			float amplitueSum = 0.0f;
+//
+//			float freq = 0.0f;
+//			string note = "";
+//			for (int i = 1; i < spectrum.Length - 1; i++) {
+//				if (maxAmplitude < spectrum [i]) {
+//					maxAmplitude = spectrum [i];
+//					freq = i;
+//				}
+//				amplitueSum += Mathf.Abs(spectrum [i]);
+//			}
+//				
+//			float fundFreq = freq * sampleRate / 2 / numSamples;
+//
+//			float amplitude = amplitueSum / numSamples;
 			string note = "";
-			for (int i = 1; i < spectrum.Length - 1; i++) {
-				if (maxAmplitude < spectrum [i]) {
-					maxAmplitude = spectrum [i];
-					freq = i;
+			string pitchStr = parsor.readData();
+			float pitch;
+			if (float.TryParse (pitchStr, out pitch)) {
+				string result = calcNoteAndZone (pitch);
+				if (result.Length == 2) {
+					note = result [0].ToString ();
+					string zone = result [1].ToString();
+					resourceManager.InstantiateMusicSymbol (note, zone, pitch);
+					spawnRate = 0.75f;
 				}
-				amplitueSum += Mathf.Abs(spectrum [i]);
-			}
-				
-			float fundFreq = freq * sampleRate / 2 / numSamples;
-
-			float amplitude = amplitueSum / numSamples;
-			string result = calcNoteAndZone (fundFreq);
-			if (result.Length == 2) {
-				note = result [0].ToString ();
-				string zone = result [1].ToString();
-				resourceManager.InstantiateMusicSymbol (note, zone, fundFreq);
-				spawnRate = 0.75f;
-			}
+			} 
+		
 
 		} else {
 			spawnRate -= Time.deltaTime;
+			parsor.readData();
 		}
 	}
 

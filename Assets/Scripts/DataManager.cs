@@ -6,6 +6,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour 
 {
 	public static DataManager instance;
+	public string searchPath = "";
 	public string path = "";
 	float length;
 

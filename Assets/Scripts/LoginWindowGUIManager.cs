@@ -23,7 +23,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			parentDir = Directory.GetParent (searchPath).FullName;
 		}
 
-		Debug.logger.Log (searchPath);
+		GameObject dataManager = GameObject.Find ("DataManager");
+		dataManager.GetComponentInChildren<DataManager> ().searchPath = searchPath;
 	}
 
 	public void Play() {
