@@ -4,8 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Runtime.InteropServices;
 
 public class LoginWindowGUIManager : MonoBehaviour {
+	
+	[DllImport ("AudioProcessorPlugin")]
+	private static extern void detectPitch (int algoNum, string audio_file, string output_file);
 
 	public GameObject mainCanvas;
 	public GameObject musicLibraryCanvas;
@@ -22,9 +26,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			searchPath = parentDir;
 			parentDir = Directory.GetParent (searchPath).FullName;
 		}
-
-		GameObject dataManager = GameObject.Find ("DataManager");
-		dataManager.GetComponentInChildren<DataManager> ().searchPath = searchPath;
 	}
 
 	public void Play() {
@@ -37,8 +38,17 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				SetMusic (menuIndex);
 			}
 		}
+		StartCoroutine("LoadPitchResultFile");
 		SceneManager.LoadScene ("Game");
 
+	}
+
+	IEnumerator LoadPitchResultFile(){
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();;
+		string output_file_path = searchPath + "/result.csv";
+		detectPitch (0, dataManager.path, output_file_path);
+		dataManager.pitch_csv_path = output_file_path;
+		yield return null;
 	}
 
 	public void Setting() {

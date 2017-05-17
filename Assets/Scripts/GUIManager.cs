@@ -32,8 +32,6 @@ public class GUIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (gameOver && animationDelay >=  5f) {
-			GameObject dataManager = GameObject.Find ("DataManager");
-			Destroy (dataManager);
 			gameOverAnimator.SetTrigger ("GameOver");
 		}
 		if (gameOver) {

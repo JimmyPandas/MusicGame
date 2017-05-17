@@ -6,7 +6,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour 
 {
 	public static DataManager instance;
-	public string searchPath = "";
+	public string pitch_csv_path = "";
 	public string path = "";
 	float length;
 
@@ -16,9 +16,13 @@ public class DataManager : MonoBehaviour
 	}
 
 	/// <summary>Awake is called when the script instance is being loaded.</summary>
-	void Awake()
-	{
-		// Do not destroy this object, when we load a new scene.
-		DontDestroyOnLoad(gameObject);
+	void Awake() {
+		if (instance == null) {
+			// Do not destroy this object, when we load a new scene.
+			DontDestroyOnLoad (gameObject);
+			instance = this;
+		} else if (instance != this) {
+			Destroy (gameObject);
+		}
 	}
 }
