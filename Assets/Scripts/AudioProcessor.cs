@@ -47,8 +47,6 @@ public class AudioProcessor : MonoBehaviour {
 						spawnRate = 0.75f;
 					}
 				} 
-				Debug.Log ("Time: " + Time.timeSinceLevelLoad);
-				Debug.Log ("pitch: " + pitch);
 			}
 		
 
