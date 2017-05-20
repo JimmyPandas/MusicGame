@@ -27,7 +27,6 @@ public class AudioProcessor : MonoBehaviour {
 		if (sampleRate == 0) {
 			AudioSource audioSource = GetComponent<AudioSource> ();
 			sampleRate = audioSource.clip.frequency;
-			Debug.Log (audioSource.clip.length);
 		}
 
 		if (spawnRate <= 0) {

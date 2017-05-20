@@ -11,6 +11,12 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	[DllImport ("AudioProcessorPlugin")]
 	private static extern void detectPitch (int algoNum, string audio_file, string output_file);
 
+	[DllImport ("AudioProcessorPlugin")]
+	private static extern int extractMusicSVM (string audio_file_name, string output_file_name, string profile_file_name);
+
+	[DllImport ("AudioProcessorPlugin_2")]
+	private static extern int extractMusic (string input_file_name, string output_file_name, string profile_file_name);
+
 	public GameObject mainCanvas;
 	public GameObject musicLibraryCanvas;
 	public Dropdown dropdown;
@@ -48,6 +54,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		string output_file_path = searchPath + "/result.csv";
 		detectPitch (0, dataManager.path, output_file_path);
 		dataManager.pitch_csv_path = output_file_path;
+		extractMusic (dataManager.path, searchPath + "/descriptor.txt", "");
+		Debug.Log(extractMusicSVM (searchPath + "/descriptor.txt", searchPath + "/classfiresult.json", ""));
 		yield return null;
 	}
 
@@ -81,6 +89,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			}
 		}
 		dropdown.AddOptions (musicOptions);
+		dropdown.RefreshShownValue ();
 	}
 
 	public void MusicLibraryConfirm() {

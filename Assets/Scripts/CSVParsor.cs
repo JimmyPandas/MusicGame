@@ -25,9 +25,8 @@ public class CSVParsor : MonoBehaviour{
 			string[] fields = record.Split (fieldSeperator);
 			records.RemoveAt (0);
 			return new List<string> (fields);
-		} else {
-			return null;
-		}
+		} 
+		return null;
 	}
 		
 
