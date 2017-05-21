@@ -14,7 +14,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	[DllImport ("AudioProcessorPlugin")]
 	private static extern int extractMusicSVM (string audio_file_name, string output_file_name, string profile_file_name);
 
-	[DllImport ("AudioProcessorPlugin_2")]
+	[DllImport ("AudioProcessorPlugin")]
 	private static extern int extractMusic (string input_file_name, string output_file_name, string profile_file_name);
 
 	public GameObject mainCanvas;
