@@ -51,12 +51,52 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	IEnumerator LoadPitchResultFile(){
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();;
-		string output_file_path = searchPath + "/result.csv";
-		detectPitch (0, dataManager.path, output_file_path);
+		string filename = 	Path.GetFileNameWithoutExtension (dataManager.path);
+		string resultFolderPath = searchPath + "/Results";
+		if (!Directory.Exists (resultFolderPath)) {
+			Directory.CreateDirectory (resultFolderPath);
+		}
+		resultFolderPath += "/" + filename + "_";
+		string output_file_path = resultFolderPath + "result.csv";
+		if(!File.Exists(output_file_path)) { 
+			detectPitch (0, dataManager.path, output_file_path);
+		}
 		dataManager.pitch_csv_path = output_file_path;
-		extractMusic (dataManager.path, searchPath + "/descriptor.txt", "");
-		Debug.Log(extractMusicSVM (searchPath + "/descriptor.txt", searchPath + "/classfiresult.json", ""));
+		if (!File.Exists (resultFolderPath + "descriptor.txt")) {
+			extractMusic (dataManager.path, resultFolderPath + "descriptor.txt", "");
+		}
+		if (!File.Exists (resultFolderPath + "classfiresult.json")) {
+			extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
+
+		}
+		LoadJsonData (resultFolderPath + "classfiresult.json");
 		yield return null;
+	}
+
+	public void LoadJsonData(string path) {
+		if (File.Exists (path)) {
+			StreamReader sr = new StreamReader (path);
+			string probabilityStr = sr.ReadLine ();
+			while (probabilityStr != null) {
+				if (probabilityStr.Contains ("probability")) {
+					int startIndex = probabilityStr.IndexOf (": ") + 2;
+					int length = probabilityStr.IndexOf (",") - startIndex;
+					probabilityStr = probabilityStr.Substring (startIndex, length);
+					string value = sr.ReadLine ();
+					startIndex = value.IndexOf (": ") + 3;
+					length = value.Length - startIndex - 1;
+					value = value.Substring (startIndex, length);
+					Dictionary<string, float> attributesDic = new Dictionary<string, float> ();
+					float probability = 0f;
+					if (float.TryParse (probabilityStr, out probability)) {
+						attributesDic.Add (value, probability);
+					}
+		
+				}
+				probabilityStr = sr.ReadLine();
+			}
+
+		}
 	}
 
 	public void Setting() {
