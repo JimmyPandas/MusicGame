@@ -5,10 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioProcessor : MonoBehaviour {
 
-	float spawnRate = 0.75f;
+	float spawnRate = 0f;
 	private int sampleRate;
 	private ResourseManager resourceManager;
 	private CSVParsor pitchCSVParsor;
+	private CSVParsor beatCSVParsor;
 
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,11 @@ public class AudioProcessor : MonoBehaviour {
 		pitchCSVParsor = new CSVParsor ();
 		pitchCSVParsor.path = dataManager.pitch_csv_path;
 		pitchCSVParsor.ReadAllLines ();
+
+		beatCSVParsor = new CSVParsor ();
+		beatCSVParsor.path = dataManager.beat_csv_path;
+		beatCSVParsor.ReadAllLines ();
+
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
 
@@ -30,8 +36,13 @@ public class AudioProcessor : MonoBehaviour {
 		}
 
 		if (spawnRate <= 0) {
+			List<string> fields = beatCSVParsor.ReadRecord();
+			if (fields != null) {
+				spawnRate = float.Parse (fields [1]);
+			}
+
 			string note = "";
-			List<string> fields = pitchCSVParsor.ReadRecord();
+			fields = pitchCSVParsor.ReadRecord();
 			while (fields != null && float.Parse(fields [0]) < Time.timeSinceLevelLoad) {
 				fields = pitchCSVParsor.ReadRecord ();
 			}
@@ -39,11 +50,11 @@ public class AudioProcessor : MonoBehaviour {
 				float pitch = 0f;
 				if (float.TryParse (fields [1], out pitch)) {
 					string result = calcNoteAndZone (pitch);
-					if (result.Length == 2) {
+					if (result.Length == 2 && float.Parse(fields[2]) > 0.20f) {
 						note = result [0].ToString ();
 						string zone = result [1].ToString ();
 						resourceManager.InstantiateMusicSymbol (note, zone, pitch);
-						spawnRate = 0.75f;
+//						spawnRate = 0.75f;
 					}
 				} 
 			}

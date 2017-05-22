@@ -12,6 +12,9 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private static extern void detectPitch (int algoNum, string audio_file, string output_file);
 
 	[DllImport ("AudioProcessorPlugin")]
+	private static extern void extractRhythm (string audio_file, string output_file);
+
+	[DllImport ("AudioProcessorPlugin")]
 	private static extern int extractMusicSVM (string audio_file_name, string output_file_name, string profile_file_name);
 
 	[DllImport ("AudioProcessorPlugin")]
@@ -23,6 +26,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private bool musicChosen = false;
 	private string searchPath = "";
 	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
+	public Slider progressBar;
 
 	// Use this for initialization
 	void Start () {
@@ -44,12 +48,11 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				SetMusic (menuIndex);
 			}
 		}
-		StartCoroutine("LoadPitchResultFile");
 		SceneManager.LoadScene ("Game");
 
 	}
 
-	IEnumerator LoadPitchResultFile(){
+	IEnumerator LoadAnalysisResultFiles(){
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();;
 		string filename = 	Path.GetFileNameWithoutExtension (dataManager.path);
 		string resultFolderPath = searchPath + "/Results";
@@ -57,18 +60,28 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			Directory.CreateDirectory (resultFolderPath);
 		}
 		resultFolderPath += "/" + filename + "_";
-		string output_file_path = resultFolderPath + "result.csv";
-		if(!File.Exists(output_file_path)) { 
-			detectPitch (0, dataManager.path, output_file_path);
+
+		string pitch_csv_path = resultFolderPath + "pitch_result.csv";
+		if(!File.Exists(pitch_csv_path)) { 
+			detectPitch (0, dataManager.path, pitch_csv_path);
 		}
-		dataManager.pitch_csv_path = output_file_path;
+		dataManager.pitch_csv_path = pitch_csv_path;
+
+		string beat_csv_path = resultFolderPath + "beat_result.csv";
+		if(!File.Exists(beat_csv_path)) { 
+			extractRhythm (dataManager.path, beat_csv_path);
+		}
+		dataManager.beat_csv_path = beat_csv_path;
+
 		if (!File.Exists (resultFolderPath + "descriptor.txt")) {
 			extractMusic (dataManager.path, resultFolderPath + "descriptor.txt", "");
 		}
+
 		if (!File.Exists (resultFolderPath + "classfiresult.json")) {
 			extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
 
 		}
+
 		LoadJsonData (resultFolderPath + "classfiresult.json");
 		yield return null;
 	}
@@ -150,6 +163,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			string path = musicOptionsDic [musicOption];
 			dataManager.GetComponentInChildren<DataManager> ().path = path;
 			musicChosen = true;
+			StartCoroutine("LoadAnalysisResultFiles");
 		}
 	}
 

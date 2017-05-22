@@ -100,31 +100,31 @@ public class ResourseManager : MonoBehaviour {
 		return currentNote;
 	}
 
-	public void CollectFruit() {
-		var button = EventSystem.current.currentSelectedGameObject;
-		if (button != null) {
-			Debug.Log ("Clicked on : " + button.name);
-			string note = button.name.Replace ("Button", "");
-			List<GameObject> spawnedFruits = spawnedFruitsDict [note];
-			if(spawnedFruits.Count > 0) {
-				GameObject fruit = spawnedFruits[0];
-				if (fruit != null) {
-					Debug.Log (fruit.name);
-					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
-					fruitController.SetRemoved (true);
-					spawnedFruitsDict [note].Remove (fruit);
-					GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
-					if (fruitController.IfScoreable ()) {
-						guiManager.AddScore (10);
-					} else {
-						guiManager.LoseScore (10);
-					}
-				}
-			}
-		} else {
-			Debug.Log ("currentSelectedGameObject is null");
-		}
-	}
+//	public void CollectFruit() {
+//		var button = EventSystem.current.currentSelectedGameObject;
+//		if (button != null) {
+//			Debug.Log ("Clicked on : " + button.name);
+//			string note = button.name.Replace ("Button", "");
+//			List<GameObject> spawnedFruits = spawnedFruitsDict [note];
+//			if(spawnedFruits.Count > 0) {
+//				GameObject fruit = spawnedFruits[0];
+//				if (fruit != null) {
+//					Debug.Log (fruit.name);
+//					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
+//					fruitController.SetRemoved (true);
+//					spawnedFruitsDict [note].Remove (fruit);
+//					GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
+//					if (fruitController.IfScoreable ()) {
+//						guiManager.AddScore (10);
+//					} else {
+//						guiManager.LoseScore (10);
+//					}
+//				}
+//			}
+//		} else {
+//			Debug.Log ("currentSelectedGameObject is null");
+//		}
+//	}
 
 	public void RemoveNote(string note) {
 		notes.Remove (note);	
@@ -145,7 +145,7 @@ public class ResourseManager : MonoBehaviour {
 				int index = Random.Range (0, size);
 				GameObject item = items [index];
 				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
-				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 2 || Mathf.Abs (position.x - prevSpawnedPos.x) > 8) {
+				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
 					position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
 				}
 				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);

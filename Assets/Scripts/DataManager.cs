@@ -7,6 +7,7 @@ public class DataManager : MonoBehaviour
 {
 	public static DataManager instance;
 	public string pitch_csv_path = "";
+	public string beat_csv_path = "";
 	public string path = "";
 	float length;
 
