@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitController : MonoBehaviour {
 	
 	private string note = "";
-	private float scoreableTime = 3f;
+	public float scoreableTime = 1f;
 	private string zone;
 	private float differenceInScale;
 	private float speed;
@@ -77,10 +77,6 @@ public class FruitController : MonoBehaviour {
 
 	public bool IfNoteRemoved(){
 		return noteRemoved;
-	}
-
-	public float GetScoreTime() {
-		return scoreableTime;
 	}
 		
 	public void SetSpeed(float speed) {

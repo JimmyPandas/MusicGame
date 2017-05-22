@@ -130,7 +130,7 @@ public class ResourseManager : MonoBehaviour {
 		notes.Remove (note);	
 	}
 
-	public void InstantiateMusicSymbol(string note, string zone, float pitch) {
+	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
@@ -153,6 +153,7 @@ public class ResourseManager : MonoBehaviour {
 				spawnedFruit.transform.SetParent (parent.transform);
 				spawnedFruitsDict [note].Add (spawnedFruit);
 				FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+				fruitController.scoreableTime += nextBeatInterval;
 				fruitController.SetSpeed (speed);
 				fruitController.SetNote (note);
 				fruitController.SetZone (zone);
@@ -163,7 +164,6 @@ public class ResourseManager : MonoBehaviour {
 			GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
 			foreach (GameObject fruit in liveFruits) {
 				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
-			
 				fruitController.SetSpeed (speed);
 			
 			}

@@ -82,11 +82,11 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 		}
 
-		LoadJsonData (resultFolderPath + "classfiresult.json");
+		LoadAttributeData (resultFolderPath + "classfiresult.json");
 		yield return null;
 	}
 
-	public void LoadJsonData(string path) {
+	public void LoadAttributeData(string path) {
 		if (File.Exists (path)) {
 			StreamReader sr = new StreamReader (path);
 			string probabilityStr = sr.ReadLine ();

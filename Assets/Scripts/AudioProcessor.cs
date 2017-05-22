@@ -10,6 +10,7 @@ public class AudioProcessor : MonoBehaviour {
 	private ResourseManager resourceManager;
 	private CSVParsor pitchCSVParsor;
 	private CSVParsor beatCSVParsor;
+	float nextBeatInterval = 0f;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,7 @@ public class AudioProcessor : MonoBehaviour {
 
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
+		UpdateNextSpawnRate ();
 
 	}
 
@@ -34,12 +36,10 @@ public class AudioProcessor : MonoBehaviour {
 			AudioSource audioSource = GetComponent<AudioSource> ();
 			sampleRate = audioSource.clip.frequency;
 		}
-
+		List<string> fields = new List<string> ();
 		if (spawnRate <= 0) {
-			List<string> fields = beatCSVParsor.ReadRecord();
-			if (fields != null) {
-				spawnRate = float.Parse (fields [1]);
-			}
+			spawnRate = nextBeatInterval;
+			UpdateNextSpawnRate ();
 
 			string note = "";
 			fields = pitchCSVParsor.ReadRecord();
@@ -53,7 +53,7 @@ public class AudioProcessor : MonoBehaviour {
 					if (result.Length == 2 && float.Parse(fields[2]) > 0.20f) {
 						note = result [0].ToString ();
 						string zone = result [1].ToString ();
-						resourceManager.InstantiateMusicSymbol (note, zone, pitch);
+						resourceManager.InstantiateMusicSymbol (note, zone, pitch, nextBeatInterval);
 //						spawnRate = 0.75f;
 					}
 				} 
@@ -65,6 +65,16 @@ public class AudioProcessor : MonoBehaviour {
 		}
 	}
 
+	private void UpdateNextSpawnRate() {
+		nextBeatInterval = 0f;
+		List<string> fields = new List<string> ();
+		for (int i = 0; i < 2; i++) {
+			fields = beatCSVParsor.ReadRecord ();
+			if (fields != null) {
+				nextBeatInterval += float.Parse (fields [1]);
+			}
+		}
+	}
 
 	private string calcNoteAndZone(float fundFreq) {
 		int zone = 1;
