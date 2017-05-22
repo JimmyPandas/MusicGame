@@ -53,7 +53,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 
 	IEnumerator LoadAnalysisResultFiles(){
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();;
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		string filename = 	Path.GetFileNameWithoutExtension (dataManager.path);
 		string resultFolderPath = searchPath + "/Results";
 		if (!Directory.Exists (resultFolderPath)) {
@@ -99,16 +99,36 @@ public class LoginWindowGUIManager : MonoBehaviour {
 					startIndex = value.IndexOf (": ") + 3;
 					length = value.Length - startIndex - 1;
 					value = value.Substring (startIndex, length);
-					Dictionary<string, float> attributesDic = new Dictionary<string, float> ();
 					float probability = 0f;
 					if (float.TryParse (probabilityStr, out probability)) {
-						attributesDic.Add (value, probability);
+						ChangeSettingByAttributes (value, probability);
 					}
 		
 				}
 				probabilityStr = sr.ReadLine();
 			}
 
+		}
+	}
+
+	private void ChangeSettingByAttributes(string attribute, float probability) {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		switch (attribute) {
+		case "happy":
+			dataManager.happyFactor = probability;
+			break;
+		case "sad":
+			dataManager.sadFactor = probability;
+			break;
+		case "relaxed":
+			break;
+		case "party":
+			break;
+		case "aggressive":
+			dataManager.aggresiveFactor = 2;
+			break;
+		default:
+			break;
 		}
 	}
 

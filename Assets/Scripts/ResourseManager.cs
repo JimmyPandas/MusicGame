@@ -30,6 +30,7 @@ public class ResourseManager : MonoBehaviour {
 	private List<string> notes = new List<string>();
 	private Vector3 prevSpawnedPos = new Vector3 ();
 
+
 	// Use this for initialization
 	void Start () {
 		InitItemDict ();
@@ -100,74 +101,52 @@ public class ResourseManager : MonoBehaviour {
 		return currentNote;
 	}
 
-//	public void CollectFruit() {
-//		var button = EventSystem.current.currentSelectedGameObject;
-//		if (button != null) {
-//			Debug.Log ("Clicked on : " + button.name);
-//			string note = button.name.Replace ("Button", "");
-//			List<GameObject> spawnedFruits = spawnedFruitsDict [note];
-//			if(spawnedFruits.Count > 0) {
-//				GameObject fruit = spawnedFruits[0];
-//				if (fruit != null) {
-//					Debug.Log (fruit.name);
-//					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
-//					fruitController.SetRemoved (true);
-//					spawnedFruitsDict [note].Remove (fruit);
-//					GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
-//					if (fruitController.IfScoreable ()) {
-//						guiManager.AddScore (10);
-//					} else {
-//						guiManager.LoseScore (10);
-//					}
-//				}
-//			}
-//		} else {
-//			Debug.Log ("currentSelectedGameObject is null");
-//		}
-//	}
-
 	public void RemoveNote(string note) {
 		notes.Remove (note);	
 	}
 
+
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
-			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f;
+			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f + dataManager.happyFactor - dataManager.sadFactor;
 		} 
-
-		if (itemsDict.ContainsKey (note)) {
-			notes.Add (note);
-			List<GameObject> items = itemsDict [note];
-			int size = items.Count;
-			if (size > 0) {
-				int index = Random.Range (0, size);
-				GameObject item = items [index];
-				Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
-				while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
-					position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+			
+		for (int i = 0; i < dataManager.aggresiveFactor; i++) {
+			if (itemsDict.ContainsKey (note)) {
+				notes.Add (note);
+				List<GameObject> items = itemsDict [note];
+				int size = items.Count;
+				if (size > 0) {
+					int index = Random.Range (0, size);
+					GameObject item = items [index];
+					Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+					while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
+						position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+					}
+					GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
+					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
+					spawnedFruit.transform.SetParent (parent.transform);
+					spawnedFruitsDict [note].Add (spawnedFruit);
+					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+					fruitController.scoreableTime += nextBeatInterval;
+					fruitController.SetSpeed (speed);
+					fruitController.SetNote (note);
+					fruitController.SetZone (zone);
+					prevSpawnedPos = position;
 				}
-				GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
-				GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
-				spawnedFruit.transform.SetParent (parent.transform);
-				spawnedFruitsDict [note].Add (spawnedFruit);
-				FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
-				fruitController.scoreableTime += nextBeatInterval;
-				fruitController.SetSpeed (speed);
-				fruitController.SetNote (note);
-				fruitController.SetZone (zone);
-				prevSpawnedPos = position;
-			}
 				
 		
-			GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
-			foreach (GameObject fruit in liveFruits) {
-				FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
-				fruitController.SetSpeed (speed);
+				GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
+				foreach (GameObject fruit in liveFruits) {
+					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();
+					fruitController.SetSpeed (speed);
 			
-			}
+				}
 
+			}
 		}
 
 	}

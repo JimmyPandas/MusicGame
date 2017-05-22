@@ -1779,6 +1779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pitch_csv_path: 
+  beat_csv_path: 
   path: 
 --- !u!114 &104
 MonoBehaviour:

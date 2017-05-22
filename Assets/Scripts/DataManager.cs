@@ -9,6 +9,9 @@ public class DataManager : MonoBehaviour
 	public string pitch_csv_path = "";
 	public string beat_csv_path = "";
 	public string path = "";
+	public float happyFactor;
+	public float sadFactor;
+	public int aggresiveFactor = 1;
 	float length;
 
 
@@ -26,4 +29,6 @@ public class DataManager : MonoBehaviour
 			Destroy (gameObject);
 		}
 	}
+
+
 }
