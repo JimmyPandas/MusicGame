@@ -1287,6 +1287,7 @@ MonoBehaviour:
   watermelon: {fileID: 1942963199086238, guid: 255610cccd8db4f6fa71e4603865e220, type: 2}
   blueberry: {fileID: 1680183774302690, guid: a3cffdb92a043447ab4dbb16bd1f56fe, type: 2}
   yellowPear: {fileID: 1575342239557430, guid: 6c504239f9dba4173b1f542bda428c40, type: 2}
+  rain: {fileID: 100000, guid: af5d2d14895eaed4dae91d06b8ca164f, type: 2}
 --- !u!1 &1605099395
 GameObject:
   m_ObjectHideFlags: 0

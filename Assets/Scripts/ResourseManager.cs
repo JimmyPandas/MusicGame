@@ -30,17 +30,22 @@ public class ResourseManager : MonoBehaviour {
 	private List<string> notes = new List<string>();
 	private Vector3 prevSpawnedPos = new Vector3 ();
 
+	public GameObject rain;
 
 	// Use this for initialization
 	void Start () {
 		InitItemDict ();
 		InitSpawnedFruits ();
-		GameObject dataManager = GameObject.Find ("DataManager");
-		path = dataManager.GetComponentInChildren<DataManager> ().path;
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		path = dataManager.path;
 		audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
 		if(audioSource != null) {
 			StartCoroutine(LoadSongCoroutine()); 
 			Camera.main.GetComponentInChildren<AudioProcessor> ().enabled = true;
+		}
+
+		if (dataManager.sadFactor >= 0.6) {
+			Instantiate (rain, rain.transform.position, Quaternion.identity);
 		}
 	
 	}
