@@ -116,7 +116,7 @@ public class ResourseManager : MonoBehaviour {
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
-			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f + dataManager.happyFactor - dataManager.sadFactor;
+			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f *  (2f + dataManager.happyFactor) / (2f + dataManager.sadFactor);
 		} 
 			
 		for (int i = 0; i < dataManager.aggresiveFactor; i++) {
@@ -127,9 +127,9 @@ public class ResourseManager : MonoBehaviour {
 				if (size > 0) {
 					int index = Random.Range (0, size);
 					GameObject item = items [index];
-					Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+					Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), Random.Range (-1f, 3f), 0);
 					while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
-						position = new Vector3 (Random.Range (-10.0f, 10.0f), 1, 0);
+						position = new Vector3 (Random.Range (-10.0f, 10.0f), Random.Range (-1f, 3f), 0);
 					}
 					GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);

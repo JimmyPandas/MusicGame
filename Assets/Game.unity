@@ -684,11 +684,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -390.72046
+      value: -390.09
       objectReference: {fileID: 0}
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -244.66
+      value: -243.65
       objectReference: {fileID: 0}
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalPosition.z
@@ -720,11 +720,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.7592955
+      value: 0.8556105
       objectReference: {fileID: 0}
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalScale.y
-      value: 1.0452737
+      value: 1.2256675
       objectReference: {fileID: 0}
     - target: {fileID: 4689551034701932, guid: 647ac912450cf42fb910bc90224faa30, type: 2}
       propertyPath: m_LocalScale.z
@@ -879,7 +879,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 76
   orthographic: 1
   orthographic size: 8.0842085
   m_Depth: -1

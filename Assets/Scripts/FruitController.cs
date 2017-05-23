@@ -26,8 +26,8 @@ public class FruitController : MonoBehaviour {
 			gameObject.transform.localScale *= Mathf.Sqrt(multiple);
 		} 
 		animator = GetComponentInChildren<Animator> ();
-		animator.speed = this.speed;
-		animator.Play ("FruitFalling");
+		animator.Play ("FruitSpawning");
+		animator.SetFloat ("FallingSpeed", speed);
 	}
 
 	// Update is called once per frame
