@@ -26,7 +26,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private bool musicChosen = false;
 	private string searchPath = "";
 	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
-	public Slider progressBar;
 
 	// Use this for initialization
 	void Start () {

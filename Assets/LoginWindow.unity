@@ -1765,7 +1765,6 @@ MonoBehaviour:
   mainCanvas: {fileID: 160472780}
   musicLibraryCanvas: {fileID: 848118483}
   dropdown: {fileID: 86}
-  progressBar: {fileID: 392247982}
 --- !u!114 &103
 MonoBehaviour:
   m_ObjectHideFlags: 0

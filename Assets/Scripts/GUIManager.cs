@@ -11,6 +11,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject magician;
 	public int score = 0;
 	public GameObject gameCanvas;
+	private int maxCombo;
 	private int combo = 0;
 
 	public Slider energybar;
@@ -22,6 +23,8 @@ public class GUIManager : MonoBehaviour {
 	public GameObject gameOverText;
 	public Animator gameOverAnimator;
 	private float animationDelay = 15f;
+	public Text gameOverScoreText;
+	public Text gameOverMaxComboText;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +36,9 @@ public class GUIManager : MonoBehaviour {
 	void Update () {
 		if (gameOver && animationDelay >= 15f) {
 			gameOverAnimator.SetTrigger ("GameOver");
+			gameOverScoreText.text = "" + score;
+			maxCombo = Mathf.Max (combo, maxCombo);
+			gameOverMaxComboText.text = "" + maxCombo;
 		}
 		if (gameOver) {
 			animationDelay -= Time.deltaTime;
@@ -74,6 +80,7 @@ public class GUIManager : MonoBehaviour {
 			}
 			animator.Play("ComboAnimation");
 		} else {
+			maxCombo = Mathf.Max (combo, maxCombo);
 			feeebackText.text = "Fighting!";
 			animator.Play("ComboAnimation");
 		}
