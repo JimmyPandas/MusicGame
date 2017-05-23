@@ -36,6 +36,9 @@ public class InputController : MonoBehaviour {
 					} else {
 						guiManager.LoseScore (10);
 					}
+				} else if(!fruitController.IfScoreable()) {
+					fruitController.SetRemoved (true);
+					guiManager.LoseScore (10);
 				}
 			}
 		}

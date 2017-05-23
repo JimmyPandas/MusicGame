@@ -1781,6 +1781,9 @@ MonoBehaviour:
   pitch_csv_path: 
   beat_csv_path: 
   path: 
+  happyFactor: 0
+  sadFactor: 0
+  aggresiveFactor: 1
 --- !u!114 &104
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 public class FruitController : MonoBehaviour {
 	
 	private string note = "";
-	public float scoreableTime = 1f;
+	public float scoreableTime = 0.65f;
 	private string zone;
 	private float differenceInScale;
 	private float speed;
