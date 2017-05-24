@@ -26,7 +26,6 @@ public class ResourseManager : MonoBehaviour {
 	private float musicPlayTime = 100f;
 	private string path = "";
 	private AudioSource audioSource;
-	private Dictionary<string, List<GameObject>> spawnedFruitsDict = new Dictionary<string, List<GameObject>>();
 	private List<string> notes = new List<string>();
 	private Vector3 prevSpawnedPos = new Vector3 ();
 
@@ -35,7 +34,6 @@ public class ResourseManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		InitItemDict ();
-		InitSpawnedFruits ();
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		path = dataManager.path;
 		audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
@@ -87,16 +85,7 @@ public class ResourseManager : MonoBehaviour {
 		itemsDict.Add ("A", new List<GameObject>{peach});
 		itemsDict.Add ("B", new List<GameObject>{purpleGrape});
 	}
-
-	private void InitSpawnedFruits() {
-		spawnedFruitsDict.Add ("C", new List<GameObject>());
-		spawnedFruitsDict.Add ("D", new List<GameObject>());
-		spawnedFruitsDict.Add ("E", new List<GameObject>());
-		spawnedFruitsDict.Add ("F", new List<GameObject>());
-		spawnedFruitsDict.Add ("G", new List<GameObject>());
-		spawnedFruitsDict.Add ("A", new List<GameObject>());
-		spawnedFruitsDict.Add ("B", new List<GameObject>());
-	}
+		
 
 	public string GetCurrentNote() {
 		string currentNote = "";
@@ -141,8 +130,10 @@ public class ResourseManager : MonoBehaviour {
 					GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
 					spawnedFruit.transform.SetParent (parent.transform);
-					spawnedFruitsDict [note].Add (spawnedFruit);
+
+					string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+					fruitController.SetEmotion (emotion);
 					fruitController.scoreableTime += nextBeatInterval;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);

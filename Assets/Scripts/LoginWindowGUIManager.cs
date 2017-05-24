@@ -122,22 +122,28 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		switch (attribute) {
 		case "happy":
-			dataManager.happyFactor = probability;
+			dataManager.emotions.Add (attribute);
+			dataManager.happyFactor = probability;	
 			break;
 		case "sad":
+			dataManager.emotions.Add (attribute);
 			dataManager.sadFactor = probability;
 			break;
 		case "relaxed":
+//			dataManager.emotions.Add (attribute);
 			break;
 		case "party":
+//			dataManager.emotions.Add (attribute);
 			break;
 		case "aggressive":
+//			dataManager.emotions.Add (attribute);
 			dataManager.aggresiveFactor = 2;
 			break;
 		default:
 			break;
 		}
 	}
+		
 
 	public void Setting() {
 	}

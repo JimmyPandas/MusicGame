@@ -1783,6 +1783,7 @@ MonoBehaviour:
   happyFactor: 0
   sadFactor: 0
   aggresiveFactor: 1
+  emotions: []
 --- !u!114 &104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2396,18 +2397,15 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 135801626512380166, guid: 5469abfa272884d198f259e8c9553c02,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Radius
       value: 0.9322531
       objectReference: {fileID: 0}
-    - target: {fileID: 135801626512380166, guid: 5469abfa272884d198f259e8c9553c02,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Center.x
       value: 0.08456254
       objectReference: {fileID: 0}
-    - target: {fileID: 135801626512380166, guid: 5469abfa272884d198f259e8c9553c02,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: m_Center.y
       value: -0.2771871
       objectReference: {fileID: 0}

@@ -13,7 +13,7 @@ public class DataManager : MonoBehaviour
 	public float sadFactor;
 	public int aggresiveFactor = 1;
 	float length;
-
+	public List<string> emotions = new List<string>();
 
 	// Use this for initialization
 	void Start () {

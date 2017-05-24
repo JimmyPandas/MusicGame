@@ -16,6 +16,13 @@ public class FruitController : MonoBehaviour {
 	private bool removed = false;
 	private bool noteRemoved = false;
 	private Vector3 onGroundPos;
+	private string emotion;
+
+	public GameObject happyEmotion;
+	public GameObject sadEmotion;
+	public GameObject aggresiveEmotion;
+	public GameObject relaxedEmotion;
+	public GameObject partyEmotion;
 
 	// Use this for initialization
 	void Start () {
@@ -63,6 +70,29 @@ public class FruitController : MonoBehaviour {
 	
 	}
 		
+	public void SetEmotion(string emotion){
+		this.emotion = emotion;
+		switch (emotion) {
+		case "happy":
+			happyEmotion.SetActive (true);
+			break;
+		case "sad":
+			sadEmotion.SetActive (true);
+			break;
+		case "relaxed":
+//			relaxedEmotion.SetActive(true)
+			break;
+		case "party":
+//			partyEmotion.SetActive(true);
+			break;
+		case "aggressive":
+//			aggresiveEmotion.SetActive(true);
+			break;
+		default:
+			break;
+		}
+	}
+
 	public void SetScoreable(bool scoreable){
 		this.scoreable = scoreable;
 	}
