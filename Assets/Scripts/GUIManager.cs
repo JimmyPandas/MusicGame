@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GUIManager : MonoBehaviour {
 
-	public GameObject ground;
-	public GameObject trees;
-	public GameObject magician;
 	public int score = 0;
 	public GameObject gameCanvas;
 	private int maxCombo;
@@ -21,7 +18,7 @@ public class GUIManager : MonoBehaviour {
 	private bool shieldSpawned = false;
 	public bool gameOver = false;
 	public GameObject gameOverText;
-	public Animator gameOverAnimator;
+	private Animator gameOverAnimator;
 	private float animationDelay = 15f;
 	public Text gameOverScoreText;
 	public Text gameOverMaxComboText;

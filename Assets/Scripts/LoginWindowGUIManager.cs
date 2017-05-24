@@ -121,6 +121,9 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private void ChangeSettingByAttributes(string attribute, float probability) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		switch (attribute) {
+		case "danceable":
+			dataManager.danceable = true;
+			break;
 		case "happy":
 			dataManager.emotions.Add (attribute);
 			dataManager.happyFactor = probability;	

@@ -30,6 +30,8 @@ public class ResourseManager : MonoBehaviour {
 	private Vector3 prevSpawnedPos = new Vector3 ();
 
 	public GameObject rain;
+	private Animator magicianGameAnimator;
+	private bool danceable = false;
 
 	// Use this for initialization
 	void Start () {
@@ -45,6 +47,9 @@ public class ResourseManager : MonoBehaviour {
 		if (dataManager.sadFactor >= 0.6) {
 			Instantiate (rain, rain.transform.position, Quaternion.identity);
 		}
+
+		magicianGameAnimator = GameObject.Find ("magician_game").GetComponentInChildren<Animator> ();
+		danceable = dataManager.danceable;
 	
 	}
 
@@ -72,6 +77,11 @@ public class ResourseManager : MonoBehaviour {
 				GUIManager guiManager = GetComponent<GUIManager> ();
 				guiManager.gameOver = true;
 			}
+		}
+			
+		if (danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
+			Debug.Log("enter here");
+			magicianGameAnimator.SetTrigger("Dance");
 		}
 	}
 		

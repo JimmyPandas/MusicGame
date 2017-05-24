@@ -12,6 +12,7 @@ public class DataManager : MonoBehaviour
 	public float happyFactor;
 	public float sadFactor;
 	public int aggresiveFactor = 1;
+	public bool danceable = false;
 	float length;
 	public List<string> emotions = new List<string>();
 
