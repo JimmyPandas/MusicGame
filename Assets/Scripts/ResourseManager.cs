@@ -116,7 +116,14 @@ public class ResourseManager : MonoBehaviour {
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
-			speed = Mathf.Log(Mathf.Sqrt(pitch) * multiple) / 4f *  (2f + dataManager.happyFactor) / (2f + dataManager.sadFactor);
+			
+			speed = Mathf.Log (Mathf.Sqrt (pitch) * multiple) / 4f;
+			if (dataManager.happyFactor > 0.5) {
+				speed *= (2f + dataManager.happyFactor);
+			}
+			if (dataManager.sadFactor > 0.5) {
+				speed /= (2f + dataManager.sadFactor);
+			}
 		} 
 			
 		for (int i = 0; i < dataManager.aggresiveFactor; i++) {

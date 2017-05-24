@@ -15,6 +15,7 @@ public class FruitController : MonoBehaviour {
 	private float onGroundTime = 2f;
 	private bool removed = false;
 	private bool noteRemoved = false;
+	private Vector3 onGroundPos;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +24,7 @@ public class FruitController : MonoBehaviour {
 //			differenceInScale = speed - transform.localScale.x;
 //			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
 //			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
-			gameObject.transform.localScale *= Mathf.Sqrt(multiple);
+			gameObject.transform.localScale *= Mathf.Sqrt(multiple / 2f);
 		} 
 		animator = GetComponentInChildren<Animator> ();
 		animator.Play ("FruitSpawning");
@@ -32,7 +33,9 @@ public class FruitController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+		if (!onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
+			transform.parent.transform.Translate (Vector3.down * Time.deltaTime * speed);
+		}
 		scoreableTime -= Time.deltaTime;
 		if (scoreableTime < 0) {
 			SetScoreable (false);
@@ -46,6 +49,7 @@ public class FruitController : MonoBehaviour {
 		if (onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
 			animator.SetTrigger ("OnGround");
 		} 
+
 		if (onGround) {
 			onGroundTime -= Time.deltaTime;
 		}

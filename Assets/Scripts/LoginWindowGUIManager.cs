@@ -87,6 +87,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	public void LoadAttributeData(string path) {
 		if (File.Exists (path)) {
+			ClearSetting ();
 			StreamReader sr = new StreamReader (path);
 			string probabilityStr = sr.ReadLine ();
 			while (probabilityStr != null) {
@@ -108,6 +109,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			}
 
 		}
+	}
+		
+	private void ClearSetting() {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		dataManager.happyFactor = 0;
+		dataManager.sadFactor = 0;
+		dataManager.aggresiveFactor = 1;
 	}
 
 	private void ChangeSettingByAttributes(string attribute, float probability) {
