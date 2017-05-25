@@ -15,7 +15,6 @@ public class FruitController : MonoBehaviour {
 	private float onGroundTime = 2f;
 	private bool removed = false;
 	private bool noteRemoved = false;
-	private Vector3 onGroundPos;
 	private string emotion;
 
 	public GameObject happyEmotion;
@@ -51,6 +50,7 @@ public class FruitController : MonoBehaviour {
 			if (!noteRemoved) {
 				rm.RemoveNote (note);
 				noteRemoved = true;
+				ClearEmotion ();
 			}
 		}
 		if (onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
@@ -70,6 +70,28 @@ public class FruitController : MonoBehaviour {
 	
 	}
 		
+	private void ClearEmotion() {
+		switch (emotion) {
+		case "happy":
+			happyEmotion.SetActive (false);
+			break;
+		case "sad":
+			sadEmotion.SetActive (false);
+			break;
+		case "relaxed":
+			relaxedEmotion.SetActive (false);
+			break;
+		case "party":
+			partyEmotion.SetActive(false);
+			break;
+		case "aggressive":
+			aggresiveEmotion.SetActive(false);
+			break;
+		default:
+			break;
+		}
+	}
+
 	public void SetEmotion(string emotion){
 		this.emotion = emotion;
 		switch (emotion) {
@@ -80,13 +102,13 @@ public class FruitController : MonoBehaviour {
 			sadEmotion.SetActive (true);
 			break;
 		case "relaxed":
-//			relaxedEmotion.SetActive(true)
+			relaxedEmotion.SetActive (true);
 			break;
 		case "party":
-//			partyEmotion.SetActive(true);
+			partyEmotion.SetActive(true);
 			break;
 		case "aggressive":
-//			aggresiveEmotion.SetActive(true);
+			aggresiveEmotion.SetActive(true);
 			break;
 		default:
 			break;

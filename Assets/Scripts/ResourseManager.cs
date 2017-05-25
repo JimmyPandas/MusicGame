@@ -80,7 +80,6 @@ public class ResourseManager : MonoBehaviour {
 		}
 			
 		if (danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
-			Debug.Log("enter here");
 			magicianGameAnimator.SetTrigger("Dance");
 		}
 	}

@@ -1783,6 +1783,7 @@ MonoBehaviour:
   happyFactor: 0
   sadFactor: 0
   aggresiveFactor: 1
+  danceable: 0
   emotions: []
 --- !u!114 &104
 MonoBehaviour:

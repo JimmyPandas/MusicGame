@@ -133,13 +133,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			dataManager.sadFactor = probability;
 			break;
 		case "relaxed":
-//			dataManager.emotions.Add (attribute);
+			dataManager.emotions.Add (attribute);
 			break;
 		case "party":
-//			dataManager.emotions.Add (attribute);
+			dataManager.emotions.Add (attribute);
 			break;
 		case "aggressive":
-//			dataManager.emotions.Add (attribute);
+			dataManager.emotions.Add (attribute);
 			dataManager.aggresiveFactor = 2;
 			break;
 		default:

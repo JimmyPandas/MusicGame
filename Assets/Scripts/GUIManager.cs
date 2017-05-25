@@ -31,7 +31,7 @@ public class GUIManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (gameOver && animationDelay >= 15f) {
+		if (gameOver && animationDelay == 15f) {
 			gameOverAnimator.SetTrigger ("GameOver");
 			gameOverScoreText.text = "" + score;
 			maxCombo = Mathf.Max (combo, maxCombo);
