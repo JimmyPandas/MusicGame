@@ -84,10 +84,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4429461161821606}
   - component: {fileID: 212995725341967368}
-  - component: {fileID: 135617285845101434}
   - component: {fileID: 114328052681582810}
   - component: {fileID: 54796884322968314}
   - component: {fileID: 95810294879399276}
+  - component: {fileID: 65784926253342798}
   m_Layer: 0
   m_Name: Strawberry
   m_TagString: Item
@@ -209,6 +209,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65784926253342798
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1764648355705720}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.7221394, y: 3.4851522, z: 0.2}
+  m_Center: {x: -0.37694436, y: -0.54828167, z: 0}
 --- !u!95 &95810294879399276
 Animator:
   serializedVersion: 3
@@ -240,23 +252,12 @@ MonoBehaviour:
   scoreableTime: 0.65
   animator: {fileID: 0}
   onGround: 0
+  collider: {fileID: 0}
   happyEmotion: {fileID: 1588712940051060}
   sadEmotion: {fileID: 1311052452102212}
   aggresiveEmotion: {fileID: 1296405941727678}
   relaxedEmotion: {fileID: 1056702107263612}
   partyEmotion: {fileID: 1915945836781900}
---- !u!135 &135617285845101434
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1764648355705720}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: -0.3, y: -0.3, z: 0}
 --- !u!212 &212096679696538222
 SpriteRenderer:
   m_ObjectHideFlags: 1

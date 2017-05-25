@@ -16,7 +16,7 @@ public class FruitController : MonoBehaviour {
 	private bool removed = false;
 	private bool noteRemoved = false;
 	private string emotion;
-
+	public Collider collider;
 	public GameObject happyEmotion;
 	public GameObject sadEmotion;
 	public GameObject aggresiveEmotion;

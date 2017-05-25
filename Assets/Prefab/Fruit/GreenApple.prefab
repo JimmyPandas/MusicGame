@@ -100,10 +100,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4164288911925232}
   - component: {fileID: 212944633550410602}
-  - component: {fileID: 135312192381925364}
   - component: {fileID: 114263649215844256}
   - component: {fileID: 54651890013146410}
   - component: {fileID: 95447084600656608}
+  - component: {fileID: 65754189337916766}
   m_Layer: 0
   m_Name: GreenApple
   m_TagString: Item
@@ -209,6 +209,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65754189337916766
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1867662470220220}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 22.661093, y: 22.417583, z: 0.2}
+  m_Center: {x: 0.61076045, y: -3.8681602, z: 0}
 --- !u!95 &95447084600656608
 Animator:
   serializedVersion: 3
@@ -240,23 +252,12 @@ MonoBehaviour:
   scoreableTime: 0.65
   animator: {fileID: 0}
   onGround: 0
+  collider: {fileID: 0}
   happyEmotion: {fileID: 1782453583859292}
   sadEmotion: {fileID: 1581866031419558}
   aggresiveEmotion: {fileID: 1136487424593294}
   relaxedEmotion: {fileID: 1520197457649624}
   partyEmotion: {fileID: 1636843877325046}
---- !u!135 &135312192381925364
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1867662470220220}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.65
-  m_Center: {x: -0, y: -5, z: 0}
 --- !u!212 &212431799444696138
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -178,7 +178,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			}
 		}
 		dropdown.AddOptions (musicOptions);
-		dropdown.RefreshShownValue ();
+//		dropdown.RefreshShownValue ();
 	}
 
 	public void MusicLibraryConfirm() {
