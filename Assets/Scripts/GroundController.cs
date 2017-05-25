@@ -10,6 +10,7 @@ public class GroundController : MonoBehaviour {
 			GUIManager guiManager = GameObject.Find("GUIManager").GetComponentInChildren<GUIManager> ();
 			gameObject.GetComponentInChildren<FruitController> ().onGround = true;
 			guiManager.LoseScore(10);
+			gameObject.GetComponentInChildren<FruitController> ().SetRemoved (true);
 		}
 	}
 

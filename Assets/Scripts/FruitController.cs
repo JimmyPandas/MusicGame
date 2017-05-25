@@ -16,7 +16,7 @@ public class FruitController : MonoBehaviour {
 	private bool removed = false;
 	private bool noteRemoved = false;
 	private string emotion;
-	public Collider collider;
+	public bool danceable;
 	public GameObject happyEmotion;
 	public GameObject sadEmotion;
 	public GameObject aggresiveEmotion;
@@ -39,9 +39,17 @@ public class FruitController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
-			transform.parent.transform.Translate (Vector3.down * Time.deltaTime * speed);
+//		if (!onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
+//			transform.parent.transform.Translate (Vector3.down * Time.deltaTime * speed);
+//		}
+		if(animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitIdel")) {
+			if (danceable) {
+				animator.SetTrigger ("Dance");
+			} else {
+				animator.SetTrigger ("NotDance");
+			}
 		}
+
 		scoreableTime -= Time.deltaTime;
 		if (scoreableTime < 0) {
 			SetScoreable (false);

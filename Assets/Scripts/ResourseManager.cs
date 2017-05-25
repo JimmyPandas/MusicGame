@@ -117,10 +117,10 @@ public class ResourseManager : MonoBehaviour {
 			
 			speed = Mathf.Log (Mathf.Sqrt (pitch) * multiple) / 4f;
 			if (dataManager.happyFactor > 0.5) {
-				speed *= (2f + dataManager.happyFactor);
+				speed *= (1f + dataManager.happyFactor);
 			}
 			if (dataManager.sadFactor > 0.5) {
-				speed /= (2f + dataManager.sadFactor);
+				speed /= (1f + dataManager.sadFactor);
 			}
 		} 
 			
@@ -142,6 +142,7 @@ public class ResourseManager : MonoBehaviour {
 
 					string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+					fruitController.danceable = danceable;
 					fruitController.SetEmotion (emotion);
 					fruitController.scoreableTime += nextBeatInterval;
 					fruitController.SetSpeed (speed);
