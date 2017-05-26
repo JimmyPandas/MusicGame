@@ -1784,6 +1784,8 @@ MonoBehaviour:
   sadFactor: 0
   aggresiveFactor: 1
   danceable: 0
+  isBright: 0
+  isDark: 0
   emotions: []
 --- !u!114 &104
 MonoBehaviour:

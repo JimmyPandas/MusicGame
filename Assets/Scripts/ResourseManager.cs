@@ -144,7 +144,7 @@ public class ResourseManager : MonoBehaviour {
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
 					fruitController.danceable = danceable;
 					fruitController.SetEmotion (emotion);
-					fruitController.scoreableTime += nextBeatInterval;
+					fruitController.scoreableTime = nextBeatInterval * 1.5f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);
 					fruitController.SetZone (zone);
