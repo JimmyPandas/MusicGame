@@ -31,7 +31,7 @@ public class AudioProcessor : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		LoadAttributeData ();
 		if (sampleRate == 0) {
 			AudioSource audioSource = GetComponent<AudioSource> ();
 			sampleRate = audioSource.clip.frequency;
@@ -43,6 +43,7 @@ public class AudioProcessor : MonoBehaviour {
 
 			string note = "";
 			fields = pitchCSVParsor.ReadRecord();
+
 			while (fields != null && float.Parse(fields [0]) < Time.timeSinceLevelLoad) {
 				fields = pitchCSVParsor.ReadRecord ();
 			}
@@ -54,7 +55,6 @@ public class AudioProcessor : MonoBehaviour {
 						note = result [0].ToString ();
 						string zone = result [1].ToString ();
 						resourceManager.InstantiateMusicSymbol (note, zone, pitch, nextBeatInterval);
-//						spawnRate = 0.75f;
 					}
 				} 
 			}
@@ -62,6 +62,27 @@ public class AudioProcessor : MonoBehaviour {
 
 		} else {
 			spawnRate -= Time.deltaTime;
+		}
+	}
+
+	private void LoadAttributeData() {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		foreach (KeyValuePair<int, AttributeData> pair in dataManager.attributeDataDic) {
+			int time = pair.Key;
+			if (time <= Time.timeSinceLevelLoad) {
+				Debug.Log (time);
+				AttributeData data = dataManager.attributeDataDic [time];
+				dataManager.happyFactor = data.happyFactor;
+				dataManager.sadFactor = data.sadFactor;
+				dataManager.aggresiveFactor = data.aggresiveFactor;
+				dataManager.isBright = data.isBright;
+				dataManager.isDark = data.isDark;
+				dataManager.danceable = data.danceable;
+				dataManager.emotions = data.emotions;
+				dataManager.attributeDataDic.Remove (time);
+				break;
+			}
+
 		}
 	}
 

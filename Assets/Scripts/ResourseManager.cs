@@ -85,6 +85,7 @@ public class ResourseManager : MonoBehaviour {
 	}
 		
 
+
 	private void InitItemDict() {
 		itemsDict.Add ("C", new List<GameObject>{apple, strawberry, cherry});
 		itemsDict.Add ("D", new List<GameObject>{orange, pineapple});
@@ -140,10 +141,12 @@ public class ResourseManager : MonoBehaviour {
 					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
 					spawnedFruit.transform.SetParent (parent.transform);
 
-					string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
+					if (dataManager.emotions.Count > 0) {
+						string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
+						fruitController.SetEmotion (emotion);
+					}
 					fruitController.danceable = danceable;
-					fruitController.SetEmotion (emotion);
 					fruitController.scoreableTime = nextBeatInterval * 1.5f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
+
 
 public class LoginWindowGUIManager : MonoBehaviour {
 	
@@ -27,6 +27,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private bool musicChosen = false;
 	private string searchPath = "";
 	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
+	public Dictionary<int, string> classificationFilesDic = new Dictionary<int, string> ();
 
 	// Use this for initialization
 	void Start () {
@@ -81,19 +82,14 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
 		}
 
-//		LoadAttributeData (resultFolderPath + "classfiresult.json");
+		GetMusicFileLength (resultFolderPath + "classfiresult.json");
 		yield return null;
 	}
 
-	IEnumerator SplitMusicFileIntoMultipleTracks() {
+	private void SplitMusicFileIntoMultipleTracks() {
 		Clock start_time = new Clock ();
-		int audio_file_length = 0;
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-		if (dataManager.path.Length != 0) { 
-			WWW www = new WWW("file://" + dataManager.path);
-			yield return www;
-			audio_file_length = (int) Mathf.Round(www.GetAudioClip().length);
-		}
+
 		int num = 0;
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
 		string output_file_path = searchPath + "/" + filename + ".wav";
@@ -102,70 +98,37 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			Directory.CreateDirectory (resultFolderPath);
 		}
 
-		while (start_time.CalcTotalTime() < audio_file_length) {
+		print (dataManager.music_length);
+		while (start_time.CalcTotalTime() < dataManager.music_length) {
 			resultFolderPath = searchPath + "/Results/" + filename + "_";
-			try {
-				Process process = new Process ();
-				process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-				process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
-				if(File.Exists(output_file_path)) {
-					File.Delete(output_file_path);
-				}
-				process.StartInfo.Arguments = "-i " + dataManager.path + " -acodec copy -t 00:00:30 -ss " + start_time.ToString() + " " + output_file_path;
-				process.Start ();
-				process.WaitForExit ();
-				if (!File.Exists (resultFolderPath + "descriptor.txt")) {
-					extractMusic (output_file_path, resultFolderPath + "descriptor.txt", "");
-				}
-				if (!File.Exists (resultFolderPath + "classfiresult.json")) {
-					extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
-				}
-				start_time.increaseTimeBySeconds(30);
-				num++;
-				filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-				output_file_path = searchPath + "/" + filename + ".wav";
-			} catch (System.Exception e) {
-				print (e);        
+			ExecutableRunner runner = new ExecutableRunner ();
+			runner.run (searchPath, start_time, output_file_path);
+			if (!File.Exists (resultFolderPath + "descriptor.txt")) {
+				extractMusic (output_file_path, resultFolderPath + "descriptor.txt", "");
 			}
-		}
-		yield return null;
-	}
-
-	IEnumerator LoadAttrbuteDataFromFiles() {
-
-		int num = 0;
-		int total_splits = 0;
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-		if (dataManager.path.Length != 0) { 
-			WWW www = new WWW("file://" + dataManager.path);
-			yield return www;
-			int audio_file_length = (int) Mathf.Round(www.GetAudioClip().length);
-			total_splits = Mathf.CeilToInt(audio_file_length / 30);
-			print ("total: " + total_splits);
-		}
-		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-		print ("total: " + total_splits);
-		while (num < total_splits) {
-			string resultFolderPath = searchPath + "/Results/" + filename + "_";
-			LoadAttributeData(resultFolderPath + "classfiresult.json");
+			if (!File.Exists (resultFolderPath + "classfiresult.json")) {
+				extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
+			}
+			classificationFilesDic.Add(start_time.CalcTotalTime(), resultFolderPath + "classfiresult.json");
+			start_time.increaseTimeBySeconds(30);
 			num++;
 			filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-		}
-		foreach (AttributeData data in dataManager.attributeDataList) {
-			print ("happy:" + data.happyFactor);
-			print ("sad:" + data.sadFactor);
-			print ("aggresive:" + data.aggresiveFactor);
-			print ("dance:" + data.danceable);
+			output_file_path = searchPath + "/" + filename + ".wav";
 
 		}
-		yield return null;
+//		yield return null;
+	}
+
+	private void LoadAttrbuteDataFromFiles() {
+		foreach(KeyValuePair<int, string> pair in classificationFilesDic ) {
+			LoadAttributeData (pair.Value, pair.Key);
+		}
 
 	}
 
-	public void LoadAttributeData(string path) {
+	public void LoadAttributeData(string path, int start_time) {
 		AttributeData data = new AttributeData();
 		if (File.Exists (path)) {
-//			ClearSetting ();
 			StreamReader sr = new StreamReader (path);
 			string probabilityStr = sr.ReadLine ();
 			while (probabilityStr != null) {
@@ -186,12 +149,29 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				probabilityStr = sr.ReadLine();
 			}
 			DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-			dataManager.attributeDataList.Add (data);
-			print (dataManager.attributeDataList.Count);
+			dataManager.attributeDataDic.Add (start_time, data);
 
 		}
 	}
 		
+	private void GetMusicFileLength(string path) {
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		if (File.Exists (path)) {
+			StreamReader sr = new StreamReader (path);
+			string line = sr.ReadLine ();
+			while (line != null) {
+				if (line.Contains ("length")) {
+					int startIndex = line.IndexOf (": ") + 2;
+					int length = line.IndexOf (",") - startIndex;
+					line = line.Substring (startIndex, length);
+					dataManager.music_length = float.Parse (line);
+
+				}
+				line = sr.ReadLine();
+			}
+		}
+	}
+
 	private void ClearSetting() {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		dataManager.happyFactor = 0;
@@ -285,9 +265,10 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			string path = musicOptionsDic [musicOption];
 			dataManager.path = path;
 			musicChosen = true;
-			StartCoroutine("SplitMusicFileIntoMultipleTracks");
-			StartCoroutine("LoadAttrbuteDataFromFiles");
 			StartCoroutine("LoadAnalysisResultFiles");
+			SplitMusicFileIntoMultipleTracks ();
+			LoadAttrbuteDataFromFiles ();
+
 		}
 	}
 

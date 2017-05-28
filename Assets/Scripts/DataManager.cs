@@ -17,8 +17,8 @@ public class DataManager : MonoBehaviour
 	public bool isDark;
 	public List<string> emotions = new List<string>();
 
-	public List<AttributeData> attributeDataList = new List<AttributeData>();
-
+	public Dictionary<int, AttributeData> attributeDataDic = new Dictionary<int, AttributeData>();
+	public float music_length;
 	// Use this for initialization
 	void Start () {
 	}
