@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 public class LoginWindowGUIManager : MonoBehaviour {
 	
@@ -35,6 +36,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			searchPath = parentDir;
 			parentDir = Directory.GetParent (searchPath).FullName;
 		}
+
 	}
 
 	public void Play() {
@@ -71,23 +73,99 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			extractRhythm (dataManager.path, beat_csv_path);
 		}
 		dataManager.beat_csv_path = beat_csv_path;
-
 		if (!File.Exists (resultFolderPath + "descriptor.txt")) {
 			extractMusic (dataManager.path, resultFolderPath + "descriptor.txt", "");
 		}
 
 		if (!File.Exists (resultFolderPath + "classfiresult.json")) {
 			extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
-
 		}
 
-		LoadAttributeData (resultFolderPath + "classfiresult.json");
+//		LoadAttributeData (resultFolderPath + "classfiresult.json");
 		yield return null;
 	}
 
+	IEnumerator SplitMusicFileIntoMultipleTracks() {
+		Clock start_time = new Clock ();
+		int audio_file_length = 0;
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		if (dataManager.path.Length != 0) { 
+			WWW www = new WWW("file://" + dataManager.path);
+			yield return www;
+			audio_file_length = (int) Mathf.Round(www.GetAudioClip().length);
+		}
+		int num = 0;
+		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
+		string output_file_path = searchPath + "/" + filename + ".wav";
+		string resultFolderPath = searchPath + "/Results";
+		if (!Directory.Exists (resultFolderPath)) {
+			Directory.CreateDirectory (resultFolderPath);
+		}
+
+		while (start_time.CalcTotalTime() < audio_file_length) {
+			resultFolderPath = searchPath + "/Results/" + filename + "_";
+			try {
+				Process process = new Process ();
+				process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+				process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
+				if(File.Exists(output_file_path)) {
+					File.Delete(output_file_path);
+				}
+				process.StartInfo.Arguments = "-i " + dataManager.path + " -acodec copy -t 00:00:30 -ss " + start_time.ToString() + " " + output_file_path;
+				process.Start ();
+				process.WaitForExit ();
+				if (!File.Exists (resultFolderPath + "descriptor.txt")) {
+					extractMusic (output_file_path, resultFolderPath + "descriptor.txt", "");
+				}
+				if (!File.Exists (resultFolderPath + "classfiresult.json")) {
+					extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
+				}
+				start_time.increaseTimeBySeconds(30);
+				num++;
+				filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
+				output_file_path = searchPath + "/" + filename + ".wav";
+			} catch (System.Exception e) {
+				print (e);        
+			}
+		}
+		yield return null;
+	}
+
+	IEnumerator LoadAttrbuteDataFromFiles() {
+
+		int num = 0;
+		int total_splits = 0;
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		if (dataManager.path.Length != 0) { 
+			WWW www = new WWW("file://" + dataManager.path);
+			yield return www;
+			int audio_file_length = (int) Mathf.Round(www.GetAudioClip().length);
+			total_splits = Mathf.CeilToInt(audio_file_length / 30);
+			print ("total: " + total_splits);
+		}
+		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
+		print ("total: " + total_splits);
+		while (num < total_splits) {
+			string resultFolderPath = searchPath + "/Results/" + filename + "_";
+			LoadAttributeData(resultFolderPath + "classfiresult.json");
+			num++;
+			filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
+		}
+		foreach (AttributeData data in dataManager.attributeDataList) {
+			print ("happy:" + data.happyFactor);
+			print ("sad:" + data.sadFactor);
+			print ("aggresive:" + data.aggresiveFactor);
+			print ("dance:" + data.danceable);
+
+		}
+		yield return null;
+
+	}
+
 	public void LoadAttributeData(string path) {
+		AttributeData data = new AttributeData();
 		if (File.Exists (path)) {
-			ClearSetting ();
+//			ClearSetting ();
 			StreamReader sr = new StreamReader (path);
 			string probabilityStr = sr.ReadLine ();
 			while (probabilityStr != null) {
@@ -101,12 +179,15 @@ public class LoginWindowGUIManager : MonoBehaviour {
 					value = value.Substring (startIndex, length);
 					float probability = 0f;
 					if (float.TryParse (probabilityStr, out probability)) {
-						ChangeSettingByAttributes (value, probability);
+						ChangeSettingByAttributes (value, probability, data);
 					}
 		
 				}
 				probabilityStr = sr.ReadLine();
 			}
+			DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+			dataManager.attributeDataList.Add (data);
+			print (dataManager.attributeDataList.Count);
 
 		}
 	}
@@ -118,35 +199,34 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		dataManager.aggresiveFactor = 1;
 	}
 
-	private void ChangeSettingByAttributes(string attribute, float probability) {
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+	private void ChangeSettingByAttributes(string attribute, float probability, AttributeData data) {
 		switch (attribute) {
 		case "bright":
-			dataManager.isBright = true;
+			data.isBright = true;
 			break;
 		case "dark":
-			dataManager.isDark = true;
+			data.isDark = true;
 			break;
 		case "danceable":
-			dataManager.danceable = true;
+			data.danceable = true;
 			break;
 		case "happy":
-			dataManager.emotions.Add (attribute);
-			dataManager.happyFactor = probability;	
+			data.emotions.Add (attribute);
+			data.happyFactor = probability;	
 			break;
 		case "sad":
-			dataManager.emotions.Add (attribute);
-			dataManager.sadFactor = probability;
+			data.emotions.Add (attribute);
+			data.sadFactor = probability;
 			break;
 		case "relaxed":
-			dataManager.emotions.Add (attribute);
+			data.emotions.Add (attribute);
 			break;
 		case "party":
-			dataManager.emotions.Add (attribute);
+			data.emotions.Add (attribute);
 			break;
 		case "aggressive":
-			dataManager.emotions.Add (attribute);
-			dataManager.aggresiveFactor = 2;
+			data.emotions.Add (attribute);
+			data.aggresiveFactor = 2;
 			break;
 		default:
 			break;
@@ -200,11 +280,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 		//get the string value of the selected index
 		string musicOption = menuOptions [menuIndex].text;
-		GameObject dataManager = GameObject.Find ("DataManager");
+		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (musicOptionsDic.ContainsKey (musicOption)) {
 			string path = musicOptionsDic [musicOption];
-			dataManager.GetComponentInChildren<DataManager> ().path = path;
+			dataManager.path = path;
 			musicChosen = true;
+			StartCoroutine("SplitMusicFileIntoMultipleTracks");
+			StartCoroutine("LoadAttrbuteDataFromFiles");
 			StartCoroutine("LoadAnalysisResultFiles");
 		}
 	}

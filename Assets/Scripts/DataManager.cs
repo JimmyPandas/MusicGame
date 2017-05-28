@@ -15,9 +15,9 @@ public class DataManager : MonoBehaviour
 	public bool danceable;
 	public bool isBright;
 	public bool isDark;
-
-	float length;
 	public List<string> emotions = new List<string>();
+
+	public List<AttributeData> attributeDataList = new List<AttributeData>();
 
 	// Use this for initialization
 	void Start () {

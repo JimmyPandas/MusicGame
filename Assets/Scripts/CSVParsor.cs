@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
 
-public class CSVParsor : MonoBehaviour{
+public class CSVParsor {
 	public string path;
 	private char fieldSeperator = ','; // It defines field seperate chracter
 	private List<string> records = new List<string>();
