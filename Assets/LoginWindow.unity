@@ -1787,6 +1787,7 @@ MonoBehaviour:
   isBright: 0
   isDark: 0
   emotions: []
+  music_length: 0
 --- !u!114 &104
 MonoBehaviour:
   m_ObjectHideFlags: 0

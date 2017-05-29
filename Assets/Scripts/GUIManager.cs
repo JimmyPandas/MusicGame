@@ -77,7 +77,6 @@ public class GUIManager : MonoBehaviour {
 			}
 			animator.Play("ComboAnimation");
 		} else {
-			maxCombo = Mathf.Max (combo, maxCombo);
 			feeebackText.text = "Fighting!";
 			animator.Play("ComboAnimation");
 		}
@@ -87,6 +86,7 @@ public class GUIManager : MonoBehaviour {
 	public void LoseScore (int scorePoint) {
 		if (!shieldSpawned) {
 			score -= scorePoint;
+			maxCombo = Mathf.Max (combo, maxCombo);
 			combo = 0;
 			energybar.value /= 2;
 			SetFeedback ();

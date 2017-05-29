@@ -109,6 +109,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			if (!File.Exists (resultFolderPath + "classfiresult.json")) {
 				extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
 			}
+
 			classificationFilesDic.Add(start_time.CalcTotalTime(), resultFolderPath + "classfiresult.json");
 			start_time.increaseTimeBySeconds(30);
 			num++;
@@ -164,7 +165,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 					int startIndex = line.IndexOf (": ") + 2;
 					int length = line.IndexOf (",") - startIndex;
 					line = line.Substring (startIndex, length);
-					dataManager.music_length = float.Parse (line);
+					dataManager.music_length = Mathf.Floor(float.Parse (line));
 
 				}
 				line = sr.ReadLine();
@@ -262,6 +263,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		string musicOption = menuOptions [menuIndex].text;
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (musicOptionsDic.ContainsKey (musicOption)) {
+			classificationFilesDic.Clear();
+			dataManager.attributeDataDic.Clear ();
 			string path = musicOptionsDic [musicOption];
 			dataManager.path = path;
 			musicChosen = true;

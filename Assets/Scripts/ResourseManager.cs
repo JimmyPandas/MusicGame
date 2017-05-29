@@ -31,12 +31,11 @@ public class ResourseManager : MonoBehaviour {
 
 	public GameObject rain;
 	private Animator magicianGameAnimator;
-	private bool danceable = false;
-
+	private DataManager dataManager;
 	// Use this for initialization
 	void Start () {
 		InitItemDict ();
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		path = dataManager.path;
 		audioSource = Camera.main.GetComponentInChildren<AudioSource> ();
 		if(audioSource != null) {
@@ -49,7 +48,6 @@ public class ResourseManager : MonoBehaviour {
 		}
 
 		magicianGameAnimator = GameObject.Find ("magician_game").GetComponentInChildren<Animator> ();
-		danceable = dataManager.danceable;
 	
 	}
 
@@ -79,7 +77,7 @@ public class ResourseManager : MonoBehaviour {
 			}
 		}
 			
-		if (danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
+		if (dataManager.danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
 			magicianGameAnimator.SetTrigger("Dance");
 		}
 	}
@@ -111,7 +109,6 @@ public class ResourseManager : MonoBehaviour {
 
 
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		int multiple = 0;
 		float speed = 0f;
 		if (int.TryParse (zone, out multiple)) {
@@ -146,7 +143,7 @@ public class ResourseManager : MonoBehaviour {
 						string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
 						fruitController.SetEmotion (emotion);
 					}
-					fruitController.danceable = danceable;
+					fruitController.danceable = dataManager.danceable;
 					fruitController.scoreableTime = nextBeatInterval * 1.5f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);
