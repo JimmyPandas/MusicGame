@@ -88,6 +88,9 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	private void SplitMusicFileIntoMultipleTracks() {
 		Clock start_time = new Clock ();
+		Clock duration = new Clock ();
+		duration.minutes = 1;
+		int smallestWindow = 5;
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 
 		int num = 0;
@@ -97,12 +100,11 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
 		}
-
-		print (dataManager.music_length);
-		while (start_time.CalcTotalTime() < dataManager.music_length) {
+			
+		while (start_time.CalcTotalTime() + smallestWindow < dataManager.music_length) {
 			resultFolderPath = searchPath + "/Results/" + filename + "_";
 			ExecutableRunner runner = new ExecutableRunner ();
-			runner.run (searchPath, start_time, output_file_path);
+			runner.run (searchPath, start_time, output_file_path, duration);
 			if (!File.Exists (resultFolderPath + "descriptor.txt")) {
 				extractMusic (output_file_path, resultFolderPath + "descriptor.txt", "");
 			}
@@ -110,8 +112,9 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				extractMusicSVM (resultFolderPath + "descriptor.txt", resultFolderPath + "classfiresult.json", "");
 			}
 
-			classificationFilesDic.Add(start_time.CalcTotalTime(), resultFolderPath + "classfiresult.json");
-			start_time.increaseTimeBySeconds(30);
+			classificationFilesDic.Add (start_time.CalcTotalTime (), resultFolderPath + "classfiresult.json");
+			File.Delete (output_file_path);
+			start_time.increaseTimeBySeconds(5);
 			num++;
 			filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
 			output_file_path = searchPath + "/" + filename + ".wav";
@@ -129,6 +132,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	public void LoadAttributeData(string path, int start_time) {
 		AttributeData data = new AttributeData();
+
 		if (File.Exists (path)) {
 			StreamReader sr = new StreamReader (path);
 			string probabilityStr = sr.ReadLine ();
@@ -172,13 +176,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			}
 		}
 	}
-
-	private void ClearSetting() {
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-		dataManager.happyFactor = 0;
-		dataManager.sadFactor = 0;
-		dataManager.aggresiveFactor = 1;
-	}
+		
 
 	private void ChangeSettingByAttributes(string attribute, float probability, AttributeData data) {
 		switch (attribute) {

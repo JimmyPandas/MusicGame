@@ -32,6 +32,8 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject rain;
 	private Animator magicianGameAnimator;
 	private DataManager dataManager;
+	private bool rainSpawned;
+
 	// Use this for initialization
 	void Start () {
 		InitItemDict ();
@@ -41,10 +43,6 @@ public class ResourseManager : MonoBehaviour {
 		if(audioSource != null) {
 			StartCoroutine(LoadSongCoroutine()); 
 			Camera.main.GetComponentInChildren<AudioProcessor> ().enabled = true;
-		}
-
-		if (dataManager.sadFactor >= 0.6) {
-			Instantiate (rain, rain.transform.position, Quaternion.identity);
 		}
 
 		magicianGameAnimator = GameObject.Find ("magician_game").GetComponentInChildren<Animator> ();
@@ -79,6 +77,11 @@ public class ResourseManager : MonoBehaviour {
 			
 		if (dataManager.danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
 			magicianGameAnimator.SetTrigger("Dance");
+		}
+
+		if (dataManager.sadFactor >= 0.8 && !rainSpawned) {
+			Instantiate (rain, rain.transform.position, Quaternion.identity);
+			rainSpawned = true;
 		}
 	}
 		
