@@ -72,14 +72,9 @@ public class AudioProcessor : MonoBehaviour {
 			if (time <= Time.timeSinceLevelLoad) {
 				Debug.Log (time);
 				AttributeData data = dataManager.attributeDataDic [time];
-				dataManager.happyFactor = data.happyFactor;
-				dataManager.sadFactor = data.sadFactor;
-				dataManager.aggresiveFactor = data.aggresiveFactor;
-				dataManager.isBright = data.isBright;
-				dataManager.isDark = data.isDark;
-				dataManager.danceable = data.danceable;
-				dataManager.emotions = data.emotions;
+				dataManager.currentAttributeData = data;
 				dataManager.attributeDataDic.Remove (time);
+				Debug.Log (dataManager.currentAttributeData.ToString ());
 				break;
 			}
 

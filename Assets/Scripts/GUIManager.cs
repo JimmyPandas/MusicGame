@@ -22,17 +22,37 @@ public class GUIManager : MonoBehaviour {
 	private float animationDelay = 15f;
 	public Text gameOverScoreText;
 	public Text gameOverMaxComboText;
+	public GameObject tree;
+	public GameObject grassGround;
+	public GameObject dayBackground;
+	public GameObject nightBackground;
+	private DataManager dataManager;
+
 
 	// Use this for initialization
 	void Start () {
 		gameOverAnimator = GameObject.Find ("ItemCanvas").GetComponentInChildren<Animator> ();
 		UpdateScore ();
+		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		if (dataManager.isBright) {
+			nightBackground.SetActive (false);
+			tree.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+			grassGround.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+		} else {
+			dayBackground.SetActive (false);
+			tree.GetComponentInChildren<SpriteRenderer> ().color = Color.gray;
+			grassGround.GetComponentInChildren<SpriteRenderer> ().color = Color.gray;
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (gameOver && animationDelay == 15f) {
-			gameOverAnimator.SetTrigger ("GameOver");
+			if (dataManager.isBright) {
+				gameOverAnimator.SetTrigger ("DayBackgroundGameOver");
+			} else {
+				gameOverAnimator.SetTrigger ("NightBackgroundGameOver");
+			}
 			gameOverScoreText.text = "" + score;
 			maxCombo = Mathf.Max (combo, maxCombo);
 			gameOverMaxComboText.text = "" + maxCombo;

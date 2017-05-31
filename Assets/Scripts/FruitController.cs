@@ -39,9 +39,7 @@ public class FruitController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-//		if (!onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
-//			transform.parent.transform.Translate (Vector3.down * Time.deltaTime * speed);
-//		}
+
 		if(animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitIdel")) {
 			if (danceable) {
 				animator.SetTrigger ("Dance");

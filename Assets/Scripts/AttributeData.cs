@@ -9,6 +9,21 @@ public class AttributeData {
 	public int aggresiveFactor = 1;
 	public bool danceable;
 	public bool isBright;
-	public bool isDark;
 	public List<string> emotions = new List<string>();
+
+
+	public override string ToString ()
+	{
+		string result = "current attribute data: \n";
+		result = "happyFactor: " + happyFactor + "\n";
+		result += "sadFactor: " + sadFactor + "\n";
+		result += "aggresiveFactor: " + aggresiveFactor + "\n";
+		result += "isBright: " + isBright + "\n";
+		result += "danceable: " + danceable + "\n";
+		result += "emotions: ";
+		foreach (string emotion in emotions) {
+			result += emotion + " ";
+		}
+		return result;
+	}
 }

@@ -9,16 +9,11 @@ public class DataManager : MonoBehaviour
 	public string pitch_csv_path = "";
 	public string beat_csv_path = "";
 	public string path = "";
-	public float happyFactor;
-	public float sadFactor;
-	public int aggresiveFactor = 1;
-	public bool danceable;
-	public bool isBright;
-	public bool isDark;
-	public List<string> emotions = new List<string>();
-
+	public AttributeData currentAttributeData = new AttributeData ();
 	public Dictionary<int, AttributeData> attributeDataDic = new Dictionary<int, AttributeData>();
 	public float music_length;
+	public bool isBright;
+
 	// Use this for initialization
 	void Start () {
 	}

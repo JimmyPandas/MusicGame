@@ -30,6 +30,8 @@ public class ResourseManager : MonoBehaviour {
 	private Vector3 prevSpawnedPos = new Vector3 ();
 
 	public GameObject rain;
+	public GameObject sun;
+	public GameObject moon;
 	private Animator magicianGameAnimator;
 	private DataManager dataManager;
 	private bool rainSpawned;
@@ -74,14 +76,39 @@ public class ResourseManager : MonoBehaviour {
 				guiManager.gameOver = true;
 			}
 		}
-			
-		if (dataManager.danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
+		AttributeData data = dataManager.currentAttributeData;
+		if (data.danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameIdel")) {
 			magicianGameAnimator.SetTrigger("Dance");
 		}
 
-		if (dataManager.sadFactor >= 0.8 && !rainSpawned) {
-			Instantiate (rain, rain.transform.position, Quaternion.identity);
-			rainSpawned = true;
+		if (!data.danceable && magicianGameAnimator.GetCurrentAnimatorStateInfo (0).IsName ("MagicianGameDancing")) {
+			magicianGameAnimator.SetTrigger("NotDance");
+		}
+
+		float sadFactor = data.sadFactor;
+		float happyFactor = data.happyFactor;
+
+		if (sadFactor >= 0.75 && sadFactor > happyFactor) {
+			if (dataManager.isBright) {
+				sun.SetActive (false);
+			} else {
+				moon.SetActive (false);
+			}
+			if (!rainSpawned) {
+				Instantiate (rain, rain.transform.position, Quaternion.identity);
+				rainSpawned = true;
+			}
+		}
+		if (happyFactor >= 0.75 && happyFactor > sadFactor) {
+			Destroy(GameObject.FindGameObjectWithTag("Rain"));
+			if (dataManager.isBright) {
+				sun.SetActive (true);
+			} else {
+				moon.SetActive (true);
+			}
+			if (rainSpawned) {
+				rainSpawned = false;
+			}
 		}
 	}
 		
@@ -114,18 +141,19 @@ public class ResourseManager : MonoBehaviour {
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
 		int multiple = 0;
 		float speed = 0f;
+		AttributeData data = dataManager.currentAttributeData;
 		if (int.TryParse (zone, out multiple)) {
 			
 			speed = Mathf.Log (Mathf.Sqrt (pitch) * multiple) / 4f;
-			if (dataManager.happyFactor > 0.5) {
-				speed *= (1f + dataManager.happyFactor);
+			if (data.happyFactor > 0.5) {
+				speed *= (1f + data.happyFactor);
 			}
-			if (dataManager.sadFactor > 0.5) {
-				speed /= (1f + dataManager.sadFactor);
+			if (data.sadFactor > 0.5) {
+				speed /= (1f + data.sadFactor);
 			}
 		} 
 			
-		for (int i = 0; i < dataManager.aggresiveFactor; i++) {
+		for (int i = 0; i < data.aggresiveFactor; i++) {
 			if (itemsDict.ContainsKey (note)) {
 				notes.Add (note);
 				List<GameObject> items = itemsDict [note];
@@ -142,11 +170,11 @@ public class ResourseManager : MonoBehaviour {
 					spawnedFruit.transform.SetParent (parent.transform);
 
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
-					if (dataManager.emotions.Count > 0) {
-						string emotion = dataManager.emotions [Random.Range (0, dataManager.emotions.Count)];
+					if (data.emotions.Count > 0) {
+						string emotion = data.emotions [Random.Range (0, data.emotions.Count)];
 						fruitController.SetEmotion (emotion);
 					}
-					fruitController.danceable = dataManager.danceable;
+					fruitController.danceable = data.danceable;
 					fruitController.scoreableTime = nextBeatInterval * 1.5f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);

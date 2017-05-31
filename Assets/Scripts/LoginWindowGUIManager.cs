@@ -28,6 +28,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private string searchPath = "";
 	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
 	public Dictionary<int, string> classificationFilesDic = new Dictionary<int, string> ();
+	private const int OVERALL_MUSIC_FILE_INDEX = -1;
 
 	// Use this for initialization
 	void Start () {
@@ -83,6 +84,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		}
 
 		GetMusicFileLength (resultFolderPath + "classfiresult.json");
+		classificationFilesDic.Add (OVERALL_MUSIC_FILE_INDEX, resultFolderPath + "classfiresult.json");
 		yield return null;
 	}
 
@@ -90,7 +92,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		Clock start_time = new Clock ();
 		Clock duration = new Clock ();
 		duration.minutes = 1;
-		int smallestWindow = 5;
+		const int smallestWindow = 5;
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 
 		int num = 0;
@@ -147,14 +149,16 @@ public class LoginWindowGUIManager : MonoBehaviour {
 					value = value.Substring (startIndex, length);
 					float probability = 0f;
 					if (float.TryParse (probabilityStr, out probability)) {
-						ChangeSettingByAttributes (value, probability, data);
+						SetAttributeData (value, probability, data);
 					}
 		
 				}
 				probabilityStr = sr.ReadLine();
 			}
 			DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-			dataManager.attributeDataDic.Add (start_time, data);
+			if (!dataManager.attributeDataDic.ContainsKey (start_time)) {
+				dataManager.attributeDataDic.Add (start_time, data);
+			}
 
 		}
 	}
@@ -178,13 +182,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 		
 
-	private void ChangeSettingByAttributes(string attribute, float probability, AttributeData data) {
+	private void SetAttributeData(string attribute, float probability, AttributeData data) {
 		switch (attribute) {
 		case "bright":
 			data.isBright = true;
 			break;
 		case "dark":
-			data.isDark = true;
+			data.isBright = false;
 			break;
 		case "danceable":
 			data.danceable = true;
@@ -269,7 +273,11 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			StartCoroutine("LoadAnalysisResultFiles");
 			SplitMusicFileIntoMultipleTracks ();
 			LoadAttrbuteDataFromFiles ();
-
+			if (dataManager.attributeDataDic.ContainsKey (OVERALL_MUSIC_FILE_INDEX)) {
+				AttributeData data = dataManager.attributeDataDic [OVERALL_MUSIC_FILE_INDEX];
+				dataManager.currentAttributeData = data;
+				dataManager.isBright = data.isBright;
+			}
 		}
 	}
 
