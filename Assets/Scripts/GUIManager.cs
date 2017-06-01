@@ -35,13 +35,11 @@ public class GUIManager : MonoBehaviour {
 		UpdateScore ();
 		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (dataManager.isBright) {
-			nightBackground.SetActive (false);
-			tree.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
-			grassGround.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+//			nightBackground.SetActive (false);
+			nightBackground.GetComponentInChildren<SpriteRenderer> ().sortingOrder = -1;
 		} else {
-			dayBackground.SetActive (false);
-			tree.GetComponentInChildren<SpriteRenderer> ().color = Color.gray;
-			grassGround.GetComponentInChildren<SpriteRenderer> ().color = Color.gray;
+//			dayBackground.SetActive (false);
+			dayBackground.GetComponentInChildren<SpriteRenderer> ().sortingOrder = -1;
 		}
 	}
 
@@ -57,6 +55,7 @@ public class GUIManager : MonoBehaviour {
 			maxCombo = Mathf.Max (combo, maxCombo);
 			gameOverMaxComboText.text = "" + maxCombo;
 		}
+
 		if (gameOver) {
 			animationDelay -= Time.deltaTime;
 		}
