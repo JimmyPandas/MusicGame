@@ -91,7 +91,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private void SplitMusicFileIntoMultipleTracks() {
 		Clock start_time = new Clock ();
 		Clock duration = new Clock ();
-		duration.minutes = 1;
+		duration.seconds = 50;
 		const int smallestWindow = 5;
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 

@@ -28,7 +28,6 @@ public class GUIManager : MonoBehaviour {
 	public GameObject nightBackground;
 	private DataManager dataManager;
 
-
 	// Use this for initialization
 	void Start () {
 		gameOverAnimator = GameObject.Find ("ItemCanvas").GetComponentInChildren<Animator> ();
@@ -69,7 +68,7 @@ public class GUIManager : MonoBehaviour {
 		energybar.value += combo;
 		if (energybar.value >= energybar.maxValue) {
 			if (!shieldSpawned) {
-				Instantiate (shield, shield.transform.position, shield.transform.rotation);
+				shield.SetActive (true);
 				shieldSpawned = true;
 			}
 		}
@@ -111,7 +110,7 @@ public class GUIManager : MonoBehaviour {
 			SetFeedback ();
 			UpdateScore ();
 		} else {
-			Destroy (GameObject.FindGameObjectWithTag ("Shield"));
+			shield.SetActive (false);
 			feeebackText.text = "Guard!";
 			shieldSpawned = false;
 			energybar.value /= 2;

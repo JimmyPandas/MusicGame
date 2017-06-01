@@ -158,26 +158,4 @@ public class FruitController : MonoBehaviour {
 		this.zone = zone;
 	}
 
-	public float GetNoteSpeed(string note) {
-		const float multiple = 1.05946f;
-		switch (note) {
-		case "C":
-			return 1f;
-		case "D":
-			return Mathf.Pow (multiple, 2);
-		case "E":
-			return Mathf.Pow (multiple, 4);
-		case "F":
-			return Mathf.Pow (multiple, 5);
-		case "G":
-			return Mathf.Pow (multiple, 7);
-		case "A":
-			return Mathf.Pow (multiple, 9);
-		case "B":
-			return Mathf.Pow (multiple, 11);
-		default:
-			return 3.0f;
-		}
-	}
-
 }

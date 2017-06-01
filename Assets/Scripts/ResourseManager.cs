@@ -34,7 +34,7 @@ public class ResourseManager : MonoBehaviour {
 	public GameObject moon;
 	private Animator magicianGameAnimator;
 	private DataManager dataManager;
-	private bool rainSpawned;
+	private List<string> directions = new List<string>{"left", "right"};
 
 	// Use this for initialization
 	void Start () {
@@ -48,7 +48,7 @@ public class ResourseManager : MonoBehaviour {
 		}
 
 		magicianGameAnimator = GameObject.Find ("magician_game").GetComponentInChildren<Animator> ();
-	
+
 	}
 
 	IEnumerator LoadSongCoroutine(){
@@ -94,21 +94,15 @@ public class ResourseManager : MonoBehaviour {
 			} else {
 				moon.SetActive (false);
 			}
-			if (!rainSpawned) {
-				Instantiate (rain, rain.transform.position, Quaternion.identity);
-				rainSpawned = true;
-			}
+			rain.SetActive (true);
 		}
 		if (happyFactor >= 0.75 && happyFactor > sadFactor) {
-			Destroy(GameObject.FindGameObjectWithTag("Rain"));
 			if (dataManager.isBright) {
 				sun.SetActive (true);
 			} else {
 				moon.SetActive (true);
 			}
-			if (rainSpawned) {
-				rainSpawned = false;
-			}
+			rain.SetActive (false);
 		}
 	}
 		
@@ -137,7 +131,19 @@ public class ResourseManager : MonoBehaviour {
 		notes.Remove (note);	
 	}
 
+	private Vector3 CalcFruitSpawnedPos() {
+		string direction = directions[Random.Range (0, directions.Count)];
+		switch (direction) {
+		case "left":
+			return new Vector3 (Random.Range (-2.0f, -12.0f), Random.Range (-1f, 3f), 0);
+		case "right":
+			return new Vector3 (Random.Range (3.0f, 12.0f), Random.Range (-1f, 3f), 0);
+		default:
+			return Vector3.zero;
+		}
 
+
+	}
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
 		int multiple = 0;
 		float speed = 0f;
@@ -161,9 +167,10 @@ public class ResourseManager : MonoBehaviour {
 				if (size > 0) {
 					int index = Random.Range (0, size);
 					GameObject item = items [index];
-					Vector3 position = new Vector3 (Random.Range (-10.0f, 10.0f), Random.Range (-1f, 3f), 0);
+
+					Vector3 position = CalcFruitSpawnedPos ();
 					while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
-						position = new Vector3 (Random.Range (-10.0f, 10.0f), Random.Range (-1f, 3f), 0);
+						position = CalcFruitSpawnedPos ();
 					}
 					GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
