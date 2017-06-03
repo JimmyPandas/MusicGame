@@ -103,6 +103,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			Directory.CreateDirectory (resultFolderPath);
 		}
 			
+		Debug.Log (dataManager.music_length);
 		while (start_time.CalcTotalTime() + smallestWindow < dataManager.music_length) {
 			resultFolderPath = searchPath + "/Results/" + filename + "_";
 			ExecutableRunner runner = new ExecutableRunner ();
