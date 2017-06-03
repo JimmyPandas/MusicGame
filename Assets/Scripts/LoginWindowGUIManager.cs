@@ -102,8 +102,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
 		}
-		Debug.Log (duration.CalcTotalTime ());
-		Debug.Log (hop);
 		while (start_time.CalcTotalTime() + smallestWindow < dataManager.music_length) {
 			resultFolderPath = searchPath + "/Results/" + filename + "_";
 			ExecutableRunner runner = new ExecutableRunner ();
