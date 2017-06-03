@@ -22,6 +22,7 @@ public class FruitController : MonoBehaviour {
 	public GameObject aggresiveEmotion;
 	public GameObject relaxedEmotion;
 	public GameObject partyEmotion;
+	private Vector3 startPos;
 
 	// Use this for initialization
 	void Start () {
@@ -32,6 +33,8 @@ public class FruitController : MonoBehaviour {
 //			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
 			gameObject.transform.localScale *= Mathf.Sqrt(multiple / 2f);
 		} 
+//		startPos = gameObject.transform.position;
+//		Debug.Log ("start: " + startPos);
 		animator = GetComponentInChildren<Animator> ();
 		animator.Play ("FruitSpawning");
 		animator.SetFloat ("FallingSpeed", speed);
@@ -48,7 +51,16 @@ public class FruitController : MonoBehaviour {
 			}
 		}
 
-		scoreableTime -= Time.deltaTime;
+//		if (Mathf.Abs(startPos.y - gameObject.transform.position.y) >= 2 && !scoreable) {
+//			Debug.Log ("loop: " + gameObject.transform.position);
+//			ShowEmotion ();
+//			scoreable = true;
+//		}
+
+		if (scoreable) {
+			scoreableTime -= Time.deltaTime;
+		}
+
 		if (scoreableTime < 0) {
 			SetScoreable (false);
 			GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
@@ -100,6 +112,9 @@ public class FruitController : MonoBehaviour {
 
 	public void SetEmotion(string emotion){
 		this.emotion = emotion;
+	}
+
+	public void ShowEmotion(){
 		switch (emotion) {
 		case "happy":
 			happyEmotion.SetActive (true);

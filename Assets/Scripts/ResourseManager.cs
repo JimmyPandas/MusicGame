@@ -152,10 +152,12 @@ public class ResourseManager : MonoBehaviour {
 			
 			speed = Mathf.Log (Mathf.Sqrt (pitch) * multiple) / 4f;
 			if (data.happyFactor > 0.5) {
-				speed *= (1f + data.happyFactor);
+				speed *= (1.36f + data.happyFactor);
+				nextBeatInterval *= data.happyFactor;
 			}
 			if (data.sadFactor > 0.5) {
-				speed /= (1f + data.sadFactor);
+				speed /= (1.36f + data.sadFactor);
+				nextBeatInterval *= (1f + data.sadFactor);
 			}
 		} 
 			
@@ -180,9 +182,12 @@ public class ResourseManager : MonoBehaviour {
 					if (data.emotions.Count > 0) {
 						string emotion = data.emotions [Random.Range (0, data.emotions.Count)];
 						fruitController.SetEmotion (emotion);
+						fruitController.ShowEmotion ();
 					}
+
 					fruitController.danceable = data.danceable;
-					fruitController.scoreableTime = nextBeatInterval * 1.5f;
+//					fruitController.SetScoreable (false);
+					fruitController.scoreableTime = nextBeatInterval * 1.1f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);
 					fruitController.SetZone (zone);
