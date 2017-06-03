@@ -154,7 +154,6 @@ public class ResourseManager : MonoBehaviour {
 			if (data.happyFactor > 0.5) {
 				speed *= (1.36f + data.happyFactor);
 				nextBeatInterval /= data.happyFactor;
-				Debug.Log ("next beat: " + nextBeatInterval);
 			}
 			if (data.sadFactor > 0.5) {
 				speed /= (1.36f + data.sadFactor);
@@ -187,7 +186,6 @@ public class ResourseManager : MonoBehaviour {
 					}
 
 					fruitController.danceable = data.danceable;
-//					fruitController.SetScoreable (false);
 					fruitController.scoreableTime = nextBeatInterval * 1.1f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);

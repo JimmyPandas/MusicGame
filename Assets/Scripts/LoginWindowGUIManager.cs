@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.InteropServices;
-
+using System;
 
 public class LoginWindowGUIManager : MonoBehaviour {
 	
@@ -29,6 +29,11 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private Dictionary<string, string> musicOptionsDic = new Dictionary<string, string>();
 	public Dictionary<int, string> classificationFilesDic = new Dictionary<int, string> ();
 	private const int OVERALL_MUSIC_FILE_INDEX = -1;
+	private DataManager dataManager;
+	public InputField durationInputField;
+	public InputField hopInputField;
+	private Clock duration = new Clock();
+	private int hop;
 
 	// Use this for initialization
 	void Start () {
@@ -38,7 +43,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			searchPath = parentDir;
 			parentDir = Directory.GetParent (searchPath).FullName;
 		}
-
+		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 	}
 
 	public void Play() {
@@ -47,7 +52,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			//get all options available within this dropdown menu
 			List<Dropdown.OptionData> menuOptions = dropdown.options;
 			if (menuOptions.Count > 0) {
-				int menuIndex = Random.Range (0, menuOptions.Count);
+				int menuIndex = UnityEngine.Random.Range (0, menuOptions.Count);
 				SetMusic (menuIndex);
 			}
 		}
@@ -56,7 +61,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 
 	IEnumerator LoadAnalysisResultFiles(){
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		string filename = 	Path.GetFileNameWithoutExtension (dataManager.path);
 		string resultFolderPath = searchPath + "/Results";
 		if (!Directory.Exists (resultFolderPath)) {
@@ -90,11 +94,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	private void SplitMusicFileIntoMultipleTracks() {
 		Clock start_time = new Clock ();
-		Clock duration = new Clock ();
-		duration.seconds = 50;
 		const int smallestWindow = 5;
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
-
 		int num = 0;
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
 		string output_file_path = searchPath + "/" + filename + ".wav";
@@ -102,12 +102,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
 		}
-			
-		Debug.Log (dataManager.music_length);
+		Debug.Log (duration.CalcTotalTime ());
+		Debug.Log (hop);
 		while (start_time.CalcTotalTime() + smallestWindow < dataManager.music_length) {
 			resultFolderPath = searchPath + "/Results/" + filename + "_";
 			ExecutableRunner runner = new ExecutableRunner ();
 			runner.run (searchPath, start_time, output_file_path, duration);
+	
 			if (!File.Exists (resultFolderPath + "descriptor.txt")) {
 				extractMusic (output_file_path, resultFolderPath + "descriptor.txt", "");
 			}
@@ -117,7 +118,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 			classificationFilesDic.Add (start_time.CalcTotalTime (), resultFolderPath + "classfiresult.json");
 			File.Delete (output_file_path);
-			start_time.increaseTimeBySeconds(5);
+			start_time.increaseTimeBySeconds(hop);
 			num++;
 			filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
 			output_file_path = searchPath + "/" + filename + ".wav";
@@ -156,7 +157,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				}
 				probabilityStr = sr.ReadLine();
 			}
-			DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 			if (!dataManager.attributeDataDic.ContainsKey (start_time)) {
 				dataManager.attributeDataDic.Add (start_time, data);
 			}
@@ -165,7 +165,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 		
 	private void GetMusicFileLength(string path) {
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (File.Exists (path)) {
 			StreamReader sr = new StreamReader (path);
 			string line = sr.ReadLine ();
@@ -252,10 +251,18 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 
 	public void MusicLibraryConfirm() {
+		try {
+			duration.seconds = int.Parse (durationInputField.text);
+			hop = int.Parse (hopInputField.text);
+		} catch (FormatException exception) {
+			duration.seconds = 50;
+			hop = 5;
+		}
 		int menuIndex = dropdown.value;
 		SetMusic (menuIndex);
 		musicLibraryCanvas.SetActive (false);
 		mainCanvas.SetActive (true);
+
 	}
 
 	private void SetMusic(int menuIndex) {
@@ -264,7 +271,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 		//get the string value of the selected index
 		string musicOption = menuOptions [menuIndex].text;
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (musicOptionsDic.ContainsKey (musicOption)) {
 			classificationFilesDic.Clear();
 			dataManager.attributeDataDic.Clear ();
