@@ -45,6 +45,7 @@ public class GUIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (gameOver && animationDelay == 15f) {
+			shield.SetActive (false);
 			if (dataManager.isBright) {
 				gameOverAnimator.SetTrigger ("DayBackgroundGameOver");
 			} else {
