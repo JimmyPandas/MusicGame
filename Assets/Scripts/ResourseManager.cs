@@ -161,6 +161,10 @@ public class ResourseManager : MonoBehaviour {
 			}
 		} 
 			
+		if (data.aggresiveFactor == 2) {
+			nextBeatInterval *= 1.2f;
+		}
+
 		for (int i = 0; i < data.aggresiveFactor; i++) {
 			if (itemsDict.ContainsKey (note)) {
 				notes.Add (note);
