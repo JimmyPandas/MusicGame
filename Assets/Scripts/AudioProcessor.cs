@@ -50,11 +50,13 @@ public class AudioProcessor : MonoBehaviour {
 			if (fields != null) {
 				float pitch = 0f;
 				if (float.TryParse (fields [1], out pitch)) {
-					string result = calcNoteAndZone (pitch);
-					if (result.Length == 2 && float.Parse(fields[2]) > 0.20f) {
-						note = result [0].ToString ();
-						string zone = result [1].ToString ();
-						resourceManager.InstantiateMusicSymbol (note, zone, pitch, nextBeatInterval);
+					if(float.Parse(fields[2]) > 0.20f) {
+						string result = calcNoteAndZone (pitch);
+						if (result.Length == 2) {
+							note = result [0].ToString ();
+							string zone = result [1].ToString ();
+							resourceManager.InstantiateMusicSymbol (note, zone, pitch, nextBeatInterval);
+						}
 					}
 				} 
 			}
