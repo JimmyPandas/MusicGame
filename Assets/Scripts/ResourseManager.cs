@@ -153,7 +153,7 @@ public class ResourseManager : MonoBehaviour {
 			speed = Mathf.Log (Mathf.Sqrt (pitch) * multiple) / 4f;
 			if (data.happyFactor > 0.5) {
 				speed *= (1.36f + data.happyFactor);
-				nextBeatInterval /= data.happyFactor;
+				nextBeatInterval *= data.happyFactor;
 			}
 			if (data.sadFactor > 0.5) {
 				speed /= (1.36f + data.sadFactor);
