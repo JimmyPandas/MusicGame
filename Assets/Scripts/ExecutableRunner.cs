@@ -4,14 +4,18 @@ using UnityEngine;
 using System.Diagnostics;
 using System.IO;
 using System;
+using UnityEngine.UI;
+
 public class ExecutableRunner {
 
 	public void run(string searchPath, Clock start_time, string output_file_path, Clock duration) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
+
 			Process process = new Process ();
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
+
 			if(File.Exists(output_file_path)) {
 				File.Delete(output_file_path);
 			}

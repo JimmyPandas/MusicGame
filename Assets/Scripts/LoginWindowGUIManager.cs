@@ -37,6 +37,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log (Application.dataPath);
 		searchPath =  Application.dataPath;
 		string parentDir = Directory.GetParent (searchPath).FullName;
 		while (parentDir.Length >= 16) {
@@ -44,6 +45,12 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			parentDir = Directory.GetParent (searchPath).FullName;
 		}
 		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
+		StreamWriter sw = new StreamWriter(searchPath + "/FilePathSetting.txt", true);
+		sw.Flush ();
+		sw.WriteLine ("We will search all local wav files within directory: " + searchPath);
+		sw.WriteLine("You shold put ffmpeg exe in: " + searchPath + "/ffmpeg/ffmpeg");
+		sw.Close();
+
 	}
 
 	public void Play() {
@@ -245,7 +252,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			}
 		}
 		dropdown.AddOptions (musicOptions);
-//		dropdown.RefreshShownValue ();
 	}
 
 	public void MusicLibraryConfirm() {
@@ -253,7 +259,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			duration.seconds = int.Parse (durationInputField.text);
 			hop = int.Parse (hopInputField.text);
 		} catch (FormatException exception) {
-			duration.seconds = 50;
+			duration.seconds = 45;
 			hop = 5;
 		}
 		int menuIndex = dropdown.value;
