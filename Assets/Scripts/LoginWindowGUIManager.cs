@@ -37,7 +37,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log (Application.dataPath);
 		searchPath =  Application.dataPath;
 		string parentDir = Directory.GetParent (searchPath).FullName;
 		while (parentDir.Length >= 16) {
