@@ -77,7 +77,6 @@ public class AudioProcessor : MonoBehaviour {
 				AttributeData data = dataManager.attributeDataDic [time];
 				dataManager.currentAttributeData = data;
 				dataManager.attributeDataDic.Remove (time);
-				Debug.Log (dataManager.currentAttributeData.ToString ());
 				break;
 			}
 

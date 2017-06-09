@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ResourseManager : MonoBehaviour {
 
@@ -36,6 +37,7 @@ public class ResourseManager : MonoBehaviour {
 	private DataManager dataManager;
 	private List<string> directions = new List<string>{"left", "right"};
 
+	public Text dataText;
 
 	// Use this for initialization
 	void Start () {
@@ -154,26 +156,21 @@ public class ResourseManager : MonoBehaviour {
 	}
 
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
-		int multiple = 0;
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
-		if (int.TryParse (zone, out multiple)) {
-
-	
-			float bpmEstimate = 60f / (nextBeatInterval / 2f);
-			Debug.Log ("bpmEstimate: " + bpmEstimate);
-			speed = bpmEstimate / 100f;
-			Debug.Log ("speed: " + speed);
-			if (data.happyFactor > 0.5) {
-				speed = (1.36f + data.happyFactor);
-				nextBeatInterval *= data.happyFactor;
-			}
-			if (data.sadFactor > 0.5) {
-				speed /= (1.36f + data.sadFactor);
-				nextBeatInterval *= (1f + data.sadFactor);
-			}
-		} 
+		float bpmEstimate = 60f / (nextBeatInterval / 2f);
+		speed = bpmEstimate / 90f;
+		if (data.happyFactor > 0.5) {
+			speed = (1.36f + data.happyFactor);
+			nextBeatInterval *= data.happyFactor;
+		}
+		if (data.sadFactor > 0.5) {
+			speed /= (1.36f + data.sadFactor);
+			nextBeatInterval *= (1f + data.sadFactor);
+		}
 			
+		dataText.text = "CurrentTempo: " + bpmEstimate + "\n" + 
+			"CurrentSpeed: " + speed + "\n" + data.ToString ();
 		if (data.aggresiveFactor == 2) {
 			nextBeatInterval *= 1.2f;
 		}
