@@ -35,7 +35,7 @@ public class ResourseManager : MonoBehaviour {
 	private Animator magicianGameAnimator;
 	private DataManager dataManager;
 	private List<string> directions = new List<string>{"left", "right"};
-	public float basicFruitSpeed = 0f;
+
 
 	// Use this for initialization
 	void Start () {
@@ -49,18 +49,17 @@ public class ResourseManager : MonoBehaviour {
 		}
 
 		magicianGameAnimator = GameObject.Find ("magician_game").GetComponentInChildren<Animator> ();
-		SetBasicFruitSpeed ();
-		Debug.Log ("basic fruit speed: " + basicFruitSpeed);
+
 
 	}
 
-	private void SetBasicFruitSpeed() {
-		StreamReader sr = new StreamReader (dataManager.beat_csv_path);
-		string record = sr.ReadLine();
-		string[] fields = record.Split (',');
-		float bpm = float.Parse (fields [0]);
-		basicFruitSpeed = bpm / 100;
-	}
+//	private void SetBasicFruitSpeed() {
+//		StreamReader sr = new StreamReader (dataManager.beat_csv_path);
+//		string record = sr.ReadLine();
+//		string[] fields = record.Split (',');
+//		float bpm = float.Parse (fields [0]);
+//		basicFruitSpeed = bpm / 100;
+//	}
 
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
@@ -162,10 +161,8 @@ public class ResourseManager : MonoBehaviour {
 
 	
 			float bpmEstimate = 60f / (nextBeatInterval / 2f);
-			float difference = bpmEstimate / 100 - basicFruitSpeed;
-			Debug.Log ("difference: " + difference);
 			Debug.Log ("bpmEstimate: " + bpmEstimate);
-			speed = basicFruitSpeed + difference;
+			speed = bpmEstimate / 100f;
 			Debug.Log ("speed: " + speed);
 			if (data.happyFactor > 0.5) {
 				speed = (1.36f + data.happyFactor);
