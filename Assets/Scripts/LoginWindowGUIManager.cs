@@ -54,9 +54,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 
 	}
 
-
-		
-
 	public void Setting() {
 	}
 		

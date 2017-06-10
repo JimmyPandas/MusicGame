@@ -171,11 +171,11 @@ public class ResourseManager : MonoBehaviour {
 			
 		dataText.text = "CurrentTempo: " + bpmEstimate + "\n" + 
 			"CurrentSpeed: " + speed + "\n" + data.ToString ();
-		if (data.aggresiveFactor == 2) {
+		if (data.aggressiveFactor == 2) {
 			nextBeatInterval *= 1.2f;
 		}
 
-		for (int i = 0; i < data.aggresiveFactor; i++) {
+		for (int i = 0; i < data.aggressiveFactor; i++) {
 			if (itemsDict.ContainsKey (note)) {
 				notes.Add (note);
 				List<GameObject> items = itemsDict [note];

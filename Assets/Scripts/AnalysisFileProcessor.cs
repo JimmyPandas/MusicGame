@@ -71,11 +71,11 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 		if (!File.Exists (resultFilePath + "classfiresult.json")) {
 			extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
+			File.Delete (resultFilePath + "descriptor.txt");
 		}
 
 		GetMusicFileLength (resultFilePath + "classfiresult.json");
 		classificationFilesDic.Add (OVERALL_MUSIC_FILE_INDEX, resultFilePath + "classfiresult.json");
-		Debug.Log ("Finish Loading analyzing whole file");
 		yield return null;
 	}
 
@@ -90,38 +90,76 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
 		}
-		while (start_time.CalcTotalTime() + smallestWindow < dataManager.music_length) {
-			string resultFilePath = resultFolderPath + "/" + filename + "_";;
-			ExecutableRunner runner = new ExecutableRunner ();
-			runner.run (searchPath, start_time, output_file_path, duration);
+		string classificationCSVFilePath = resultFolderPath + "/" + Path.GetFileNameWithoutExtension (dataManager.path) + "_classificationResult.csv";
+		if (!File.Exists (classificationCSVFilePath)) {
+			while (start_time.CalcTotalTime () + smallestWindow < dataManager.music_length) {
+				string resultFilePath = resultFolderPath + "/" + filename + "_";
 
-			if (!File.Exists (resultFilePath + "descriptor.txt")) {
-				extractMusic (output_file_path, resultFilePath + "descriptor.txt", "");
+				ExecutableRunner runner = new ExecutableRunner ();
+				runner.run (searchPath, start_time, output_file_path, duration);
+
+				if (!File.Exists (resultFilePath + "descriptor.txt")) {
+					extractMusic (output_file_path, resultFilePath + "descriptor.txt", "");
+				}
+				if (!File.Exists (resultFilePath + "classfiresult.json")) {
+					extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
+				}
+				
+				classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
+				File.Delete (output_file_path);
+				start_time.increaseTimeBySeconds (hop);
+				num++;
+				filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
+				output_file_path = searchPath + "/" + filename + ".wav";
+
 			}
-			if (!File.Exists (resultFilePath + "classfiresult.json")) {
-				extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
-			}
-
-			classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
-			File.Delete (output_file_path);
-			start_time.increaseTimeBySeconds(hop);
-			num++;
-			filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-			output_file_path = searchPath + "/" + filename + ".wav";
-
 		}
-		Debug.Log ("Finish splitting whole file");
 	}
 
 	public void LoadAttrbuteDataFromFiles() {
-		foreach(KeyValuePair<int, string> pair in classificationFilesDic ) {
-			LoadAttributeData (pair.Value, pair.Key);
+		
+		string filename = Path.GetFileNameWithoutExtension (dataManager.path);
+		string resultFolderPath = guiManager.searchPath + "/Results/" + duration.CalcTotalTime() + "_duration_" + hop + "_shift";
+		string resultFilePath = resultFolderPath + "/" + filename + "_classificationResult.csv";;
+
+		if (!File.Exists (resultFilePath)) {
+			StreamWriter sw = new StreamWriter (resultFilePath, true);
+			foreach (KeyValuePair<int, string> pair in classificationFilesDic) {
+				LoadAttributeData (pair.Value, pair.Key, sw);
+			}
+			sw.Close ();
+		} else {
+			LoadAttributeDataFromProcessedFile (resultFilePath);
 		}
-		Debug.Log ("Finish loading whole file data");
 	}
 
-	public void LoadAttributeData(string path, int start_time) {
+
+	public void LoadAttributeDataFromProcessedFile(string resultFilePath) {
+
+		CSVParsor csvParsor = new CSVParsor ();
+		csvParsor.path = resultFilePath;
+		csvParsor.ReadAllLines ();
+		List<string> fields = csvParsor.ReadRecord ();
+		while (fields != null) {
+			AttributeData data = new AttributeData ();
+			int time = int.Parse (fields [0]);
+			data.time = time;
+			data.happyFactor = float.Parse (fields [1]);
+			data.sadFactor = float.Parse (fields [2]);
+			data.aggressiveFactor = int.Parse (fields [3]);
+			data.isBright = bool.Parse (fields [4]);
+			data.danceable = bool.Parse (fields [5]);
+			string[] emotions = fields [6].Split ('/');
+			data.emotions = new List<string>(emotions);
+			Debug.Log (data.ToString ());
+			dataManager.attributeDataDic.Add (time, data);
+			fields = csvParsor.ReadRecord ();
+		}
+	}
+	
+	public void LoadAttributeData(string path, int start_time, StreamWriter sw) {
 		AttributeData data = new AttributeData();
+		data.time = start_time;
 
 		if (File.Exists (path)) {
 			StreamReader sr = new StreamReader (path);
@@ -143,6 +181,8 @@ public class AnalysisFileProcessor : MonoBehaviour {
 				}
 				probabilityStr = sr.ReadLine();
 			}
+
+			sw.WriteLine (data.ToCSVString ());
 			if (!dataManager.attributeDataDic.ContainsKey (start_time)) {
 				dataManager.attributeDataDic.Add (start_time, data);
 			}
@@ -195,7 +235,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 			break;
 		case "aggressive":
 			data.emotions.Add (attribute);
-			data.aggresiveFactor = 2;
+			data.aggressiveFactor = 2;
 			break;
 		default:
 			break;
