@@ -263,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 32}
   - component: {fileID: 102}
+  - component: {fileID: 89}
   m_Layer: 0
   m_Name: GUIManager
   m_TagString: Untagged
@@ -1417,6 +1418,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 022e748e60ad145439256db1c0d0a211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &89
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 18}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255f16e0af2b04660a9dc721f1013998, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &90
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1765,6 +1777,7 @@ MonoBehaviour:
   mainCanvas: {fileID: 160472780}
   musicLibraryCanvas: {fileID: 848118483}
   dropdown: {fileID: 86}
+  searchPath: 
   durationInputField: {fileID: 1174797613}
   hopInputField: {fileID: 1019998170}
 --- !u!114 &103
