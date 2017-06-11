@@ -37,11 +37,12 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 
 	public void SetDurationAndHopSize(InputField durationInputField, InputField hopInputField) {
+		duration.Reset ();
 		try {
-			duration.seconds = int.Parse (durationInputField.text);
+			duration.increaseTimeBySeconds(int.Parse (durationInputField.text));
 			hop = int.Parse (hopInputField.text);
 		} catch (FormatException exception) {
-			duration.seconds = 45;
+			duration.increaseTimeBySeconds(45);
 			hop = 5;
 		}
 	}
@@ -92,7 +93,8 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		}
 		string classificationCSVFilePath = resultFolderPath + "/" + Path.GetFileNameWithoutExtension (dataManager.path) + "_classificationResult.csv";
 		if (!File.Exists (classificationCSVFilePath)) {
-			while (start_time.CalcTotalTime () + smallestWindow < dataManager.music_length) {
+			while (start_time.CalcTotalTime () + duration.CalcTotalTime() <= dataManager.music_length) {
+
 				string resultFilePath = resultFolderPath + "/" + filename + "_";
 
 				ExecutableRunner runner = new ExecutableRunner ();

@@ -20,8 +20,16 @@ public class Clock {
 			minutes -= MAX_VALUE;
 		}
 	}
+
 	public int CalcTotalTime() {
 		return hours * MAX_VALUE * MAX_VALUE + minutes * MAX_VALUE + seconds;
+	}
+
+
+	public void Reset() {
+		seconds = 0;
+		minutes = 0;
+		hours = 0;
 	}
 
 	public override string ToString () {
