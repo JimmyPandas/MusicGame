@@ -32,11 +32,13 @@ public class LoginWindowGUIManager : MonoBehaviour {
 		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		analysisFileProcessor = gameObject.GetComponentInChildren<AnalysisFileProcessor> ();
 
-		StreamWriter sw = new StreamWriter(searchPath + "/FilePathSetting.txt", true);
-		sw.Flush ();
-		sw.WriteLine ("We will search all local wav files within directory: " + searchPath);
-		sw.WriteLine("You shold put ffmpeg exe in: " + searchPath + "/ffmpeg/ffmpeg");
-		sw.Close();
+		if (!File.Exists (searchPath + "/FilePathSetting.txt")) {
+			StreamWriter sw = new StreamWriter (searchPath + "/FilePathSetting.txt", true);
+			sw.Flush ();
+			sw.WriteLine ("We will search all local wav files within directory: " + searchPath);
+			sw.WriteLine ("You shold put ffmpeg exe in: " + searchPath + "/ffmpeg/ffmpeg");
+			sw.Close ();
+		}
 
 	}
 

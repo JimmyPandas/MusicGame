@@ -103,6 +103,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 				}
 				if (!File.Exists (resultFilePath + "classfiresult.json")) {
 					extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
+					File.Delete (resultFilePath + "descriptor.txt");
 				}
 				
 				classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
