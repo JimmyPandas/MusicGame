@@ -43,17 +43,16 @@ public class AnalysisFileProcessor : MonoBehaviour {
 			hop = int.Parse (hopInputField.text);
 		} catch (FormatException exception) {
 			duration.increaseTimeBySeconds(45);
-			hop = 5;
 		}
 	}
 
 	IEnumerator LoadAnalysisResultFiles(){
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path);
-		string resultFolderPath = guiManager.searchPath + "/Results/" + duration.CalcTotalTime() + "_duration_" + hop + "_shift";
+		string resultFolderPath = guiManager.searchPath + "/Results/";
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
 		}
-		string resultFilePath = resultFolderPath +  "/" + filename + "_";
+		string resultFilePath = resultFolderPath + filename + "_";
 
 		string pitch_csv_path = resultFilePath + "pitch_result.csv";
 		if(!File.Exists(pitch_csv_path)) { 
@@ -76,6 +75,11 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		}
 
 		GetMusicFileLength (resultFilePath + "classfiresult.json");
+
+		if (hop == 0) {
+			hop = (int)Mathf.Floor (0.00011f * Mathf.Pow (dataManager.music_length, 2f));
+		}
+
 		classificationFilesDic.Add (OVERALL_MUSIC_FILE_INDEX, resultFilePath + "classfiresult.json");
 		yield return null;
 	}
@@ -83,7 +87,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 	public void SplitMusicFileIntoMultipleTracks() {
 		string searchPath = guiManager.searchPath;
 		Clock start_time = new Clock ();
-		const int smallestWindow = 5;
+
 		int num = 0;
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
 		string output_file_path = searchPath + "/" + filename + ".wav";
@@ -107,8 +111,10 @@ public class AnalysisFileProcessor : MonoBehaviour {
 					extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
 					File.Delete (resultFilePath + "descriptor.txt");
 				}
-				
-				classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
+
+				if (!classificationFilesDic.ContainsKey (start_time.CalcTotalTime ())) {
+					classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
+				}
 				File.Delete (output_file_path);
 				start_time.increaseTimeBySeconds (hop);
 				num++;
