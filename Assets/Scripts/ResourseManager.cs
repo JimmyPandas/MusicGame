@@ -55,14 +55,6 @@ public class ResourseManager : MonoBehaviour {
 
 	}
 
-//	private void SetBasicFruitSpeed() {
-//		StreamReader sr = new StreamReader (dataManager.beat_csv_path);
-//		string record = sr.ReadLine();
-//		string[] fields = record.Split (',');
-//		float bpm = float.Parse (fields [0]);
-//		basicFruitSpeed = bpm / 100;
-//	}
-
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
 			WWW www = new WWW("file://" + path);
@@ -161,7 +153,7 @@ public class ResourseManager : MonoBehaviour {
 		float bpmEstimate = 60f / (nextBeatInterval / 2f);
 		speed = bpmEstimate / 90f;
 		if (data.happyFactor > 0.5) {
-			speed = (1.36f + data.happyFactor);
+			speed *= (0.95f + data.happyFactor);
 			nextBeatInterval *= data.happyFactor;
 		}
 		if (data.sadFactor > 0.5) {
