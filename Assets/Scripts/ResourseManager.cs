@@ -151,9 +151,9 @@ public class ResourseManager : MonoBehaviour {
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
 		float bpmEstimate = 60f / (nextBeatInterval / 2f);
-		speed = bpmEstimate / 90f;
+		speed = bpmEstimate / 100f;
 		if (data.happyFactor > 0.5) {
-			speed *= (0.95f + data.happyFactor);
+			speed *= (1.05f + data.happyFactor);
 			nextBeatInterval *= data.happyFactor;
 		}
 		if (data.sadFactor > 0.5) {
