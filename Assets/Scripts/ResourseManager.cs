@@ -150,7 +150,7 @@ public class ResourseManager : MonoBehaviour {
 	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
-		float bpmEstimate = 60f / (nextBeatInterval / 2f);
+		float bpmEstimate = 60f / (nextBeatInterval / 2);
 		speed = bpmEstimate / 100f;
 		if (data.happyFactor > 0.5) {
 			speed *= (1.05f + data.happyFactor);

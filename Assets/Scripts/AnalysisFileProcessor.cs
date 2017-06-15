@@ -56,7 +56,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 		string pitch_csv_path = resultFilePath + "pitch_result.csv";
 		if(!File.Exists(pitch_csv_path)) { 
-			detectPitch (0, dataManager.path, pitch_csv_path);
+			detectPitch (4, dataManager.path, pitch_csv_path);
 		}
 		dataManager.pitch_csv_path = pitch_csv_path;
 
