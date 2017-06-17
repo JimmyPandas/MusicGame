@@ -77,7 +77,8 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		GetMusicFileLength (resultFilePath + "classfiresult.json");
 
 		if (hop == 0) {
-			hop = (int)Mathf.Floor (0.00011f * Mathf.Pow (dataManager.music_length, 2f));
+			hop = (int)Mathf.Round (0.00011f * Mathf.Pow (dataManager.music_length, 2f));
+			Debug.Log ("hop: " + hop);
 		}
 
 		classificationFilesDic.Add (OVERALL_MUSIC_FILE_INDEX, resultFilePath + "classfiresult.json");
