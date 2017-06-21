@@ -78,8 +78,8 @@ public class ResourseManager : MonoBehaviour {
 			}
 		}
 		if (musicPlayTime < 0) {
-			GameObject[] liveSymbols = GameObject.FindGameObjectsWithTag ("Symbol");
-			if (liveSymbols.Length == 0) {
+			GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
+			if (liveFruits.Length == 0) {
 				GUIManager guiManager = GetComponent<GUIManager> ();
 				guiManager.gameOver = true;
 			}
@@ -179,6 +179,12 @@ public class ResourseManager : MonoBehaviour {
 			"CurrentSpeed: " + Mathf.Round(speed * 1000) / 1000f + "\n" + data.ToString ();
 		if (data.aggressiveFactor == 2) {
 			nextBeatInterval *= 1.2f;
+		}
+
+		if (dataManager.isBright) {
+			dataText.color = Color.black;
+		} else {
+			dataText.color = Color.white;
 		}
 
 		for (int i = 0; i < data.aggressiveFactor; i++) {

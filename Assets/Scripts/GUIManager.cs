@@ -27,6 +27,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject dayBackground;
 	public GameObject nightBackground;
 	private DataManager dataManager;
+	public Text dataText;
 
 	// Use this for initialization
 	void Start () {
@@ -34,10 +35,8 @@ public class GUIManager : MonoBehaviour {
 		UpdateScore ();
 		dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		if (dataManager.isBright) {
-//			nightBackground.SetActive (false);
 			nightBackground.GetComponentInChildren<SpriteRenderer> ().sortingOrder = -1;
 		} else {
-//			dayBackground.SetActive (false);
 			dayBackground.GetComponentInChildren<SpriteRenderer> ().sortingOrder = -1;
 		}
 	}
