@@ -161,7 +161,6 @@ public class AnalysisFileProcessor : MonoBehaviour {
 			data.danceable = bool.Parse (fields [5]);
 			string[] emotions = fields [6].Split ('/');
 			data.emotions = new List<string>(emotions);
-			Debug.Log (data.ToString ());
 			dataManager.attributeDataDic.Add (time, data);
 			fields = csvParsor.ReadRecord ();
 		}

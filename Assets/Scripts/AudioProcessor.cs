@@ -71,7 +71,6 @@ public class AudioProcessor : MonoBehaviour {
 		foreach (KeyValuePair<int, AttributeData> pair in dataManager.attributeDataDic) {
 			int time = pair.Key;
 			if (time <= Time.timeSinceLevelLoad) {
-				Debug.Log (time);
 				AttributeData data = dataManager.attributeDataDic [time];
 				dataManager.currentAttributeData = data;
 				dataManager.attributeDataDic.Remove (time);
