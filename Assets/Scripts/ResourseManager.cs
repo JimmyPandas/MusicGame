@@ -158,7 +158,7 @@ public class ResourseManager : MonoBehaviour {
 	/* Apply the analysis results to calculate the fruit's speed and scoreable allow time.
 	   It also changes other game settings using the analysis results. When a fruit is
 	   spawned, other fruits' speed will become same. */
-	public void InstantiateMusicSymbol(string note, string zone, float nextBeatInterval) {
+	public void InstantiateMusicSymbol(string note, string register, float nextBeatInterval) {
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
 		float bpmEstimate = 60f / (nextBeatInterval / 2f);
@@ -206,7 +206,7 @@ public class ResourseManager : MonoBehaviour {
 					fruitController.scoreableTime = nextBeatInterval * 1.1f;
 					fruitController.SetSpeed (speed);
 					fruitController.SetNote (note);
-					fruitController.SetZone (zone);
+					fruitController.SetRegister (register);
 					prevSpawnedPos = position;
 				}
 				

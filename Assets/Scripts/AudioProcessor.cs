@@ -32,7 +32,6 @@ public class AudioProcessor : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
 		LoadAttributeData ();
 		if (sampleRate == 0) {
 			AudioSource audioSource = GetComponent<AudioSource> ();
@@ -52,11 +51,11 @@ public class AudioProcessor : MonoBehaviour {
 			if (fields != null) {
 				float pitch = 0f;
 				if (float.TryParse (fields [1], out pitch)) {
-					string result = calcNoteAndZone (pitch);
+					string result = CalcNoteAndRegister (pitch);
 					if (result.Length == 2) {
 						note = result [0].ToString ();
-						string zone = result [1].ToString ();
-						resourceManager.InstantiateMusicSymbol (note, zone, nextBeatInterval);
+						string register = result [1].ToString ();
+						resourceManager.InstantiateMusicSymbol (note, register, nextBeatInterval);
 					}
 				} 
 			}
@@ -85,6 +84,10 @@ public class AudioProcessor : MonoBehaviour {
 		}
 	}
 
+	/* This method will fetch two records from the beats CSV file and set nextSpawnedRate
+	 * to be the sum of two beats intervals.
+	 the sum of two beat intervals.
+	 */
 	private void UpdateNextSpawnRate() {
 		nextBeatInterval = 0f;
 		List<string> fields = new List<string> ();
@@ -96,8 +99,12 @@ public class AudioProcessor : MonoBehaviour {
 		}
 	}
 
-	private string calcNoteAndZone(float fundFreq) {
-		int zone = 1;
+	/* This method uses the pitch results table to calculate the corresponding
+	note and register of the given pitch frequency. Please notice this method
+	ignores all the sharp notes. 
+	*/
+	private string CalcNoteAndRegister(float fundFreq) {
+		int register = 1;
 		List<string> notes = new List<string> {"C", "D", "E", "F", "G", "A", "B"};
 		string note = "";
 		float noteFreq = 32.7f;
@@ -107,7 +114,7 @@ public class AudioProcessor : MonoBehaviour {
 		while (fundFreq >= noteFreq && fundFreq <= MAX_NOTE_FREQ) {
 			if (fundFreq >= noteFreq * 2) {
 				noteFreq *= 2;
-				zone++;
+				register++;
 			} else {
 				int pow = 0;
 				while (fundFreq > noteFreq && pow <= 6) {
@@ -126,12 +133,12 @@ public class AudioProcessor : MonoBehaviour {
 				}
 				if (pow == 7) {
 					pow = 0;
-					zone++;
+					register++;
 				}
-				return notes [pow] + zone;
+				return notes [pow] + register;
 			}
 		}
-		return note + zone;
+		return note + register;
 	}
 		
 }

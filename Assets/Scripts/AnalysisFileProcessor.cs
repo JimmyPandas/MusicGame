@@ -9,6 +9,7 @@ using System;
 
 public class AnalysisFileProcessor : MonoBehaviour {
 
+	/* C++ native plugin functions import*/
 	[DllImport ("AudioProcessorPlugin")]
 	private static extern void detectPitch (int algoNum, string audio_file, string output_file);
 
@@ -36,16 +37,31 @@ public class AnalysisFileProcessor : MonoBehaviour {
 	}
 
 
-	public void SetDurationAndHopSize(InputField durationInputField, InputField hopInputField) {
+	/* This method sets the duration size and hop size from user's inputs. */
+	public void SetDurationAndHopSizeFromInput(InputField durationInputField, InputField hopInputField) {
 		duration.Reset ();
 		try {
 			duration.increaseTimeBySeconds(int.Parse (durationInputField.text));
 			hop = int.Parse (hopInputField.text);
 		} catch (FormatException exception) {
-			duration.increaseTimeBySeconds(45);
 		}
 	}
 
+	/* This method sets the optimal duration size and hop size determined from
+	 * experiments.
+	*/
+	public void SetOptimalDurationAndHopSize() {
+		duration.Reset ();
+		duration.increaseTimeBySeconds (45);
+		if (hop == 0) {
+			hop = (int)Mathf.Round (0.00011f * Mathf.Pow (dataManager.music_length, 2f));
+			Debug.Log ("hop: " + hop);
+		}
+	}
+
+	/* This method will analyze the whole music and produce pitch, rhythm and
+	high-level features result files. It will also set the optimal duration and
+	hop size before audio segmentation algorithm called. */
 	IEnumerator LoadAnalysisResultFiles(){
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path);
 		string resultFolderPath = guiManager.searchPath + "/Results/";
@@ -75,16 +91,14 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		}
 
 		GetMusicFileLength (resultFilePath + "classfiresult.json");
-
-		if (hop == 0) {
-			hop = (int)Mathf.Round (0.00011f * Mathf.Pow (dataManager.music_length, 2f));
-			Debug.Log ("hop: " + hop);
-		}
-
+		SetOptimalDurationAndHopSize ();
 		classificationFilesDic.Add (OVERALL_MUSIC_FILE_INDEX, resultFilePath + "classfiresult.json");
 		yield return null;
 	}
 
+	/* This method will split any audio into smaller segments and analyze
+	high-level features for each.
+	*/
 	public void SplitMusicFileIntoMultipleTracks() {
 		string searchPath = guiManager.searchPath;
 		Clock start_time = new Clock ();
@@ -126,8 +140,8 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		}
 	}
 
+	/* This method loads the attribute data from orginal result files.*/
 	public void LoadAttrbuteDataFromFiles() {
-		
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path);
 		string resultFolderPath = guiManager.searchPath + "/Results/" + duration.CalcTotalTime() + "_duration_" + hop + "_shift";
 		string resultFilePath = resultFolderPath + "/" + filename + "_classificationResult.csv";;
@@ -144,6 +158,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 	}
 
 
+	/* This method loads the attribute data from the processed result file.*/
 	public void LoadAttributeDataFromProcessedFile(string resultFilePath) {
 
 		CSVParsor csvParsor = new CSVParsor ();
@@ -199,6 +214,9 @@ public class AnalysisFileProcessor : MonoBehaviour {
 		}
 	}
 
+	/* This method will read the file and extract the audio length information.
+	Then we will set the music_length to be the result.
+	*/
 	private void GetMusicFileLength(string path) {
 		if (File.Exists (path)) {
 			StreamReader sr = new StreamReader (path);
@@ -217,6 +235,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 	}
 
 
+	/* This method will set the attributeData struct to the results extracted from the file. */
 	private void SetAttributeData(string attribute, float probability, AttributeData data) {
 		switch (attribute) {
 		case "bright":

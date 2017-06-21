@@ -6,7 +6,7 @@ public class FruitController : MonoBehaviour {
 	
 	private string note = "";
 	public float scoreableTime = 0.65f;
-	private string zone;
+	private string register;
 	private float differenceInScale;
 	private float speed;
 	private bool scoreable = true;
@@ -27,7 +27,7 @@ public class FruitController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		int multiple = 0;
-		if (int.TryParse (zone, out multiple)) {
+		if (int.TryParse (register, out multiple)) {
 //			differenceInScale = speed - transform.localScale.x;
 //			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
 //			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
@@ -50,12 +50,6 @@ public class FruitController : MonoBehaviour {
 				animator.SetTrigger ("NotDance");
 			}
 		}
-
-//		if (Mathf.Abs(startPos.y - gameObject.transform.position.y) >= 2 && !scoreable) {
-//			Debug.Log ("loop: " + gameObject.transform.position);
-//			ShowEmotion ();
-//			scoreable = true;
-//		}
 
 		if (scoreable) {
 			scoreableTime -= Time.deltaTime;
@@ -169,8 +163,8 @@ public class FruitController : MonoBehaviour {
 		return note;
 	}
 
-	public void SetZone(string zone) {
-		this.zone = zone;
+	public void SetRegister(string register) {
+		this.register = register;
 	}
 
 }

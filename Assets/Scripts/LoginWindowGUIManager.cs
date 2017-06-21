@@ -89,7 +89,7 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	}
 
 	public void MusicLibraryConfirm() {
-		analysisFileProcessor.SetDurationAndHopSize (durationInputField, hopInputField);
+		analysisFileProcessor.SetDurationAndHopSizeFromInput (durationInputField, hopInputField);
 		int menuIndex = dropdown.value;
 		SetMusic (menuIndex);
 		musicLibraryCanvas.SetActive (false);

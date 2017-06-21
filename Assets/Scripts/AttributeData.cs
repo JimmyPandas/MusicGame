@@ -13,7 +13,6 @@ public class AttributeData {
 	public bool isBright;
 	public List<string> emotions = new List<string>();
 
-
 	public override string ToString ()
 	{
 		string result = "time: " + time + "\n"; 
@@ -30,6 +29,7 @@ public class AttributeData {
 		return result;
 	}
 
+	/* This method is only used when printing results to a CSV file. */
 	public string ToCSVString() {
 		string result = time.ToString() + ","; 
 		result += happyFactor.ToString() + ",";
