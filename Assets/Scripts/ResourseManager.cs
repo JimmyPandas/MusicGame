@@ -147,7 +147,7 @@ public class ResourseManager : MonoBehaviour {
 		}
 	}
 
-	public void InstantiateMusicSymbol(string note, string zone, float pitch, float nextBeatInterval) {
+	public void InstantiateMusicSymbol(string note, string zone, float nextBeatInterval) {
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
 		float bpmEstimate = 60f / (nextBeatInterval / 2f);
@@ -161,8 +161,8 @@ public class ResourseManager : MonoBehaviour {
 			nextBeatInterval *= (1f + data.sadFactor);
 		}
 			
-		dataText.text = "CurrentTempo: " + bpmEstimate + "\n" + 
-			"CurrentSpeed: " + speed + "\n" + data.ToString ();
+		dataText.text = "CurrentTempo: " + Mathf.Round(bpmEstimate * 1000) / 1000f + "\n" + 
+			"CurrentSpeed: " + Mathf.Round(speed * 1000) / 1000f + "\n" + data.ToString ();
 		if (data.aggressiveFactor == 2) {
 			nextBeatInterval *= 1.2f;
 		}

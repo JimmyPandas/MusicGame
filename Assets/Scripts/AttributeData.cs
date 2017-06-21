@@ -15,8 +15,8 @@ public class AttributeData {
 	public override string ToString ()
 	{
 		string result = "time: " + time + "\n"; 
-		result += "happyFactor: " + happyFactor + "\n";
-		result += "sadFactor: " + sadFactor + "\n";
+		result += "happyFactor: " + Mathf.Round(happyFactor * 1000) / 1000f + "\n";
+		result += "sadFactor: " + Mathf.Round(sadFactor * 1000) / 1000f + "\n";
 		result += "aggressiveFactor: " + aggressiveFactor + "\n";
 		result += "isBright: " + isBright + "\n";
 		result += "danceable: " + danceable + "\n";

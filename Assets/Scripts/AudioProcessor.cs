@@ -55,7 +55,7 @@ public class AudioProcessor : MonoBehaviour {
 					if (result.Length == 2) {
 						note = result [0].ToString ();
 						string zone = result [1].ToString ();
-						resourceManager.InstantiateMusicSymbol (note, zone, pitch, nextBeatInterval);
+						resourceManager.InstantiateMusicSymbol (note, zone, nextBeatInterval);
 					}
 				} 
 			}
