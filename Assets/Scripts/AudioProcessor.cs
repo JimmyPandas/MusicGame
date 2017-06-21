@@ -32,6 +32,7 @@ public class AudioProcessor : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
 		LoadAttributeData ();
 		if (sampleRate == 0) {
 			AudioSource audioSource = GetComponent<AudioSource> ();
@@ -66,6 +67,10 @@ public class AudioProcessor : MonoBehaviour {
 		}
 	}
 
+	/* This method will compare the stored time of the attributeData in the dictionary with
+	 the current unity system scene loaded time. If the stored time is smaller or equal to
+	 the unity time, then we will set this data to the current one and remove this from the 
+	 dictionary. */
 	private void LoadAttributeData() {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		foreach (KeyValuePair<int, AttributeData> pair in dataManager.attributeDataDic) {

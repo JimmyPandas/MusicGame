@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class ResourseManager : MonoBehaviour {
 
+	/* List of fruits game object. */
 	public GameObject apple;
 	public GameObject strawberry;
 	public GameObject pear;
@@ -55,6 +56,9 @@ public class ResourseManager : MonoBehaviour {
 
 	}
 
+	/* This method is used to load a song from some file path and set music play time to the audio clip
+	   length.
+    */
 	IEnumerator LoadSongCoroutine(){
 		if (path.Length != 0) { 
 			WWW www = new WWW("file://" + path);
@@ -111,7 +115,7 @@ public class ResourseManager : MonoBehaviour {
 	}
 		
 
-
+	/* Initialize the note with corresponding fruits in the dictionary. */
 	private void InitItemDict() {
 		itemsDict.Add ("C", new List<GameObject>{apple, strawberry, cherry});
 		itemsDict.Add ("D", new List<GameObject>{orange, pineapple});
@@ -123,6 +127,8 @@ public class ResourseManager : MonoBehaviour {
 	}
 		
 
+	/* Get the first note in the notes list if the list size is bigger than zero.
+	   Otherwise, */
 	public string GetCurrentNote() {
 		string currentNote = "";
 		if (notes.Count > 0) {
@@ -131,10 +137,12 @@ public class ResourseManager : MonoBehaviour {
 		return currentNote;
 	}
 
+	/* Remove the given note from the notes list. */
 	public void RemoveNote(string note) {
 		notes.Remove (note);	
 	}
 
+	/* Ramdomly calculate fruit spawned position. */
 	private Vector3 CalcFruitSpawnedPos() {
 		string direction = directions[Random.Range (0, directions.Count)];
 		switch (direction) {
@@ -147,6 +155,9 @@ public class ResourseManager : MonoBehaviour {
 		}
 	}
 
+	/* Apply the analysis results to calculate the fruit's speed and scoreable allow time.
+	   It also changes other game settings using the analysis results. When a fruit is
+	   spawned, other fruits' speed will become same. */
 	public void InstantiateMusicSymbol(string note, string zone, float nextBeatInterval) {
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;

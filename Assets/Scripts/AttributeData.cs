@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*This data structure is used to store mood analysis result*/
 public class AttributeData {
 
 	public int time;
@@ -11,6 +12,7 @@ public class AttributeData {
 	public bool danceable;
 	public bool isBright;
 	public List<string> emotions = new List<string>();
+
 
 	public override string ToString ()
 	{
