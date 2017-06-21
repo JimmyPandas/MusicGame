@@ -159,6 +159,8 @@ public class ResourseManager : MonoBehaviour {
 	   It also changes other game settings using the analysis results. When a fruit is
 	   spawned, other fruits' speed will become same. */
 	public void InstantiateMusicSymbol(string note, string register, float nextBeatInterval) {
+
+		/* Set speed and scoreabletime of the new fruits using the analysis results. */
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
 		float bpmEstimate = 60f / (nextBeatInterval / 2f);
@@ -172,6 +174,7 @@ public class ResourseManager : MonoBehaviour {
 			nextBeatInterval *= (1f + data.sadFactor);
 		}
 			
+		/* Set the speed and tempo of the dataText. */
 		dataText.text = "CurrentTempo: " + Mathf.Round(bpmEstimate * 1000) / 1000f + "\n" + 
 			"CurrentSpeed: " + Mathf.Round(speed * 1000) / 1000f + "\n" + data.ToString ();
 		if (data.aggressiveFactor == 2) {
@@ -187,14 +190,17 @@ public class ResourseManager : MonoBehaviour {
 					int index = Random.Range (0, size);
 					GameObject item = items [index];
 
+					/* Limit the new spawned position to be far away from previous pos. */
 					Vector3 position = CalcFruitSpawnedPos ();
 					while (Mathf.Abs (position.x - prevSpawnedPos.x) < 3 || Mathf.Abs (position.x - prevSpawnedPos.x) > 9) {
 						position = CalcFruitSpawnedPos ();
 					}
+					/* Empty parent is used to aid animation effects. */
 					GameObject spawnedFruit = Instantiate (item, Vector3.zero, Quaternion.identity);
 					GameObject parent = Instantiate (new GameObject ("parent"), position, Quaternion.identity);
 					spawnedFruit.transform.SetParent (parent.transform);
 
+					/* Set the attributes of the new spawned fruit. */
 					FruitController fruitController = spawnedFruit.GetComponentInChildren<FruitController> ();
 					if (data.emotions.Count > 0) {
 						string emotion = data.emotions [Random.Range (0, data.emotions.Count)];
@@ -210,7 +216,7 @@ public class ResourseManager : MonoBehaviour {
 					prevSpawnedPos = position;
 				}
 				
-		
+		        /* Set other fruits' speed to be same as the new one's. */
 				GameObject[] liveFruits = GameObject.FindGameObjectsWithTag ("Item");
 				foreach (GameObject fruit in liveFruits) {
 					FruitController fruitController = fruit.GetComponentInChildren<FruitController> ();

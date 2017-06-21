@@ -8,6 +8,8 @@ public class InputController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		/* Set the input controller of the game. */
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
 		if (SceneManager.GetActiveScene ().name.Equals ("LoginWindow")) {

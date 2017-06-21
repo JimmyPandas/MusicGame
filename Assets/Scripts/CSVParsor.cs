@@ -9,7 +9,9 @@ public class CSVParsor {
 	private char fieldSeperator = ','; // It defines field seperate chracter
 	private List<string> records = new List<string>();
 
-	// Read data from CSV file
+	/* Read data from CSV file and store then into list of string
+	records.
+	*/
 	public void ReadAllLines(){
 		StreamReader sr = new StreamReader (path);
 		string record = sr.ReadLine ();
@@ -19,6 +21,7 @@ public class CSVParsor {
 		}
 	}
 
+	/* Fetch and remove the first record from records list.*/
 	public List<string> ReadRecord() {
 		if (records.Count > 0) {
 			string record = records [0];

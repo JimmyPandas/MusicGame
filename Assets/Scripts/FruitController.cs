@@ -11,8 +11,6 @@ public class FruitController : MonoBehaviour {
 	private float speed;
 	private bool scoreable = true;
 	public Animator animator;
-	public bool onGround = false;
-	private float onGroundTime = 2f;
 	private bool removed = false;
 	private bool noteRemoved = false;
 	private string emotion;
@@ -28,13 +26,9 @@ public class FruitController : MonoBehaviour {
 	void Start () {
 		int multiple = 0;
 		if (int.TryParse (register, out multiple)) {
-//			differenceInScale = speed - transform.localScale.x;
-//			gameObject.transform.localScale += new Vector3(differenceInScale, differenceInScale, 0);
-//			gameObject.transform.position += new Vector3 (6f * differenceInScale, -6f * differenceInScale, 0);
 			gameObject.transform.localScale *= Mathf.Sqrt(multiple / 2f);
 		} 
-//		startPos = gameObject.transform.position;
-//		Debug.Log ("start: " + startPos);
+
 		animator = GetComponentInChildren<Animator> ();
 		animator.Play ("FruitSpawning");
 		animator.SetFloat ("FallingSpeed", speed);
@@ -55,6 +49,9 @@ public class FruitController : MonoBehaviour {
 			scoreableTime -= Time.deltaTime;
 		}
 
+		/* If scoreable time < 0, then we will remove the correponding note from notes and
+		clear the emotion of the fruit.
+		*/
 		if (scoreableTime < 0) {
 			SetScoreable (false);
 			GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
@@ -65,15 +62,9 @@ public class FruitController : MonoBehaviour {
 				ClearEmotion ();
 			}
 		}
-		if (onGround && animator.GetCurrentAnimatorStateInfo (0).IsName ("FruitFalling")) {
-			animator.SetTrigger ("OnGround");
-		} 
-
-		if (onGround) {
-			onGroundTime -= Time.deltaTime;
-		}
-
-		if(onGroundTime < 0 || removed) {
+	
+		/* If the fruit is in removed status, then the fruit will be destroyed. */
+		if(removed) {
 			if (gameObject.transform.parent != null) {
 				Destroy (gameObject.transform.parent.gameObject);
 			}

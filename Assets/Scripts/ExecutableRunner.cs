@@ -7,6 +7,7 @@ using System;
 
 public class ExecutableRunner {
 
+	/* This method is ued to run the ffmpeg split audio executable file. */
 	public void run(string searchPath, Clock start_time, string output_file_path, Clock duration) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
