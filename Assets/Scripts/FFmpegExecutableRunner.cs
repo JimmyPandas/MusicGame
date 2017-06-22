@@ -11,7 +11,6 @@ public class FFmpegExecutableRunner {
 	public void SplitAudio(string searchPath, Clock start_time, string audioSegmentPath, Clock duration) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
-
 			Process process = new Process ();
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
@@ -29,9 +28,7 @@ public class FFmpegExecutableRunner {
 	}
 
 	public void ConvertMp3toWav(string audioPath, string outputPath, string searchPath) {
-		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
-
 			Process process = new Process ();
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";

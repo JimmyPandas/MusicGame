@@ -85,7 +85,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				}
 			}
 		}
-	
 		SearchOtherMusicFileAndConvertToWav (musicOptions);
 		dropdown.AddOptions (musicOptions);
 	}
@@ -96,7 +95,8 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			var fileInfo = new System.IO.FileInfo(musicfile);
 			if (fileInfo.Length > 100) {
 				FFmpegExecutableRunner runner = new FFmpegExecutableRunner ();
-				string outputPath = musicfile.Replace (".mp3", ".wav");
+				string outputPath = searchPath + "/Music/" + Path.GetFileNameWithoutExtension(musicfile) + ".wav";
+				Debug.Log (outputPath);
 				runner.ConvertMp3toWav (musicfile, outputPath, searchPath);
 				string musicOption = Path.GetFileName(outputPath);
 				if (!musicOptionsDic.ContainsKey (musicOption)) {
@@ -119,7 +119,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 	private void SetMusic(int menuIndex) {
 		//get all options available within this dropdown menu
 		List<Dropdown.OptionData> menuOptions = dropdown.options;
-
 		//get the string value of the selected index
 		string musicOption = menuOptions [menuIndex].text;
 		if (musicOptionsDic.ContainsKey (musicOption)) {
