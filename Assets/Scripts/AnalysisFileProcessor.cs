@@ -116,8 +116,8 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 				string resultFilePath = resultFolderPath + "/" + filename + "_";
 
-				ExecutableRunner runner = new ExecutableRunner ();
-				runner.run (searchPath, start_time, audioSegmentPath, duration);
+				FFmpegExecutableRunner runner = new FFmpegExecutableRunner ();
+				runner.SplitAudio (searchPath, start_time, audioSegmentPath, duration);
 
 				if (!File.Exists (resultFilePath + "descriptor.txt")) {
 					extractMusic (audioSegmentPath, resultFilePath + "descriptor.txt", "");

@@ -85,7 +85,26 @@ public class LoginWindowGUIManager : MonoBehaviour {
 				}
 			}
 		}
+	
+		SearchOtherMusicFileAndConvertToWav (musicOptions);
 		dropdown.AddOptions (musicOptions);
+	}
+
+	private void SearchOtherMusicFileAndConvertToWav(List<string> musicOptions) {
+		string[] musicfiles = Directory.GetFiles (searchPath, "*.mp3", SearchOption.AllDirectories);
+		foreach(string musicfile in musicfiles) {
+			var fileInfo = new System.IO.FileInfo(musicfile);
+			if (fileInfo.Length > 100) {
+				FFmpegExecutableRunner runner = new FFmpegExecutableRunner ();
+				string outputPath = musicfile.Replace (".mp3", ".wav");
+				runner.ConvertMp3toWav (musicfile, outputPath, searchPath);
+				string musicOption = Path.GetFileName(outputPath);
+				if (!musicOptionsDic.ContainsKey (musicOption)) {
+					musicOptions.Add (musicOption);
+					musicOptionsDic.Add (musicOption, outputPath);
+				}
+			}
+		}
 	}
 
 	public void MusicLibraryConfirm() {
