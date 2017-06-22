@@ -22,6 +22,7 @@ public class AudioProcessor : MonoBehaviour {
 		beatCSVParsor = new CSVParsor ();
 		beatCSVParsor.path = dataManager.beat_csv_path;
 		beatCSVParsor.ReadAllLines ();
+		beatCSVParsor.ReadRecord ();
 
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();

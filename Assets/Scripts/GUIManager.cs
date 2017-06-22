@@ -27,7 +27,6 @@ public class GUIManager : MonoBehaviour {
 	public GameObject dayBackground;
 	public GameObject nightBackground;
 	private DataManager dataManager;
-	public Text dataText;
 
 	// Use this for initialization
 	void Start () {
