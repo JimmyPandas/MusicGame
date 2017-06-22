@@ -96,7 +96,6 @@ public class LoginWindowGUIManager : MonoBehaviour {
 			if (fileInfo.Length > 100) {
 				FFmpegExecutableRunner runner = new FFmpegExecutableRunner ();
 				string outputPath = searchPath + "/Music/" + Path.GetFileNameWithoutExtension(musicfile) + ".wav";
-				Debug.Log (outputPath);
 				runner.ConvertMp3toWav (musicfile, outputPath, searchPath);
 				string musicOption = Path.GetFileName(outputPath);
 				if (!musicOptionsDic.ContainsKey (musicOption)) {

@@ -7,7 +7,7 @@ using System;
 
 public class FFmpegExecutableRunner {
 
-	/* This method is ued to run the ffmpeg split audio executable file. */
+	/* This method is ued to run the ffmpeg executable to segment any audio. */
 	public void SplitAudio(string searchPath, Clock start_time, string audioSegmentPath, Clock duration) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
@@ -27,18 +27,20 @@ public class FFmpegExecutableRunner {
 		}
 	}
 
+	/* This method is ued to run the ffmpeg executable to convert mp3 file
+	 * to wav file. 
+	*/
 	public void ConvertMp3toWav(string audioPath, string outputPath, string searchPath) {
 		try {
 			Process process = new Process ();
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
 
-			if(File.Exists(outputPath)) {
-				File.Delete(outputPath);
+			if(!File.Exists(outputPath)) {
+				process.StartInfo.Arguments = "-i " + audioPath + " " +  outputPath;
+				process.Start ();
+				process.WaitForExit ();
 			}
-			process.StartInfo.Arguments = "-i " + audioPath + " " +  outputPath;
-			process.Start ();
-			process.WaitForExit ();
 		} catch (System.Exception e) {
 
 		}
