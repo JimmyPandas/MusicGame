@@ -105,7 +105,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 		int num = 0;
 		string filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-		string output_file_path = searchPath + "/" + filename + ".wav";
+		string audioSegmentPath = searchPath + "/" + filename + ".wav";
 		string resultFolderPath = searchPath + "/Results/" + duration.CalcTotalTime() + "_duration_" + hop + "_shift";
 		if (!Directory.Exists (resultFolderPath)) {
 			Directory.CreateDirectory (resultFolderPath);
@@ -117,10 +117,10 @@ public class AnalysisFileProcessor : MonoBehaviour {
 				string resultFilePath = resultFolderPath + "/" + filename + "_";
 
 				ExecutableRunner runner = new ExecutableRunner ();
-				runner.run (searchPath, start_time, output_file_path, duration);
+				runner.run (searchPath, start_time, audioSegmentPath, duration);
 
 				if (!File.Exists (resultFilePath + "descriptor.txt")) {
-					extractMusic (output_file_path, resultFilePath + "descriptor.txt", "");
+					extractMusic (audioSegmentPath, resultFilePath + "descriptor.txt", "");
 				}
 				if (!File.Exists (resultFilePath + "classfiresult.json")) {
 					extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
@@ -130,11 +130,11 @@ public class AnalysisFileProcessor : MonoBehaviour {
 				if (!classificationFilesDic.ContainsKey (start_time.CalcTotalTime ())) {
 					classificationFilesDic.Add (start_time.CalcTotalTime (), resultFilePath + "classfiresult.json");
 				}
-				File.Delete (output_file_path);
+				File.Delete (audioSegmentPath);
 				start_time.increaseTimeBySeconds (hop);
 				num++;
 				filename = Path.GetFileNameWithoutExtension (dataManager.path) + num;
-				output_file_path = searchPath + "/" + filename + ".wav";
+				audioSegmentPath = searchPath + "/" + filename + ".wav";
 
 			}
 		}

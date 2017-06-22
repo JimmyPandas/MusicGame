@@ -8,7 +8,7 @@ using System;
 public class ExecutableRunner {
 
 	/* This method is ued to run the ffmpeg split audio executable file. */
-	public void run(string searchPath, Clock start_time, string output_file_path, Clock duration) {
+	public void run(string searchPath, Clock start_time, string audioSegmentPath, Clock duration) {
 		DataManager dataManager = GameObject.Find ("DataManager").GetComponentInChildren<DataManager> ();
 		try {
 
@@ -16,11 +16,11 @@ public class ExecutableRunner {
 			process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			process.StartInfo.FileName = searchPath + "/ffmpeg/ffmpeg";
 
-			if(File.Exists(output_file_path)) {
-				File.Delete(output_file_path);
+			if(File.Exists(audioSegmentPath)) {
+				File.Delete(audioSegmentPath);
 			}
 			process.StartInfo.Arguments = "-i " + dataManager.path + " -acodec copy -t " 
-				+ duration.ToString() + " -ss " + start_time.ToString() + " " + output_file_path;
+				+ duration.ToString() + " -ss " + start_time.ToString() + " " + audioSegmentPath;
 			process.Start ();
 			process.WaitForExit ();
 		} catch (System.Exception e) {
