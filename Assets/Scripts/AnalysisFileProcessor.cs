@@ -40,6 +40,7 @@ public class AnalysisFileProcessor : MonoBehaviour {
 	/* This method sets the duration size and hop size from user's inputs. */
 	public void SetDurationAndHopSizeFromInput(InputField durationInputField, InputField hopInputField) {
 		duration.Reset ();
+		hop = 0;
 		try {
 			duration.increaseTimeBySeconds(int.Parse (durationInputField.text));
 			hop = int.Parse (hopInputField.text);
@@ -87,7 +88,6 @@ public class AnalysisFileProcessor : MonoBehaviour {
 
 		if (!File.Exists (resultFilePath + "classfiresult.json")) {
 			extractMusicSVM (resultFilePath + "descriptor.txt", resultFilePath + "classfiresult.json", "");
-			File.Delete (resultFilePath + "descriptor.txt");
 		}
 
 		GetMusicFileLength (resultFilePath + "classfiresult.json");
