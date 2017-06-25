@@ -48,7 +48,7 @@ public class AudioProcessor : MonoBehaviour {
 			while (fields != null && float.Parse(fields [0]) < Time.timeSinceLevelLoad) {
 				fields = pitchCSVParsor.ReadRecord ();
 			}
-			if (fields != null && spawnRate != 0) {
+			if (fields != null && currentBeatInterval != 0) {
 				float pitch = 0f;
 				if (float.TryParse (fields [1], out pitch)) {
 					string result = CalcNoteAndRegister (pitch);
