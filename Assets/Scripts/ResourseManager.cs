@@ -158,12 +158,12 @@ public class ResourseManager : MonoBehaviour {
 	/* Apply the analysis results to calculate the fruit's speed and scoreable allow time.
 	   It also changes other game settings using the analysis results. When a fruit is
 	   spawned, other fruits' speed will become same. */
-	public void InstantiateMusicSymbol(string note, string register, float nextBeatInterval) {
+	public void InstantiateMusicSymbol(string note, string register, float currentBeatInterval, float nextBeatInterval) {
 
 		/* Set speed and scoreabletime of the new fruits using the analysis results. */
 		float speed = 0f;
 		AttributeData data = dataManager.currentAttributeData;
-		float bpmEstimate = 60f / (nextBeatInterval / 2f);
+		float bpmEstimate = 60f / (currentBeatInterval / 2f);
 		speed = bpmEstimate / 100f;
 		if (data.happyFactor > 0.5) {
 			speed *= (1.05f + data.happyFactor);

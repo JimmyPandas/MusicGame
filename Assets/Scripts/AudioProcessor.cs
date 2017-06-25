@@ -11,6 +11,7 @@ public class AudioProcessor : MonoBehaviour {
 	private CSVParsor pitchCSVParsor;
 	private CSVParsor beatCSVParsor;
 	float nextBeatInterval = 0f;
+	float currentBeatInterval = 0f;
 
 	// Use this for initialization
 	void Start () {
@@ -26,8 +27,6 @@ public class AudioProcessor : MonoBehaviour {
 
 		GUIManager guiManager = GameObject.Find ("GUIManager").GetComponentInChildren<GUIManager> ();
 		resourceManager = guiManager.GetComponentInChildren<ResourseManager> ();
-		UpdateNextSpawnRate ();
-
 	}
 
 	// Update is called once per frame
@@ -39,8 +38,9 @@ public class AudioProcessor : MonoBehaviour {
 		}
 		List<string> fields = new List<string> ();
 		if (spawnRate <= 0) {
-			spawnRate = nextBeatInterval;
+			currentBeatInterval = nextBeatInterval;
 			UpdateNextSpawnRate ();
+			spawnRate = nextBeatInterval;
 
 			string note = "";
 			fields = pitchCSVParsor.ReadRecord();
@@ -48,14 +48,14 @@ public class AudioProcessor : MonoBehaviour {
 			while (fields != null && float.Parse(fields [0]) < Time.timeSinceLevelLoad) {
 				fields = pitchCSVParsor.ReadRecord ();
 			}
-			if (fields != null) {
+			if (fields != null && spawnRate != 0) {
 				float pitch = 0f;
 				if (float.TryParse (fields [1], out pitch)) {
 					string result = CalcNoteAndRegister (pitch);
 					if (result.Length == 2) {
 						note = result [0].ToString ();
 						string register = result [1].ToString ();
-						resourceManager.InstantiateMusicSymbol (note, register, nextBeatInterval);
+						resourceManager.InstantiateMusicSymbol (note, register, currentBeatInterval, nextBeatInterval);
 					}
 				} 
 			}
